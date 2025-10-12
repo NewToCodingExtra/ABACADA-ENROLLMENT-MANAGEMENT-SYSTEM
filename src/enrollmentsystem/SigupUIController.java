@@ -86,10 +86,15 @@ public class SigupUIController implements Initializable {
         try {
             URL url = getClass().getResource("/terms.html");
             if (url != null) {
-                String path = url.toURI().toString(); 
-                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", path});
+                String path = url.toURI().getPath();
+ 
+                if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                    Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()});
+                } else { 
+                    java.awt.Desktop.getDesktop().browse(url.toURI());
+                } 
             } else {
-                System.out.println("terms.html not found in resources!");
+                System.out.println("terms.html not found in resources folder!");
             }
         } catch (Exception e) {
             e.printStackTrace();

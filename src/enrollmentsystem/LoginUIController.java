@@ -128,8 +128,5 @@ public class LoginUIController implements Initializable {
             e.printStackTrace();
         } 
     }
-    @FXML
-    private void showPassClickedBTN(ActionEvent event) {
-    }
 
 }
