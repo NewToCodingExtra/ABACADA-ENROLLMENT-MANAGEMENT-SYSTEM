@@ -68,7 +68,7 @@
                   <CheckBox fx:id="sShowPassword" layoutX="353.0" layoutY="304.0" mnemonicParsing="false" text="Show password" />
                   <PasswordField fx:id="fPassField" layoutX="35.0" layoutY="215.0" prefHeight="25.0" prefWidth="425.0" promptText="Input a password...." />
                   <PasswordField fx:id="sPassField" layoutX="34.0" layoutY="272.0" prefHeight="25.0" prefWidth="425.0" promptText="Re-input a password..." />
-                  <CheckBox layoutX="33.0" layoutY="313.0" mnemonicParsing="false" text="Accept our" />
+                  <CheckBox fx:id="checkAcceptTermsAndConditionBtn" layoutX="33.0" layoutY="313.0" mnemonicParsing="false" text="Accept our" />
                   <Label fx:id="termsAndConditon" layoutX="117.0" layoutY="313.0" onMouseClicked="#termsAndConditionClicked" text="Terms and Conditions" textFill="#3f36bf">
                      <cursor>
                         <Cursor fx:constant="HAND" />

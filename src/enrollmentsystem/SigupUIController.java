@@ -5,6 +5,7 @@
 package enrollmentsystem;
 
 import java.io.IOException;
+import java.sql.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -58,6 +59,8 @@ public class SigupUIController implements Initializable {
     private Label PasswordMatchValidation;
     @FXML
     private Button createAccountBtn;
+    @FXML
+    private CheckBox checkAcceptTermsAndConditionBtn;
 
     /**
      * Initializes the controller class.
@@ -118,6 +121,65 @@ public class SigupUIController implements Initializable {
 
     @FXML
     private void createAccountBtnAction(ActionEvent event) {
+        UsernameValidationText.setText("");
+        EmailValidationText.setText("");
+        PasswordLengthValidation.setText("");
+        PasswordMatchValidation.setText("");
+
+        String username = uNameTextField.getText().trim();
+        String email = emailTextField.getText().trim();
+        String password = fPassField.getText().trim();
+        String confirmPassword = sPassField.getText().trim();
+ 
+        if (username.length() < 8 || !username.matches("^[A-Za-z0-9_@]+$")) {
+            UsernameValidationText.setText("Username must be 8+ characters (letters, numbers, _ or @ only)");
+            return;
+        }
+ 
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            EmailValidationText.setText("Invalid email format!");
+            return;
+        }
+ 
+        if (password.length() < 6) {
+            PasswordLengthValidation.setText("Password must be at least 6 characters!");
+            return;
+        }
+ 
+        if (!password.equals(confirmPassword)) {
+            PasswordMatchValidation.setText("Passwords do not match!");
+            return;
+        }
+        if (!checkAcceptTermsAndConditionBtn.isSelected()) {
+            javax.swing.JOptionPane.showMessageDialog(null, "You must accept the Terms and Conditions before creating an account.", "Terms Not Accepted", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return; 
+        }
+
+        // 🔹 Insert user into Database
+        String query = "INSERT INTO users (username, email, password, access) VALUES (?, ?, ?, 'Enrollees')";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, email);
+            stmt.setString(3, password);
+
+            stmt.executeUpdate();
+
+            javax.swing.JOptionPane.showMessageDialog(null,"✅ Account Created Successfully! You can now login.");
+
+        } catch (SQLException e) {
+            if (e.getMessage().contains("Duplicate entry")) {
+                if (e.getMessage().contains("username")) {
+                    UsernameValidationText.setText("Username already exists!");
+                } else if (e.getMessage().contains("email")) {
+                    EmailValidationText.setText("Email already registered!");
+                }
+            } else {
+                e.printStackTrace();
+            }
+        }
     }
     
 }
