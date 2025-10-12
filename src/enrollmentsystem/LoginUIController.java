@@ -4,17 +4,26 @@
  */
 package enrollmentsystem;
 
+import java.io.IOException;
+import javafx.application.Application;
 import java.sql.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -110,6 +119,29 @@ public class LoginUIController implements Initializable {
 
     @FXML
     private void signupBtnAction(ActionEvent event) {
+       
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/SigupUI.fxml"));
+            Scene scene = new Scene(root, 801, 580);
+            Stage stage = EnrollmentSystem.mainStage;
+
+            stage.setScene(scene);
+            stage.setTitle("ABAKADA UNIVERSITY - SIGNUP PAGE");
+            stage.setResizable(false);
+
+            // ✅ Manually center after scene switch
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            stage.setX((screenBounds.getWidth() - 801) / 2);
+            stage.setY((screenBounds.getHeight() - 580) / 2);
+
+            stage.show(); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
+    }
+    @FXML
+    private void showPassClickedBTN(ActionEvent event) {
+        // No code needed here because binding already handles show/hide
     }
 
 }

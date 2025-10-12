@@ -20,22 +20,23 @@ import javafx.stage.Stage;
  * @author Joshua
  */
 public class EnrollmentSystem extends Application {
-
+    public static Stage mainStage;
     @Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("LoginUI.fxml"));
+            mainStage = primaryStage;  
+            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/LoginUI.fxml"));
             primaryStage.setTitle("ABAKADA UNIVERSITY ENROLLMENT PAGE");
             primaryStage.setScene(new Scene(root, 600, 400));
+            primaryStage.centerOnScreen();
+            primaryStage.setResizable(false);
             primaryStage.show();
         } catch (IOException ex) {
             System.getLogger(EnrollmentSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
+ 
     public static void main(String[] args) {
         launch(args);
     }

@@ -49,7 +49,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <CheckBox fx:id="showPass" contentDisplay="RIGHT" graphicTextGap="5.0" layoutX="135.0" layoutY="288.0" mnemonicParsing="false" text="Show Password">
+            <CheckBox fx:id="showPass" layoutX="135.0" layoutY="288.0" mnemonicParsing="false" text="Show Password" onAction="#showPassClickedBTN" contentDisplay="RIGHT" graphicTextGap="5.0">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
