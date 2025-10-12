@@ -85,6 +85,10 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
+                  <Label fx:id="UsernameValidationText" layoutX="232.0" layoutY="130.0" prefHeight="17.0" prefWidth="218.0" textFill="#c11818" />
+                  <Label fx:id="EmailValidationText" layoutX="232.0" layoutY="187.0" prefHeight="17.0" prefWidth="218.0" textFill="#c11818" />
+                  <Label fx:id="PasswordLengthValidation" layoutX="172.0" layoutY="244.0" prefHeight="17.0" prefWidth="179.0" textFill="#c11818" />
+                  <Label fx:id="PasswordMatchValidation" layoutX="172.0" layoutY="295.0" prefHeight="17.0" prefWidth="179.0" textFill="#c11818" />
                </children>
             </Pane>
          </children>

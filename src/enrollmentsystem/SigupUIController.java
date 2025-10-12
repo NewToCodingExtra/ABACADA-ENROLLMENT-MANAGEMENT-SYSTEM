@@ -46,21 +46,45 @@ public class SigupUIController implements Initializable {
     private Label termsAndConditon;
     @FXML
     private Label LogInHere;
+    @FXML
+    private Label UsernameValidationText;
+    @FXML
+    private Label EmailValidationText;
+    @FXML
+    private Label PasswordLengthValidation;
+    @FXML
+    private Label PasswordMatchValidation;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+     
+        fPasswordTextField.managedProperty().bind(fShowPassword.selectedProperty());
+        fPasswordTextField.visibleProperty().bind(fShowPassword.selectedProperty());
+        fPassField.managedProperty().bind(fShowPassword.selectedProperty().not());
+        fPassField.visibleProperty().bind(fShowPassword.selectedProperty().not());
+        fPasswordTextField.textProperty().bindBidirectional(fPassField.textProperty());
+
+        sPasswordTextField.managedProperty().bind(sShowPassword.selectedProperty());
+        sPasswordTextField.visibleProperty().bind(sShowPassword.selectedProperty());
+        sPassField.managedProperty().bind(sShowPassword.selectedProperty().not());
+        sPassField.visibleProperty().bind(sShowPassword.selectedProperty().not());
+        sPasswordTextField.textProperty().bindBidirectional(sPassField.textProperty());
     }    
 
     @FXML
     private void termsAndConditionClicked(MouseEvent event) {
         try {
-            java.awt.Desktop.getDesktop().browse(
-                new java.io.File("/enrollmentsystem/terms.html").toURI()
-            );
+            URL url = getClass().getResource("/terms.html");
+            if (url != null) {
+                String path = url.toURI().toString();
+                // ✅ Forces browser
+                Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", path});
+            } else {
+                System.out.println("terms.html not found in resources!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
