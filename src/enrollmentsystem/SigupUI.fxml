@@ -77,7 +77,7 @@
                         <Bloom />
                      </effect>
                   </Label>
-                  <Button layoutX="109.0" layoutY="356.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="260.0" text="CREATE AN ACCOUNT" />
+                  <Button fx:id="createAccountBtn" layoutX="109.0" layoutY="356.0" mnemonicParsing="false" onAction="#createAccountBtnAction" prefHeight="25.0" prefWidth="260.0" text="CREATE AN ACCOUNT" />
                   <Line endX="154.0" endY="-7.62939453125E-6" layoutX="338.0" layoutY="411.0" startX="-339.0" startY="-7.62939453125E-6" stroke="#1e42bd" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="3.0" />
                   <Label layoutX="239.0" layoutY="430.0" text="Already have an account?" />
                   <Label fx:id="LogInHere" layoutX="390.0" layoutY="430.0" onMouseClicked="#LogInClicked" prefHeight="17.0" prefWidth="97.0" text="Log in here" textFill="#3f36bf">

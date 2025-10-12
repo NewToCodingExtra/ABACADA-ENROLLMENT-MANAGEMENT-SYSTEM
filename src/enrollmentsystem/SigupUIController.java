@@ -7,11 +7,13 @@ package enrollmentsystem;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -54,6 +56,8 @@ public class SigupUIController implements Initializable {
     private Label PasswordLengthValidation;
     @FXML
     private Label PasswordMatchValidation;
+    @FXML
+    private Button createAccountBtn;
 
     /**
      * Initializes the controller class.
@@ -111,6 +115,10 @@ public class SigupUIController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void createAccountBtnAction(ActionEvent event) {
     }
     
 }
