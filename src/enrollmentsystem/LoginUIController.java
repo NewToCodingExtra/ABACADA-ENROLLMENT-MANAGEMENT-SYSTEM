@@ -55,14 +55,10 @@ public class LoginUIController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        // Bind password field and visible text field
         passVisibleField.managedProperty().bind(showPass.selectedProperty());
         passVisibleField.visibleProperty().bind(showPass.selectedProperty());
-
         passField.managedProperty().bind(showPass.selectedProperty().not());
         passField.visibleProperty().bind(showPass.selectedProperty().not());
-
-        // Keep both fields' text synchronized
         passVisibleField.textProperty().bindBidirectional(passField.textProperty());
     }
 
@@ -74,7 +70,6 @@ public class LoginUIController implements Initializable {
         String userInput = userNameTField.getText().trim();
         String password = passField.getText().trim();
 
-        // Basic validation
         if (userInput.isEmpty()) {
             userNameString.setText("Please enter username or email!");
             return;
@@ -84,10 +79,8 @@ public class LoginUIController implements Initializable {
             return;
         }
 
-        // Determine if input is email or username
         boolean isEmail = userInput.matches("^[A-Za-z0-9+_.-]+@(.+)$");
 
-        // Build SQL dynamically
         String query = "SELECT * FROM users WHERE " + (isEmail ? "email" : "username") + " = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -101,16 +94,13 @@ public class LoginUIController implements Initializable {
                 return;
             }
 
-            // Check password
             if (!rs.getString("password").equals(password)) {
                 passwordString.setText("Incorrect password!");
                 return;
             }
 
-            // SUCCESS
             javax.swing.JOptionPane.showMessageDialog(null,"✅ Login successful! Access role: " + rs.getString("access"), "Successful", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-            // TODO: Load next window based on role later
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,7 +119,6 @@ public class LoginUIController implements Initializable {
             stage.setTitle("ABAKADA UNIVERSITY - SIGNUP PAGE");
             stage.setResizable(false);
 
-            // ✅ Manually center after scene switch
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             stage.setX((screenBounds.getWidth() - 801) / 2);
             stage.setY((screenBounds.getHeight() - 580) / 2);
@@ -141,7 +130,6 @@ public class LoginUIController implements Initializable {
     }
     @FXML
     private void showPassClickedBTN(ActionEvent event) {
-        // No code needed here because binding already handles show/hide
     }
 
 }

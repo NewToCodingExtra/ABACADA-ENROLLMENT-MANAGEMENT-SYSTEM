@@ -83,8 +83,7 @@ public class SigupUIController implements Initializable {
         try {
             URL url = getClass().getResource("/terms.html");
             if (url != null) {
-                String path = url.toURI().toString();
-                // ✅ Forces browser
+                String path = url.toURI().toString(); 
                 Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", path});
             } else {
                 System.out.println("terms.html not found in resources!");
@@ -98,8 +97,8 @@ public class SigupUIController implements Initializable {
     private void LogInClicked(MouseEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/LoginUI.fxml"));
-            Scene scene = new Scene(root, 600, 400); // ← Your Login window size
-            Stage stage = EnrollmentSystem.mainStage; // ← Use same stage
+            Scene scene = new Scene(root, 600, 400);  
+            Stage stage = EnrollmentSystem.mainStage;  
 
             stage.setScene(scene);
             stage.setTitle("ABAKADA UNIVERSITY - LOGIN PAGE");
