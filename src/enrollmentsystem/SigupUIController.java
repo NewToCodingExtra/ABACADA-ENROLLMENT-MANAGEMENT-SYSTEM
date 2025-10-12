@@ -167,7 +167,7 @@ public class SigupUIController implements Initializable {
 
             stmt.executeUpdate();
 
-            javax.swing.JOptionPane.showMessageDialog(null,"✅ Account Created Successfully! You can now login.");
+            javax.swing.JOptionPane.showMessageDialog(null,"Account Created Successfully! You can now login.");
 
         } catch (SQLException e) {
             if (e.getMessage().contains("Duplicate entry")) {
