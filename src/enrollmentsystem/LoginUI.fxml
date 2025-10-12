@@ -19,7 +19,7 @@
          <children>
             <ImageView fitHeight="164.0" fitWidth="233.0" layoutX="83.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../imgResource/7711847.jpg" />
+                  <Image url="@../../resource/7711847.jpg" />
                </image>
             </ImageView>
          </children>
@@ -49,7 +49,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <CheckBox fx:id="showPass" layoutX="135.0" layoutY="288.0" mnemonicParsing="false" text="Show Password" onAction="#showPassClickedBTN" contentDisplay="RIGHT" graphicTextGap="5.0">
+            <CheckBox fx:id="showPass" contentDisplay="RIGHT" graphicTextGap="5.0" layoutX="135.0" layoutY="288.0" mnemonicParsing="false" text="Show Password">
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>

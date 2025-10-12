@@ -59,7 +59,7 @@ public class SigupUIController implements Initializable {
     private void termsAndConditionClicked(MouseEvent event) {
         try {
             java.awt.Desktop.getDesktop().browse(
-                new java.io.File("\terms.html").toURI()
+                new java.io.File("/enrollmentsystem/terms.html").toURI()
             );
         } catch (Exception e) {
             e.printStackTrace();
