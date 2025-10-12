@@ -16,9 +16,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.SigupUIController">
    <top>
-      <AnchorPane prefHeight="102.0" prefWidth="850.0" style="-fx-background-color: #82CEE6;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="102.0" prefWidth="850.0" style="-fx-background-color: #5D866C;" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="271.0" layoutY="14.0" prefHeight="35.0" prefWidth="260.0" text="ABACADA ACADEMY" textAlignment="CENTER" wrapText="true">
+            <Label layoutX="271.0" layoutY="34.0" prefHeight="35.0" prefWidth="260.0" text="ABACADA ACADEMY" textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
@@ -30,16 +30,16 @@
       <AnchorPane prefHeight="0.0" prefWidth="912.0" style="-fx-background-color: #F9F793;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="461.0" prefWidth="802.0" style="-fx-background-color: #E3ED5D;" BorderPane.alignment="CENTER">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="461.0" prefWidth="802.0" style="-fx-background-color: #E6D8C3;" BorderPane.alignment="CENTER">
          <children>
-            <Pane layoutX="160.0" layoutY="14.0" prefHeight="464.0" prefWidth="494.0" style="-fx-background-color: #AFDBE7;">
+            <Pane layoutX="160.0" layoutY="14.0" prefHeight="464.0" prefWidth="494.0" style="-fx-background-color: #C2A68C;">
                <children>
                   <Text fill="WHITE" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your account" textAlignment="CENTER" wrappingWidth="482.1366271972656">
                      <font>
                         <Font name="System Bold" size="25.0" />
                      </font>
                   </Text>
-                  <Line endX="154.0" endY="-7.62939453125E-6" layoutX="339.0" layoutY="47.0" startX="-339.0" startY="-7.62939453125E-6" stroke="#1e42bd" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="3.0" />
+                  <Line endX="154.0" endY="-7.62939453125E-6" layoutX="339.0" layoutY="47.0" startX="-339.0" startY="-7.62939453125E-6" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="3.0" />
                   <Label layoutX="33.0" layoutY="80.0" prefHeight="17.0" prefWidth="102.0" text="Username:">
                      <font>
                         <Font size="14.0" />
@@ -78,7 +78,7 @@
                      </effect>
                   </Label>
                   <Button fx:id="createAccountBtn" layoutX="109.0" layoutY="356.0" mnemonicParsing="false" onAction="#createAccountBtnAction" prefHeight="25.0" prefWidth="260.0" text="CREATE AN ACCOUNT" />
-                  <Line endX="154.0" endY="-7.62939453125E-6" layoutX="338.0" layoutY="411.0" startX="-339.0" startY="-7.62939453125E-6" stroke="#1e42bd" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="3.0" />
+                  <Line endX="154.0" endY="-7.62939453125E-6" layoutX="338.0" layoutY="411.0" startX="-339.0" startY="-7.62939453125E-6" strokeLineCap="ROUND" strokeLineJoin="BEVEL" strokeWidth="3.0" />
                   <Label layoutX="239.0" layoutY="430.0" text="Already have an account?" />
                   <Label fx:id="LogInHere" layoutX="390.0" layoutY="430.0" onMouseClicked="#LogInClicked" prefHeight="17.0" prefWidth="97.0" text="Log in here" textFill="#3f36bf">
                      <cursor>
