@@ -25,9 +25,9 @@ public class EnrollmentSystem extends Application {
     public void start(Stage primaryStage) {
         try {
             mainStage = primaryStage;  
-            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/LoginUI.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
             primaryStage.setTitle("ABAKADA UNIVERSITY ENROLLMENT PAGE");
-            primaryStage.setScene(new Scene(root, 600, 400));
+            primaryStage.setScene(new Scene(root, 898, 543));
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
             primaryStage.show();
