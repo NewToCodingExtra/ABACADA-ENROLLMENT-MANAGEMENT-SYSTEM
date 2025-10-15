@@ -4,6 +4,7 @@
  */
 package enrollmentsystem;
 
+import java.io.IOException;
 import java.io.InputStream;
 import javafx.scene.image.Image;
 import java.net.URL;
@@ -13,7 +14,11 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -21,6 +26,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -120,7 +127,6 @@ public class LoginController implements Initializable {
     private Image tryLoadImage(String... candidates) {
         for (String path : candidates) {
             if (path == null) continue;
-            // Try getResourceAsStream with path as-is
             try (InputStream is = getClass().getResourceAsStream(path)) {
                 if (is != null) {
                     System.out.println("Loaded image via getResourceAsStream: " + path);
@@ -160,11 +166,11 @@ public class LoginController implements Initializable {
     private void togglePasswordVisibility(MouseEvent event) {
         // lazy load icons (only once)
         if (eyeImage == null || hiddenImage == null) {
-            // list of candidates to try (order matters)
+             
             String[] eyeCandidates = {
-                "/img/eye.png",       // common expected path
-                "img/eye.png",        // relative path (same package)
-                "/images/eye.png",    // alternative folder name
+                "/img/eye.png",        
+                "img/eye.png",         
+                "/images/eye.png",     
                 "images/eye.png"
             };
             String[] hiddenCandidates = {
@@ -173,13 +179,10 @@ public class LoginController implements Initializable {
                 "/images/hidden.png",
                 "images/hidden.png"
             };
-
-            // Try to load each — note we use tryLoadImage to get best attempt
+            
             eyeImage = tryLoadImage(eyeCandidates);
             hiddenImage = tryLoadImage(hiddenCandidates);
 
-            // If still null, but the ImageView already has an image loaded via FXML,
-            // use that as a fallback for both variants (not ideal, but prevents NPE)
             if (eyeImage == null && togglePasswordButton.getImage() != null) {
                 System.out.println("Using togglePasswordButton existing image as eyeImage fallback");
                 eyeImage = togglePasswordButton.getImage();
@@ -220,6 +223,27 @@ public class LoginController implements Initializable {
             // prevent the app from crashing — log the issue
             ex.printStackTrace();
         }
+    }
+
+    @FXML
+    private void onRegisterAction(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/Register.fxml"));
+            Scene scene = new Scene(root, 898, 543);
+            Stage stage = EnrollmentSystem.mainStage;
+
+            stage.setScene(scene);
+            stage.setTitle("ABAKADA UNIVERSITY - SIGNUP PAGE");
+            stage.setResizable(false);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            stage.setX((screenBounds.getWidth() - 801) / 2);
+            stage.setY((screenBounds.getHeight() - 580) / 2);
+
+            stage.show(); 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } 
     }
     
 }

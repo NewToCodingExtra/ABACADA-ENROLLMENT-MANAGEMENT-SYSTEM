@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -34,19 +35,13 @@ public class SigupUIController implements Initializable {
     @FXML
     private TextField emailTextField;
     @FXML
-    private TextField fPasswordTextField;
-    @FXML
-    private CheckBox fShowPassword;
+    private TextField fShowPassword;
     @FXML
     private TextField sPasswordTextField;
     @FXML
-    private CheckBox sShowPassword;
-    @FXML
-    private PasswordField fPassField;
-    @FXML
     private PasswordField sPassField;
     @FXML
-    private Label termsAndConditon;
+    private Hyperlink termsAndConditon;
     @FXML
     private Label LogInHere;
     @FXML
@@ -61,71 +56,26 @@ public class SigupUIController implements Initializable {
     private Button createAccountBtn;
     @FXML
     private CheckBox checkAcceptTermsAndConditionBtn;
+    @FXML
+    private Button cancelButton;
 
+  
+    @FXML
+    private PasswordField fPassField;
+    
+    private boolean  isFPassVisible = false;
+    private boolean  isSPassVisible = false;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
      
-        fPasswordTextField.managedProperty().bind(fShowPassword.selectedProperty());
-        fPasswordTextField.visibleProperty().bind(fShowPassword.selectedProperty());
-        fPassField.managedProperty().bind(fShowPassword.selectedProperty().not());
-        fPassField.visibleProperty().bind(fShowPassword.selectedProperty().not());
-        fPasswordTextField.textProperty().bindBidirectional(fPassField.textProperty());
-
-        sPasswordTextField.managedProperty().bind(sShowPassword.selectedProperty());
-        sPasswordTextField.visibleProperty().bind(sShowPassword.selectedProperty());
-        sPassField.managedProperty().bind(sShowPassword.selectedProperty().not());
-        sPassField.visibleProperty().bind(sShowPassword.selectedProperty().not());
-        sPasswordTextField.textProperty().bindBidirectional(sPassField.textProperty());
     }    
 
     @FXML
-    private void termsAndConditionClicked(MouseEvent event) {
-        try {
-            URL url = getClass().getResource("/terms.html");
-            if (url != null) {
-                String path = url.toURI().getPath();
- 
-                if (System.getProperty("os.name").toLowerCase().contains("win")) {
-                    Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()});
-                } else { 
-                    java.awt.Desktop.getDesktop().browse(url.toURI());
-                } 
-            } else {
-                System.out.println("terms.html not found in resources folder!");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void LogInClicked(MouseEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/LoginUI.fxml"));
-            Scene scene = new Scene(root, 600, 400);  
-            Stage stage = EnrollmentSystem.mainStage;  
-
-            stage.setScene(scene);
-            stage.setTitle("ABAKADA UNIVERSITY - LOGIN PAGE");
-            stage.setResizable(false);
-
-            // ✅ Manual window centering
-            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-            stage.setX((screenBounds.getWidth() - 600) / 2);
-            stage.setY((screenBounds.getHeight() - 400) / 2);
-
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
     private void createAccountBtnAction(ActionEvent event) {
+        System.out.println("I'm clicked");
         UsernameValidationText.setText("");
         EmailValidationText.setText("");
         PasswordLengthValidation.setText("");
@@ -133,15 +83,19 @@ public class SigupUIController implements Initializable {
 
         String username = uNameTextField.getText().trim();
         String email = emailTextField.getText().trim();
-        String password = fPassField.getText().trim();
-        String confirmPassword = sPassField.getText().trim();
+        String password = isFPassVisible 
+        ? fShowPassword.getText().trim()
+        : fPassField.getText().trim();
+        String confirmPassword = isSPassVisible 
+        ? sPasswordTextField.getText().trim()
+        : sPassField.getText().trim();
  
         if (username.length() < 8 || !username.matches("^[A-Za-z0-9_@]+$")) {
             UsernameValidationText.setText("Username must be 8+ characters (letters, numbers, _ or @ only)");
             return;
         }
  
-        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+        if (!email.matches("^[\\w.+\\-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
             EmailValidationText.setText("Invalid email format!");
             return;
         }
@@ -184,6 +138,57 @@ public class SigupUIController implements Initializable {
             } else {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    private void termsAndConditionClicked(ActionEvent event) {
+        try {
+            URL url = getClass().getResource("/terms.html");
+            if (url != null) {
+                String path = url.toURI().getPath();
+ 
+                if (System.getProperty("os.name").toLowerCase().contains("win")) {
+                    Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", url.toString()});
+                } else { 
+                    java.awt.Desktop.getDesktop().browse(url.toURI());
+                } 
+            } else {
+                System.out.println("terms.html not found in resources folder!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void LogInClicked(ActionEvent event) {
+        backToLoginScreen();
+    }
+
+    @FXML
+    private void cancelButtonClicked(ActionEvent event) {
+        backToLoginScreen();
+    }
+    public void backToLoginScreen() {
+        try {
+            System.out.println("I'm log in clicked");
+            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
+            Scene scene = new Scene(root, 898, 543);  
+            Stage stage = EnrollmentSystem.mainStage;  
+
+            stage.setScene(scene);
+            stage.setTitle("ABAKADA UNIVERSITY - LOGIN PAGE");
+            stage.setResizable(false);
+
+            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+            stage.setX((screenBounds.getWidth() - 898) / 2);
+            stage.setY((screenBounds.getHeight() - 543) / 2);
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     

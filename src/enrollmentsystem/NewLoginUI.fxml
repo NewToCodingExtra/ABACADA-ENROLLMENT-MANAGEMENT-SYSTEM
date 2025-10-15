@@ -103,7 +103,7 @@
                                   <!-- Register link -->
                       <HBox alignment="CENTER_LEFT" spacing="5">
                           <Label style="-fx-font-size: 12px; -fx-text-fill: #333;" text="Don't have an account?" />
-                          <Hyperlink fx:id="registerLink" onMouseClicked="#onMouseClickedRegisterAction" onMouseEntered="#onMouseEnterRegisterAction" onMouseExited="#onMouseExitRegisterAction" style="-fx-font-size: 12px; -fx-text-fill: red;" text="Register here" />
+                          <Hyperlink fx:id="registerLink" onAction="#onRegisterAction" onMouseClicked="#onMouseClickedRegisterAction" onMouseEntered="#onMouseEnterRegisterAction" onMouseExited="#onMouseExitRegisterAction" style="-fx-font-size: 12px; -fx-text-fill: red;" text="Register here" />
                       </HBox>
       
                                   <!-- Login Button -->
