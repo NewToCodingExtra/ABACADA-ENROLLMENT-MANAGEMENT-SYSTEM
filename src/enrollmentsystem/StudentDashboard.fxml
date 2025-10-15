@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefWidth="950" prefHeight="550"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="enrollmentsystem.StudentDashboardController"
+            stylesheets="@studentdashboard.css">
+
+    <children>
+
+        <!-- Top Header -->
+        <HBox prefHeight="65" prefWidth="950" styleClass="top-bar">
+            <children>
+                <ImageView fitHeight="45" fitWidth="45" layoutX="20" layoutY="10" style="-fx-padding: 10;">
+                    <image>
+                        <Image url="@logo.png" />
+                    </image>
+                </ImageView>
+                <Label text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" styleClass="title-label" />
+            </children>
+        </HBox>
+
+        <!-- Left Sidebar -->
+        <VBox layoutX="20" layoutY="90" prefWidth="240" prefHeight="430" styleClass="sidebar" spacing="10" alignment="CENTER">
+            <ImageView fitHeight="100" fitWidth="100" styleClass="student-logo">
+                <image>
+                    <Image url="@logo.png" />
+                </image>
+            </ImageView>
+
+            <Label fx:id="studentNameLabel" text="Student Full Name" styleClass="student-name" />
+            <Label fx:id="studentEmailLabel" text="student@starlight.student" styleClass="student-email" />
+            <Label fx:id="studentIdLabel" text="ID No. STUDENT" styleClass="student-id" />
+        </VBox>
+
+        <!-- Main Content -->
+        <VBox layoutX="280" layoutY="90" prefWidth="640" prefHeight="430" spacing="10">
+            <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+                <tabs>
+                    <Tab text="Home">
+                        <AnchorPane styleClass="tab-content">
+                            <children>
+                                <Label layoutX="20" layoutY="20" wrapText="true"
+                                       text="Dito ilalagay yung Overview ng students na parang CAIS:
+Course, Status (kung regular or irregular), Kung pending enrollment (need ng window for payment). Papapiliin if anong type ng payment (By the academy registrar or bank Transfer) or fully enrolled."
+                                       styleClass="tab-text"/>
+                            </children>
+                        </AnchorPane>
+                    </Tab>
+
+                    <Tab text="Schedule">
+                        <AnchorPane styleClass="tab-content">
+                            <children>
+                                <Label layoutX="20" layoutY="20" text="Student schedule and class details will appear here."
+                                       styleClass="tab-text"/>
+                            </children>
+                        </AnchorPane>
+                    </Tab>
+                </tabs>
+            </TabPane>
+        </VBox>
+
+    </children>
+</AnchorPane>
