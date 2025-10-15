@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -55,6 +59,17 @@
                      <children>
                         <TextField fx:id="fShowPassword" promptText="Please input a password..." />
                             <PasswordField fx:id="fPassField" promptText="Please input a password...." />
+                        <ImageView fx:id="fShowPass" fitHeight="24.0" fitWidth="27.0" nodeOrientation="INHERIT" onMouseClicked="#fShowPassAction" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="5.0" />
+                           </StackPane.margin>
+                           <image>
+                              <Image url="@images/hidden.png" />
+                           </image>
+                        </ImageView>
                      </children>
                   </StackPane>
                   <HBox>
@@ -68,6 +83,17 @@
                      <children>
                         <TextField fx:id="sPasswordTextField" promptText="c" />
                             <PasswordField fx:id="sPassField" promptText="Please re-input your password..." />
+                        <ImageView fx:id="sShowPass" fitHeight="24.0" fitWidth="27.0" nodeOrientation="INHERIT" onMouseClicked="#sShowPassAction" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <image>
+                              <Image url="@images/hidden.png" />
+                           </image>
+                           <StackPane.margin>
+                              <Insets right="5.0" />
+                           </StackPane.margin>
+                        </ImageView>
                      </children>
                   </StackPane>
          

@@ -5,6 +5,7 @@
 package enrollmentsystem;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,6 +21,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -58,13 +61,18 @@ public class SigupUIController implements Initializable {
     private CheckBox checkAcceptTermsAndConditionBtn;
     @FXML
     private Button cancelButton;
-
+    private Image eyeImage = null;
+    private Image hiddenImage = null;
   
     @FXML
     private PasswordField fPassField;
     
     private boolean  isFPassVisible = false;
     private boolean  isSPassVisible = false;
+    @FXML
+    private ImageView fShowPass;
+    @FXML
+    private ImageView sShowPass;
     /**
      * Initializes the controller class.
      */
@@ -191,5 +199,125 @@ public class SigupUIController implements Initializable {
             e.printStackTrace();
         }
     }
-    
+
+    @FXML
+    private void fShowPassAction(MouseEvent event) {
+        System.out.println("toggle");
+        isFPassVisible = togglePasswordVisibility(fShowPass, isFPassVisible, fPassField, fShowPassword);
+    }
+
+    @FXML
+    private void sShowPassAction(MouseEvent event) {
+        System.out.println("toggle");
+        isSPassVisible = togglePasswordVisibility(sShowPass, isSPassVisible, sPassField, sPasswordTextField);
+    }
+    private Image tryLoadImage(String... candidates) {
+        for (String path : candidates) {
+            if (path == null) continue;
+            try (InputStream is = getClass().getResourceAsStream(path)) {
+                if (is != null) {
+                    System.out.println("Loaded image via getResourceAsStream: " + path);
+                    return new Image(is);
+                } else {
+                    System.out.println("getResourceAsStream returned null for: " + path);
+                }
+            } catch (Exception ex) {
+                System.out.println("Exception loading resource as stream " + path + " : " + ex);
+            }
+            try {
+                URL url = getClass().getResource(path);
+                if (url != null) {
+                    System.out.println("Loaded image via getResource URL: " + path + " -> " + url);
+                    return new Image(url.toExternalForm());
+                } else {
+                    System.out.println("getResource returned null for: " + path);
+                }
+            } catch (Exception ex) {
+                System.out.println("Exception loading resource URL " + path + " : " + ex);
+            }
+        }
+        String fsFallback = "file:/C:/Users/Joshua/OneDrive/Documents/NetBeansProjects/ABACADA-ENROLLMENT-MANAGEMENT-SYSTEM/resource/img/eye.png";
+        try {
+            System.out.println("Attempting file fallback: " + fsFallback);
+            return new Image(fsFallback);
+        } catch (Exception ex) {
+            System.out.println("File fallback failed: " + ex);
+        }
+        return null;
+    }
+    private boolean togglePasswordVisibility(ImageView togglePasswordButton, boolean isPasswordVisible, PasswordField passField, TextField passwordTextField) {
+        if (eyeImage == null || hiddenImage == null) {
+             
+            
+            String[] eyeCandidates = {
+                "/img/eye.png",        
+                "img/eye.png",         
+                "/images/eye.png",     
+                "images/eye.png"
+            };
+            String[] hiddenCandidates = {
+                "/img/hidden.png",
+                "img/hidden.png",
+                "/images/hidden.png",
+                "images/hidden.png"
+            };
+            
+            eyeImage = tryLoadImage(eyeCandidates);
+            hiddenImage = tryLoadImage(hiddenCandidates);
+
+            if (eyeImage == null && togglePasswordButton.getImage() != null) {
+                System.out.println("Using togglePasswordButton existing image as eyeImage fallback");
+                eyeImage = togglePasswordButton.getImage();
+            }
+            if (hiddenImage == null && togglePasswordButton.getImage() != null) {
+                System.out.println("Using togglePasswordButton existing image as hiddenImage fallback");
+                hiddenImage = togglePasswordButton.getImage();
+            }
+        }
+
+        try {
+            boolean hadFocus = passField.isFocused() || passwordTextField.isFocused();
+            int caretPosition = passField.isFocused() ? passField.getCaretPosition()
+                                : passwordTextField.getCaretPosition();
+            if (isPasswordVisible) {
+                passField.setText(passwordTextField.getText());
+                passwordTextField.setVisible(false);
+                passwordTextField.setManaged(false);
+                passField.setVisible(true);
+                passField.setManaged(true);
+                if (hiddenImage != null) {
+                    togglePasswordButton.setImage(hiddenImage);
+                } else {
+                    System.out.println("hiddenImage is null — keeping existing image");
+                }
+                isPasswordVisible = false;
+            } else {
+                passwordTextField.setText(passField.getText());
+                passField.setVisible(false);
+                passField.setManaged(false);
+                passwordTextField.setVisible(true);
+                passwordTextField.setManaged(true);
+                if (eyeImage != null) {
+                    togglePasswordButton.setImage(eyeImage);
+                } else {
+                    System.out.println("eyeImage is null — keeping existing image");
+                }
+                isPasswordVisible = true;
+            }
+            if (hadFocus) {
+                if (isPasswordVisible) {
+                    passwordTextField.requestFocus();
+                    passwordTextField.positionCaret(caretPosition);
+                } else {
+                    passField.requestFocus();
+                    passField.positionCaret(caretPosition);
+                }
+            }
+            return isPasswordVisible;
+        } catch (Exception ex) {
+            // prevent the app from crashing — log the issue
+            ex.printStackTrace();
+        } 
+        return isPasswordVisible;
+    }
 }

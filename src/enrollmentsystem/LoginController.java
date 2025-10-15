@@ -164,7 +164,6 @@ public class LoginController implements Initializable {
 
     @FXML
     private void togglePasswordVisibility(MouseEvent event) {
-        // lazy load icons (only once)
         if (eyeImage == null || hiddenImage == null) {
              
             String[] eyeCandidates = {
