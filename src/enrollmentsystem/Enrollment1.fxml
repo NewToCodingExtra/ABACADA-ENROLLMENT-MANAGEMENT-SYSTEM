@@ -9,11 +9,15 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="566.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.Enrollment1Controller">
+<AnchorPane prefHeight="504.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.Enrollment1Controller">
 
     <children>
+      <Pane prefHeight="71.0" prefWidth="900.0" style="-fx-background-color: #191825;" />
 
         <!-- Header -->
         <HBox layoutX="20.0" layoutY="20.0" spacing="10">
@@ -27,60 +31,103 @@
         </HBox>
 
         <!-- Blue Enrollment Bar -->
-        <Label layoutX="354.0" layoutY="82.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />
+        <Label layoutX="347.0" layoutY="83.0" prefHeight="35.0" prefWidth="209.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />
 
         <!-- Form -->
-        <GridPane hgap="20" layoutX="298.0" layoutY="138.0" vgap="15">
+        <GridPane hgap="20" layoutX="225.0" layoutY="125.0" prefHeight="295.0" prefWidth="472.0" vgap="15">
             <columnConstraints>
-                <ColumnConstraints percentWidth="50" />
-                <ColumnConstraints percentWidth="50" />
+                <ColumnConstraints percentWidth="50.0" />
+                <ColumnConstraints percentWidth="50.0" />
             </columnConstraints>
 
             <children>
-                <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="lastNameField" promptText="Lastname" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-
-                <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <TextField fx:id="firstNameField" promptText="Firstname" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-
-                <Label text="Middle Name:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="middleNameField" promptText="Middlename" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-
-                <Label text="Age:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <TextField fx:id="ageField" promptText="Age" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-
-                <Label text="Contact No.:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <TextField fx:id="contactField" promptText="09XXXXXXXXX" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-
-                <Label text="Province:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <TextField fx:id="provinceField" promptText="Province" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                <Label text="City:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <TextField fx:id="cityField" promptText="City" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <Label text="Barangay:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <TextField fx:id="barangayField" promptText="Barangay" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                <Label text="Street:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <TextField fx:id="streetField" promptText="Street" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                <Label text="House No.:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <TextField fx:id="houseNoField" promptText="House number" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+      
+                      <Label text="First Name:" />
+                      <TextField fx:id="firstNameField" promptText="Firstname" />
+               </children>
+            </VBox>
+            <VBox prefHeight="52.0" prefWidth="236.0" GridPane.rowIndex="1">
+               <children>
+                      <Label text="Last Name:" />
+                      <TextField fx:id="lastNameField" promptText="Lastname" />
+               </children>
+            </VBox>
+            <VBox prefHeight="78.0" prefWidth="236.0" GridPane.rowIndex="2">
+               <children>
+      
+                                              <Label text="Middle Name:" />
+                      <TextField fx:id="middleNameField" promptText="Middlename" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="3">
+               <children>
+      
+                            <Label text="Age:" />
+                      <TextField fx:id="ageField" promptText="Age" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="4">
+               <children>
+      
+                                  <Label text="Contact No.:" />
+                      <TextField fx:id="contactField" promptText="09XXXXXXXXX" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+               <children>
+      
+                      <Label text="Province:" />
+                      <TextField fx:id="provinceField" promptText="Province" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+      
+                      <Label text="City:" />
+                      <TextField fx:id="cityField" promptText="City" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+      
+                      <Label text="Barangay:" />
+                      <TextField fx:id="barangayField" promptText="Barangay" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+      
+                      <Label text="Street:" />
+                      <TextField fx:id="streetField" promptText="Street" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+      
+                      <Label text="House No.:" />
+                      <TextField fx:id="houseNoField" promptText="House number" />
+               </children>
+            </VBox>
             </children>
          <rowConstraints>
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
+            <RowConstraints maxHeight="74.66665649414062" />
+            <RowConstraints maxHeight="108.33334350585938" />
+            <RowConstraints maxHeight="79.0" />
+            <RowConstraints maxHeight="264.66668701171875" />
+            <RowConstraints maxHeight="264.66668701171875" />
          </rowConstraints>
         </GridPane>
 
         <!-- Buttons -->
         <HBox layoutX="350.0" layoutY="520.0" spacing="20" />
-          <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="348.0" layoutY="431.0" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Home" />
-          <Button fx:id="nextButton" alignment="CENTER" contentDisplay="CENTER" layoutX="468.0" layoutY="431.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Next" />
-          <Label alignment="CENTER" contentDisplay="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" />
+          <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="342.0" layoutY="449.0" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Home" />
+          <Button fx:id="nextButton" alignment="CENTER" contentDisplay="CENTER" layoutX="462.0" layoutY="449.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Next" />
+          <Label alignment="CENTER" contentDisplay="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-font: Montserrat;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" textFill="WHITE">
+         <font>
+            <Font name="Montserrat Regular" size="12.0" />
+         </font></Label>
 
     </children>
 </AnchorPane>

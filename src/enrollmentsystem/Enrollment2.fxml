@@ -10,11 +10,14 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="566.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.Enrollment2Controller">
+<AnchorPane prefHeight="504.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.Enrollment2Controller">
 
     <children>
+      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="75.0" prefWidth="903.0" style="-fx-background-color: #191825;" />
 
         <!-- Header -->
         <HBox layoutX="20.0" layoutY="20.0" spacing="10">
@@ -28,76 +31,102 @@
         </HBox>
 
         <!-- Title -->
-        <Label alignment="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" />
+        <Label alignment="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" textFill="WHITE" />
 
         <!-- Blue Enrollment Bar -->
         <Label layoutX="354.0" layoutY="82.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />
-
-        <!-- Form -->
-        <GridPane hgap="20" layoutX="220.0" layoutY="140.0" vgap="15">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50" />
-                <ColumnConstraints percentWidth="50" />
-            </columnConstraints>
-
-            <children>
-
-                <!-- Year Level -->
-                <Label text="Year Level to Enroll:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <ComboBox fx:id="yearLevelCombo" promptText="Select year level" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-
-                <!-- Email -->
-                <Label text="Email Address:" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <TextField fx:id="emailField" promptText="Email" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                <!-- Course/Program -->
-                <Label text="Course/Program:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <ComboBox fx:id="courseCombo" promptText="Select course" GridPane.rowIndex="1" />
-
-                <!-- Upload 1x1 -->
-                <Label text="Upload 1x1 Photo:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <!-- Student Type -->
-                <Label text="Student Type (New / Transferee / Returning):" GridPane.rowIndex="2" />
-                <ComboBox fx:id="studentTypeCombo" promptText="Select type" GridPane.rowIndex="3" />
-
-                <!-- Upload Birth Cert -->
-                <Label text="Upload Birth Certificate:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Button fx:id="uploadBirthCertButton" text="Add file +" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-                <!-- Previous School -->
-                <Label text="Previous School Attended:" GridPane.rowIndex="5" />
-                <TextField fx:id="previousSchoolField" promptText="School" GridPane.rowIndex="6" />
-
-                <!-- Upload Report Card -->
-                <Label text="Upload Report Card:" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                <Button fx:id="uploadReportCardButton" text="Add file +" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-
-                <!-- School Year -->
-                <Label text="School Year (e.g., 2025–2026):" GridPane.rowIndex="8" />
-                <TextField fx:id="schoolYearField" promptText="Year" GridPane.rowIndex="8" />
-                <Button fx:id="uploadPhotoButton" text="Add file +" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-            </children>
-
-            <rowConstraints>
-                <RowConstraints maxHeight="49.6" minHeight="25.0666748046875" prefHeight="25.0666748046875" />
-                <RowConstraints maxHeight="26.933325195312506" minHeight="1.6000000000000085" prefHeight="26.933325195312506" />
-                <RowConstraints maxHeight="26.933325195312506" minHeight="1.6000000000000085" prefHeight="26.933325195312506" />
-                <RowConstraints />
-                <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            <RowConstraints />
-            </rowConstraints>
-        </GridPane>
+      <GridPane hgap="20.0" layoutX="174.0" layoutY="155.0" prefHeight="236.0" prefWidth="572.0" vgap="15.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="309.3333435058594" minWidth="10.0" prefWidth="285.3333435058594" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="319.33331298828125" minWidth="10.0" prefWidth="286.6666564941406" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox>
+               <children>
+      
+                            <!-- Year Level -->
+                      <Label text="Year Level to Enroll:" />
+                      <ComboBox fx:id="yearLevelCombo" promptText="Select year level" />
+               </children>
+            </VBox>
+            <VBox GridPane.columnIndex="1">
+               <children>
+      
+                      <!-- Email -->
+                      <Label text="Email Address:" />
+                      <TextField fx:id="emailField" promptText="Email" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="1">
+               <children>
+      
+                            <!-- Course/Program -->
+                      <Label text="Course/Program:" />
+                      <ComboBox fx:id="courseCombo" promptText="Select course" />
+               </children>
+            </VBox>
+            <VBox prefHeight="47.0" prefWidth="178.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+      
+                            <!-- Upload 1x1 -->
+                      <Label text="Upload 1x1 Photo:" />
+                      <Button fx:id="uploadPhotoButton" text="Add file +" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="2">
+               <children>
+      
+                            <!-- Student Type -->
+                      <Label text="Student Type (New / Transferee / Returning):" />
+                      <ComboBox fx:id="studentTypeCombo" promptText="Select type" />
+               </children>
+            </VBox>
+            <VBox prefHeight="47.0" prefWidth="269.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+      
+                            <!-- Upload Birth Cert -->
+                      <Label text="Upload Birth Certificate:" />
+                      <Button fx:id="uploadBirthCertButton" text="Add file +" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="3">
+               <children>
+      
+                            <!-- Previous School -->
+                      <Label text="Previous School Attended:" />
+                      <TextField fx:id="previousSchoolField" promptText="School" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="4">
+               <children>
+      
+                            <!-- School Year -->
+                      <Label text="School Year (e.g., 2025–2026):" />
+                      <TextField fx:id="schoolYearField" promptText="Year" />
+               </children>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+      
+                            <!-- Upload Report Card -->
+                      <Label text="Upload Report Card:" />
+                      <Button fx:id="uploadReportCardButton" text="Add file +" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
 
         <!-- Buttons -->
-        <Button fx:id="backButton" layoutX="348.0" layoutY="497.0" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Back" />
+        <Button fx:id="backButton" layoutX="353.0" layoutY="447.0" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Back" />
 
-        <Button fx:id="submitButton" layoutX="468.0" layoutY="497.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Submit" />
+        <Button fx:id="submitButton" layoutX="473.0" layoutY="447.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Submit" />
 
     </children>
 </AnchorPane>
