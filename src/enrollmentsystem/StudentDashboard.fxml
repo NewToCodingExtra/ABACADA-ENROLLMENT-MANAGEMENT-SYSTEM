@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefWidth="950" prefHeight="550"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="enrollmentsystem.StudentDashboardController"
-            stylesheets="@studentdashboard.css">
+<AnchorPane prefHeight="550" prefWidth="950" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.StudentDashboardController">
 
     <children>
 
@@ -21,34 +22,34 @@
                         <Image url="@logo.png" />
                     </image>
                 </ImageView>
-                <Label text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" styleClass="title-label" />
+                <Label styleClass="title-label" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM">
+               <font>
+                  <Font name="Montserrat Bold Italic" size="33.0" />
+               </font></Label>
             </children>
         </HBox>
 
         <!-- Left Sidebar -->
-        <VBox layoutX="20" layoutY="90" prefWidth="240" prefHeight="430" styleClass="sidebar" spacing="10" alignment="CENTER">
+        <VBox alignment="CENTER" layoutX="20" layoutY="90" prefHeight="430" prefWidth="240" spacing="10" styleClass="sidebar">
             <ImageView fitHeight="100" fitWidth="100" styleClass="student-logo">
                 <image>
-                    <Image url="@logo.png" />
+                    <Image url="@../../resources/img/STARLIGHT%20ACADEMY.png" />
                 </image>
             </ImageView>
 
-            <Label fx:id="studentNameLabel" text="Student Full Name" styleClass="student-name" />
-            <Label fx:id="studentEmailLabel" text="student@starlight.student" styleClass="student-email" />
-            <Label fx:id="studentIdLabel" text="ID No. STUDENT" styleClass="student-id" />
+            <Label fx:id="studentNameLabel" styleClass="student-name" text="Student Full Name" />
+            <Label fx:id="studentEmailLabel" styleClass="student-email" text="student@abakada.student" />
+            <Label fx:id="studentIdLabel" styleClass="student-id" text="ID No. STUDENT" />
         </VBox>
 
         <!-- Main Content -->
-        <VBox layoutX="280" layoutY="90" prefWidth="640" prefHeight="430" spacing="10">
-            <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+        <VBox layoutX="280" layoutY="90" prefHeight="430" prefWidth="640" spacing="10">
+            <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE">
                 <tabs>
-                    <Tab text="Home">
-                        <AnchorPane styleClass="tab-content">
+                    <Tab style="-fx-text-fill: #ffffff;" text="Home">
+                        <AnchorPane prefHeight="376.0" prefWidth="640.0" styleClass="tab-content">
                             <children>
-                                <Label layoutX="20" layoutY="20" wrapText="true"
-                                       text="Dito ilalagay yung Overview ng students na parang CAIS:
-Course, Status (kung regular or irregular), Kung pending enrollment (need ng window for payment). Papapiliin if anong type ng payment (By the academy registrar or bank Transfer) or fully enrolled."
-                                       styleClass="tab-text"/>
+                                <Label layoutX="20" layoutY="20" styleClass="tab-text" wrapText="true" />
                             </children>
                         </AnchorPane>
                     </Tab>
@@ -56,8 +57,7 @@ Course, Status (kung regular or irregular), Kung pending enrollment (need ng win
                     <Tab text="Schedule">
                         <AnchorPane styleClass="tab-content">
                             <children>
-                                <Label layoutX="20" layoutY="20" text="Student schedule and class details will appear here."
-                                       styleClass="tab-text"/>
+                                <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Student schedule and class details will appear here." />
                             </children>
                         </AnchorPane>
                     </Tab>

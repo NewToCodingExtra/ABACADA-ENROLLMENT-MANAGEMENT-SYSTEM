@@ -9,7 +9,7 @@
     -fx-alignment: CENTER_LEFT;
     -fx-spacing: 20;
     -fx-padding: 0 0 0 20;
-}
+} 
 
 .title-label {
     -fx-text-fill: white;
@@ -59,7 +59,7 @@
 
 .tab-pane .tab:selected {
     -fx-background-color: #002366;
-    -fx-text-fill: white;
+    -fx-text-fill: #ffffff;
 }
 
 .tab-pane .tab {
