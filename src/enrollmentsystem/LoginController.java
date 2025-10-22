@@ -11,6 +11,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +29,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javax.swing.*;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -81,14 +84,12 @@ public class LoginController implements Initializable {
     private void loginButtonAction(ActionEvent event) {
         userNameString.setText("");
         passwordString.setText("");
-     
+
         String userInput = userNameTField.getText().trim();
-        String password = isPasswordVisible 
-        ? passwordTextField.getText().trim()
-        : passField.getText().trim();
+        String password = isPasswordVisible ? passwordTextField.getText().trim() : passField.getText().trim();
 
         if (userInput.isEmpty()) {
-            userNameString.setText("Please enter username or email!");
+            userNameString.setText("No username or email!");
             return;
         }
         if (password.isEmpty()) {
@@ -97,7 +98,6 @@ public class LoginController implements Initializable {
         }
 
         boolean isEmail = userInput.matches("^[\\w.+\\-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$");
-
         String query = "SELECT * FROM users WHERE " + (isEmail ? "email" : "username") + " = ?";
 
         try (Connection conn = DBConnection.getConnection();
@@ -116,9 +116,40 @@ public class LoginController implements Initializable {
                 return;
             }
 
-            javax.swing.JOptionPane.showMessageDialog(null,"✅ Login successful! Access role: " + rs.getString("access"), "Successful", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            // ✅ Instantiate correct user type based on access
+            User loggedInUser = createUserFromResultSet(rs);
 
+            if (loggedInUser instanceof Enrollee enrollee) {
+                if (enrollee.hasFilledUpForm()) {
+                    openPage("/enrollmentsystem/EnrolleeDashboard.fxml",
+                             "ABAKADA UNIVERSITY - ENROLLEE DASHBOARD",
+                             1024, 600);
+                } else {
+                    openPage("/enrollmentsystem/Enrollment1.fxml",
+                             "ABAKADA UNIVERSITY - ENROLLEE FORM",
+                             900, 520);
+                }
+                return;
+            }
 
+            switch (loggedInUser.getAccess()) {
+                case "Admin" ->
+                    openPage("/enrollmentsystem/AdminDashboard.fxml",
+                             "ABAKADA UNIVERSITY - ADMIN DASHBOARD",
+                             950, 550);
+                case "Cashier" ->
+                    openPage("/enrollmentsystem/CashierDashboard.fxml",
+                             "ABAKADA UNIVERSITY - CASHIER DASHBOARD",
+                             950, 550);
+                case "Faculty" ->
+                    openPage("/enrollmentsystem/FacultyDashboard.fxml",
+                             "ABAKADA UNIVERSITY - FACULTY DASHBOARD",
+                             950, 550);
+                case "Student" ->
+                    openPage("/enrollmentsystem/StudentDashboard.fxml",
+                             "ABAKADA UNIVERSITY - STUDENT DASHBOARD",
+                             950, 550);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +168,6 @@ public class LoginController implements Initializable {
             } catch (Exception ex) {
                 System.out.println("Exception loading resource as stream " + path + " : " + ex);
             }
-            // Try getResource (URL) next
             try {
                 URL url = getClass().getResource(path);
                 if (url != null) {
@@ -150,8 +180,6 @@ public class LoginController implements Initializable {
                 System.out.println("Exception loading resource URL " + path + " : " + ex);
             }
         }
-        // As a last resort, try to load from absolute file path on disk (non-portable)
-        // UPDATE this path to your real file system path if you want a fallback
         String fsFallback = "file:/C:/Users/Joshua/OneDrive/Documents/NetBeansProjects/ABACADA-ENROLLMENT-MANAGEMENT-SYSTEM/resource/img/eye.png";
         try {
             System.out.println("Attempting file fallback: " + fsFallback);
@@ -219,30 +247,70 @@ public class LoginController implements Initializable {
                 isPasswordVisible = true;
             }
         } catch (Exception ex) {
-            // prevent the app from crashing — log the issue
             ex.printStackTrace();
         }
     }
 
     @FXML
     private void onRegisterAction(ActionEvent event) {
+        openPage("/enrollmentsystem/Register.fxml", "ABAKADA UNIVERSITY - SIGNUP PAGE", 801, 580);
+    }
+    private User createUserFromResultSet(ResultSet rs) throws SQLException {
+        String access = rs.getString("access");
+        int userId = rs.getInt("user_id");
+        String username = rs.getString("username");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        boolean isActive = rs.getBoolean("is_active");
+        LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+
+        switch (access) {
+//            case "Admin":
+//                return new Admin(userId, username, email, password, createdAt, isActive);
+//            case "Cashier":
+//                return new Cashier(userId, username, email, password, createdAt, isActive);
+//            case "Faculty":
+//                return new Faculty(userId, username, email, password, createdAt, isActive);
+//            case "Student":
+//                return new Student(userId, username, email, password, createdAt, isActive);
+            default: {
+                // ✅ Fetch enrollee data (including has_filled_up_form)
+                String enrolleeQuery = "SELECT has_filled_up_form FROM enrollees WHERE user_id = ?";
+                try (Connection conn = DBConnection.getConnection();
+                     PreparedStatement ps = conn.prepareStatement(enrolleeQuery)) {
+
+                    ps.setInt(1, userId);
+                    ResultSet enrolleeRS = ps.executeQuery();
+
+                    boolean hasFilled = false;
+                    if (enrolleeRS.next()) {
+                        hasFilled = enrolleeRS.getBoolean("has_filled_up_form");
+                    }
+
+                    return new Enrollee(userId, username, email, password, createdAt, isActive, hasFilled);
+                }
+            }
+        }
+    }
+    private void openPage(String fxmlPath, String title, double width, double height) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/Register.fxml"));
-            Scene scene = new Scene(root, 898, 543);
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Scene scene = new Scene(root, width, height);
             Stage stage = EnrollmentSystem.mainStage;
 
             stage.setScene(scene);
-            stage.setTitle("ABAKADA UNIVERSITY - SIGNUP PAGE");
+            stage.setTitle(title);
             stage.setResizable(false);
 
+            // Center the stage on screen (similar to your register code)
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((screenBounds.getWidth() - 801) / 2);
-            stage.setY((screenBounds.getHeight() - 580) / 2);
+            stage.setX((screenBounds.getWidth() - width) / 2);
+            stage.setY((screenBounds.getHeight() - height) / 2);
 
-            stage.show(); 
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-        } 
+        }
     }
-    
+
 }

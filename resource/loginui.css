@@ -1,0 +1,57 @@
+.root {
+    -fx-background-color: #FFFFFF;
+    -fx-font-family: "Montserrat";
+}
+
+.header-bar {
+    -fx-background-color: #191825;
+}
+
+.login-box {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 10, 0, 0, 4);
+    -fx-background-radius: 9;
+}
+
+.button {
+    -fx-background-color: #191825;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #2e2b58;
+}
+
+.label {
+    -fx-text-fill: #191825;
+    -fx-font-size: 16px;
+    -fx-font-family: "Montserrat";
+}
+
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.25), 5, 0, 0, 2);
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #3CD4CD;
+}
+.welcome-text {
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 25px;
+    -fx-font-weight: 800; /* or bold */
+    -fx-text-fill: #191825;
+}
+.error-text {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+    -fx-font-family: "Montserrat";
+    -fx-font-weight: bold;
+}
