@@ -253,7 +253,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void onRegisterAction(ActionEvent event) {
-        openPage("/enrollmentsystem/Register.fxml", "ABAKADA UNIVERSITY - SIGNUP PAGE", 801, 580);
+        openPage("/enrollmentsystem/Register.fxml", "ABAKADA UNIVERSITY - SIGNUP PAGE", 898.4, 543.2);
     }
     private User createUserFromResultSet(ResultSet rs) throws SQLException {
         String access = rs.getString("access");
@@ -296,6 +296,10 @@ public class LoginController implements Initializable {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
             Scene scene = new Scene(root, width, height);
+            
+            if(fxmlPath.equals("/enrollmentsystem/Register.fxml")) 
+                scene.getStylesheets().add( getClass().getResource("/sigupui.css").toExternalForm() );
+            
             Stage stage = EnrollmentSystem.mainStage;
 
             stage.setScene(scene);

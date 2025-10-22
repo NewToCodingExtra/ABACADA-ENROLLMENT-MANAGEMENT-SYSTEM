@@ -2,3 +2,15 @@
 .mainFxmlClass {
     
 }
+.registemBackground {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0.5, 0, 5);
+    -fx-background-radius: 0 0 9px 9px;
+    -fx-border-radius: 0 0 9px 9px;
+}
+.registerPane {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0.5, 0, 3);
+    -fx-background-radius: 0;  
+    -fx-border-radius: 0;    
+}

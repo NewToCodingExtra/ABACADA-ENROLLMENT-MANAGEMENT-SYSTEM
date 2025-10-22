@@ -17,124 +17,144 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefWidth="898.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.SigupUIController">
+<BorderPane prefWidth="898.0" stylesheets="@../../resource/sigupui.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.SigupUIController">
    <center>
-      <AnchorPane maxHeight="543.0" maxWidth="898.0" minHeight="543.0" minWidth="898.0" prefHeight="543.0" prefWidth="898.0" styleClass="mainFxmlClass" stylesheets="@sigupui.css">
+      <AnchorPane maxHeight="543.0" maxWidth="898.0" minHeight="543.0" minWidth="898.0" prefHeight="543.0" prefWidth="898.0" style="-fx-background-color: #ffffff;" styleClass="mainFxmlClass">
           <children>
-      
-      
-              <VBox id="registerContainer" alignment="CENTER" layoutX="171.0" layoutY="100.0" prefHeight="397.0" prefWidth="556.0" spacing="10">
+            <AnchorPane layoutX="145.0" layoutY="128.0" maxHeight="70.0" minHeight="30.0" prefHeight="46.0" prefWidth="606.0" style="-fx-background-color: #002262;">
+               <children>
+                      <Label id="registerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" prefHeight="46.0" prefWidth="607.0" styleClass="registyerPane" text="Register" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="145.0" layoutY="175.0" maxWidth="607.0" minHeight="347.0" minWidth="607.0" prefHeight="347.0" prefWidth="607.0" styleClass="registemBackground">
+               <children>
+            
                   
-                  <!-- Title -->
-                  <HBox id="registerTitleBox" alignment="CENTER" prefWidth="472.0" />
-         
-                     <!-- Form Fields -->
-                  <VBox alignment="CENTER_LEFT" prefHeight="247.0" prefWidth="556.0" spacing="6">
-                  <HBox>
-                     <children>
+                    <VBox id="registerContainer" alignment="CENTER" layoutX="26.0" layoutY="9.0" maxHeight="390.0" maxWidth="556.0" minHeight="339.0" minWidth="556.0" prefHeight="339.0" prefWidth="556.0" spacing="10">
+                        
+                              <!-- Title -->
+                        <HBox id="registerTitleBox" alignment="CENTER" prefWidth="472.0" />
                
-                                                       <Label prefHeight="18.0" prefWidth="59.0" text="Username:" />
+                                 <!-- Form Fields -->
+                        <VBox alignment="CENTER_LEFT" prefHeight="247.0" prefWidth="556.0" spacing="6">
+                        <HBox>
+                           <children>
+                     
+                                                                   <Label prefHeight="18.0" prefWidth="59.0" text="Username:" />
+                     
+                                                       <!-- Validation Labels -->
+                                  <Label fx:id="UsernameValidationText" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="495.0" styleClass="validationLabel" textFill="#d71919" />
+                           </children>
+                        </HBox>
+                            <TextField fx:id="uNameTextField" promptText="example@studentemail.edu.ph" />
+                        <HBox>
+                           <children>
+                     
+                                                             <Label prefHeight="17.0" prefWidth="39.0" text="Email:" />
+                                  <Label fx:id="EmailValidationText" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="519.0" styleClass="validationLabel" textFill="#d71919" />
+                           </children>
+                        </HBox>
+                            <TextField fx:id="emailTextField" promptText="example@studentemail.edu.ph" />
+                        <HBox>
+                           <children>
+                     
+                                                 <Label text="Password:" />
+                                  <Label fx:id="PasswordLengthValidation" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="494.0" styleClass="validationLabel" textFill="#d71919" />
+                           </children>
+                        </HBox>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="fShowPassword" promptText="Please input a password..." />
+                                  <PasswordField fx:id="fPassField" promptText="Please input a password...." />
+                              <ImageView fx:id="fShowPass" fitHeight="24.0" fitWidth="27.0" nodeOrientation="INHERIT" onMouseClicked="#fShowPassAction" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <StackPane.margin>
+                                    <Insets right="5.0" />
+                                 </StackPane.margin>
+                                 <image>
+                                    <Image url="@images/hidden.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <HBox>
+                           <children>
+                     
+                                                 <Label prefHeight="18.0" prefWidth="210.0" text="Re-input password:" />
+                                  <Label fx:id="PasswordMatchValidation" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="554.0" styleClass="validationLabel" textFill="#d71919" />
+                           </children>
+                        </HBox>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <TextField fx:id="sPasswordTextField" promptText="c" />
+                                  <PasswordField fx:id="sPassField" promptText="Please re-input your password..." />
+                              <ImageView fx:id="sShowPass" fitHeight="24.0" fitWidth="27.0" nodeOrientation="INHERIT" onMouseClicked="#sShowPassAction" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <image>
+                                    <Image url="@images/hidden.png" />
+                                 </image>
+                                 <StackPane.margin>
+                                    <Insets right="5.0" />
+                                 </StackPane.margin>
+                              </ImageView>
+                           </children>
+                        </StackPane>
                
-                                           <!-- Validation Labels -->
-                            <Label fx:id="UsernameValidationText" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="495.0" styleClass="validationLabel" textFill="#d71919" />
-                     </children>
-                  </HBox>
-                      <TextField fx:id="uNameTextField" promptText="example@studentemail.edu.ph" />
-                  <HBox>
-                     <children>
-               
-                                                 <Label prefHeight="17.0" prefWidth="39.0" text="Email:" />
-                            <Label fx:id="EmailValidationText" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="519.0" styleClass="validationLabel" textFill="#d71919" />
-                     </children>
-                  </HBox>
-                      <TextField fx:id="emailTextField" promptText="example@studentemail.edu.ph" />
-                  <HBox>
-                     <children>
-               
-                                     <Label text="Password:" />
-                            <Label fx:id="PasswordLengthValidation" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="494.0" styleClass="validationLabel" textFill="#d71919" />
-                     </children>
-                  </HBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="fShowPassword" promptText="Please input a password..." />
-                            <PasswordField fx:id="fPassField" promptText="Please input a password...." />
-                        <ImageView fx:id="fShowPass" fitHeight="24.0" fitWidth="27.0" nodeOrientation="INHERIT" onMouseClicked="#fShowPassAction" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <StackPane.margin>
-                              <Insets right="5.0" />
-                           </StackPane.margin>
-                           <image>
-                              <Image url="@images/hidden.png" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-                  <HBox>
-                     <children>
-               
-                                     <Label prefHeight="18.0" prefWidth="210.0" text="Re-input password:" />
-                            <Label fx:id="PasswordMatchValidation" alignment="BASELINE_LEFT" prefHeight="18.0" prefWidth="554.0" styleClass="validationLabel" textFill="#d71919" />
-                     </children>
-                  </HBox>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <TextField fx:id="sPasswordTextField" promptText="c" />
-                            <PasswordField fx:id="sPassField" promptText="Please re-input your password..." />
-                        <ImageView fx:id="sShowPass" fitHeight="24.0" fitWidth="27.0" nodeOrientation="INHERIT" onMouseClicked="#sShowPassAction" pickOnBounds="true" preserveRatio="true" StackPane.alignment="CENTER_RIGHT">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <image>
-                              <Image url="@images/hidden.png" />
-                           </image>
-                           <StackPane.margin>
-                              <Insets right="5.0" />
-                           </StackPane.margin>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-         
-                         <HBox alignment="CENTER_LEFT" spacing="5" style="-fx-spacing: 3;">
-                          <CheckBox fx:id="checkAcceptTermsAndConditionBtn" />
-                          <Label id="termsLabel" prefHeight="18.0" prefWidth="61.0" text="Accept our " />
-                     <Hyperlink fx:id="termsAndConditon" onAction="#termsAndConditionClicked" prefHeight="23.0" prefWidth="126.0" text="Terms and Conditions" />
-                      </HBox>
-                  </VBox>
-      
-                  <!-- Buttons -->
-                  <HBox alignment="CENTER" spacing="15">
-                  <VBox>
-                     <children>
-                        <BorderPane>
-                           <center>
-                              <HBox>
-                                 <children>
-                                        <Button id="cancelButton" fx:id="cancelButton" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="63.0" text="Cancel" />
-                                 </children>
-                              </HBox>
-                           </center>
-                        </BorderPane>
-                     </children>
-                  </VBox>
-                      <Button id="registerButton" fx:id="createAccountBtn" onAction="#createAccountBtnAction" text="Register" />
-                  </HBox>
-               <HBox alignment="CENTER" prefHeight="24.0" prefWidth="513.0">
-                  <children>
-               
-                                       <Label fx:id="LogInHere" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="157.0" text="Already have an account?" textFill="#00205B" />
-                     <Hyperlink contentDisplay="CENTER" onAction="#LogInClicked" prefHeight="24.0" prefWidth="74.0" text=" Login here" />
-                  </children>
-               </HBox>
-              </VBox>
-                <Label id="registerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="404.0" layoutY="87.0" prefHeight="34.0" prefWidth="97.0" text="Register">
-               <font>
-                  <Font name="Montserrat Light" size="21.0" />
-               </font>
-            </Label>
-            <AnchorPane layoutX="-2.0" prefHeight="54.0" prefWidth="906.0" />
+                                     <HBox alignment="CENTER_LEFT" spacing="5" style="-fx-spacing: 3;">
+                                <CheckBox fx:id="checkAcceptTermsAndConditionBtn" />
+                                <Label id="termsLabel" prefHeight="18.0" prefWidth="61.0" text="Accept our " />
+                           <Hyperlink fx:id="termsAndConditon" onAction="#termsAndConditionClicked" prefHeight="23.0" prefWidth="126.0" text="Terms and Conditions" />
+                            </HBox>
+                        </VBox>
+            
+                              <!-- Buttons -->
+                        <HBox alignment="CENTER" spacing="15">
+                        <VBox>
+                           <children>
+                              <BorderPane>
+                                 <center>
+                                    <HBox>
+                                       <children>
+                                              <Button id="cancelButton" fx:id="cancelButton" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="63.0" text="Cancel" />
+                                       </children>
+                                    </HBox>
+                                 </center>
+                              </BorderPane>
+                           </children>
+                        </VBox>
+                            <Button id="registerButton" fx:id="createAccountBtn" onAction="#createAccountBtnAction" text="Register" />
+                        </HBox>
+                     <HBox alignment="CENTER" prefHeight="24.0" prefWidth="513.0">
+                        <children>
+                     
+                                                   <Label fx:id="LogInHere" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="157.0" text="Already have an account?" textFill="#00205B" />
+                           <Hyperlink contentDisplay="CENTER" onAction="#LogInClicked" prefHeight="24.0" prefWidth="74.0" text=" Login here" />
+                        </children>
+                     </HBox>
+                    </VBox>
+               </children></AnchorPane>
+            <AnchorPane maxHeight="70.0" minHeight="40.0" prefHeight="70.0" prefWidth="898.0" style="-fx-background-color: #191825;">
+               <children>
+                  <ImageView fitHeight="67.0" fitWidth="69.0" layoutX="27.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
+                     </image>
+                  </ImageView>
+                  <Label id="registerLabel" contentDisplay="CENTER" layoutX="115.0" layoutY="16.0" prefHeight="46.0" prefWidth="776.0" styleClass="registyerPane" text="ACAKADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
           </children>
       </AnchorPane>
    </center>

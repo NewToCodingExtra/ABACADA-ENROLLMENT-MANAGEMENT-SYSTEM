@@ -182,7 +182,9 @@ public class SigupUIController implements Initializable {
         try {
             System.out.println("I'm log in clicked");
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
+            
             Scene scene = new Scene(root, 898, 543);  
+            scene.getStylesheets().add(getClass().getResource("/loginui.css").toExternalForm());
             Stage stage = EnrollmentSystem.mainStage;  
 
             stage.setScene(scene);
