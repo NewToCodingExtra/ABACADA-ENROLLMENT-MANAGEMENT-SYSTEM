@@ -30,36 +30,36 @@
 
             <!-- SIDEBAR -->
 
-<VBox fx:id="sidebar" prefWidth="250" alignment="TOP_CENTER" spacing="15" styleClass="sidebar">
+<VBox fx:id="sidebar" alignment="TOP_CENTER" prefWidth="250" spacing="15" styleClass="sidebar">
     <ImageView fx:id="adminLogo" fitHeight="100" fitWidth="100" styleClass="student-logo">
         <image>
-            <Image url="@/images/abakada_logo.png" />
+            <Image url="@images/STARLIGHT%20ACADEMY.png" />
         </image>
     </ImageView>
 
-    <Label text="ADMIN Full Name" styleClass="student-name"/>
-    <Label text="admin@abakada.admin" styleClass="student-email"/>
-    <Label text="ADMIN" styleClass="student-id"/>
+    <Label styleClass="student-name" text="ADMIN Full Name" />
+    <Label styleClass="student-email" text="admin@abakada.admin" />
+    <Label styleClass="student-id" text="ADMIN" />
 
-    <VBox spacing="10" alignment="CENTER">
+    <VBox alignment="CENTER" spacing="10">
         <HBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Enrolled" styleClass="stat-title" />
-            <Label text="5" styleClass="stat-value" />
+            <Label styleClass="stat-title" text="Enrolled" />
+            <Label styleClass="stat-value" text="5" />
         </HBox>
 
         <HBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Pending Enrollment" styleClass="stat-title" />
-            <Label text="5" styleClass="stat-value" />
+            <Label styleClass="stat-title" text="Pending Enrollment" />
+            <Label styleClass="stat-value" text="5" />
         </HBox>
 
         <HBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Pending Payments" styleClass="stat-title" />
-            <Label text="5" styleClass="stat-value" />
+            <Label styleClass="stat-title" text="Pending Payments" />
+            <Label styleClass="stat-value" text="5" />
         </HBox>
 
         <HBox alignment="CENTER" styleClass="stat-card">
-            <Label text="Paid" styleClass="stat-title" />
-            <Label text="5" styleClass="stat-value" />
+            <Label styleClass="stat-title" text="Paid" />
+            <Label styleClass="stat-value" text="5" />
         </HBox>
     </VBox>
 </VBox>
@@ -80,10 +80,10 @@
                                 </children>
                             </AnchorPane>
                         </Tab>
-                        <Tab text="Schedule">
+                        <Tab text="Account Creation">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Your class schedule will appear here." />
+                                    <Label layoutX="20" layoutY="20" prefHeight="18.0" prefWidth="105.0" styleClass="tab-text" text="Create Account" />
                                 </children>
                             </AnchorPane>
                         </Tab>

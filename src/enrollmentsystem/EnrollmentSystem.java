@@ -6,13 +6,9 @@ package enrollmentsystem;
 
 import java.io.IOException;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -24,6 +20,7 @@ public class EnrollmentSystem extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            
             mainStage = primaryStage;  
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
             Scene scene = new Scene(root, 898, 543);
@@ -33,6 +30,8 @@ public class EnrollmentSystem extends Application {
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
             primaryStage.show();
+            
+            
         } catch (IOException ex) {
             System.getLogger(EnrollmentSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }

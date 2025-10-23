@@ -25,6 +25,15 @@ public abstract class User {
         this.createdAt = createdAt;
         this.isActive = isActive;
     }
+    public User(String username, String email, String password,
+                String access) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.access = access;
+        this.createdAt = createdAt;
+        this.isActive = isActive;
+    }
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }

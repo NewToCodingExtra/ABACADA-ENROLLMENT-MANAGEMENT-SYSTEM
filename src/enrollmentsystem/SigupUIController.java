@@ -135,6 +135,7 @@ public class SigupUIController implements Initializable {
         Enrollee newEnrollee = new Enrollee();
         String enrolleeId = generateUniqueEnrolleeId();
         
+        
         if (enrolleeId == null) {
             javax.swing.JOptionPane.showMessageDialog(null, 
                 "Error generating enrollment ID. Please try again.", 
@@ -142,6 +143,7 @@ public class SigupUIController implements Initializable {
                 javax.swing.JOptionPane.ERROR_MESSAGE);
             return;
         }
+        SessionManager.getInstance().setEnrolleeId(enrolleeId);
         
         String userQuery = "INSERT INTO users (username, email, password, access) VALUES (?, ?, ?, 'Enrollees')";
         String enrolleeQuery = "INSERT INTO enrollees (enrollee_id, user_id, enrollment_status, has_filled_up_form) VALUES (?, ?, 'Pending', false)";
@@ -153,7 +155,7 @@ public class SigupUIController implements Initializable {
         
         try {
             conn = DBConnection.getConnection();
-            conn.setAutoCommit(false); // Start transaction
+            conn.setAutoCommit(false);  
             
             System.out.println("Inserting user into database...");
             
@@ -167,6 +169,7 @@ public class SigupUIController implements Initializable {
             int userId = -1;
             if (generatedKeys.next()) {
                 userId = generatedKeys.getInt(1);
+                SessionManager.getInstance().setUserId(userId);
                 System.out.println("User created with ID: " + userId);
             } else {
                 throw new SQLException("Failed to retrieve user_id after insert");
@@ -194,16 +197,7 @@ public class SigupUIController implements Initializable {
             newEnrollee.setHasFilledUpForm(false);
             
             System.out.println("Created enrollee: " + newEnrollee.toString());
-            
-//            javax.swing.JOptionPane.showMessageDialog(null,
-//                "Account Created Successfully!\n\n" +
-//                "Your Enrollment ID: " + enrolleeId + "\n\n" +
-//                "Please save this ID for your records.\n" +
-//                "You can now login or proceed to fill up your enrollment form.",
-//                "Registration Successful",
-//                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-//            
-//            // Show proceed dialog to let user choose next action
+          
             showProceedWindow();
 
         } catch (SQLException e) {
@@ -239,7 +233,6 @@ public class SigupUIController implements Initializable {
                     javax.swing.JOptionPane.ERROR_MESSAGE);
             }
         } finally {
-            // Clean up resources
             try {
                 if (generatedKeys != null) generatedKeys.close();
                 if (userStmt != null) userStmt.close();
@@ -255,12 +248,7 @@ public class SigupUIController implements Initializable {
         }
     }
     
-    /**
-     * Generates a unique enrollment ID for the enrollee
-     * Format: SA{YY}-{4-digit-random-number}
-     * Ensures uniqueness by checking against existing IDs in database
-     * @return Unique enrollment ID or null if generation fails
-     */
+
     private String generateUniqueEnrolleeId() {
         Enrollee tempEnrollee = new Enrollee();
         String enrolleeId = null;
