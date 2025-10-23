@@ -1,5 +1,6 @@
 package enrollmentsystem;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -16,38 +17,42 @@ public class Enrollment2Controller {
     @FXML private Button uploadReportCardButton;
     @FXML private Button backButton;
     @FXML private Button submitButton;
-
     @FXML
+    private Button uploadForm137Btn;
+
     public void initialize() {
-        yearLevelCombo.getItems().addAll("Grade 11", "Grade 12", "1st Year", "2nd Year", "3rd Year", "4th Year");
+        yearLevelCombo.getItems().addAll("1st Year", "2nd Year", "3rd Year", "4th Year");
         courseCombo.getItems().addAll("BSIT", "BSCS", "BSEd", "BSBA");
         studentTypeCombo.getItems().addAll("New", "Transferee", "Returning");
     }
 
+  
+
     @FXML
-    private void onUploadPhoto() {
-        System.out.println("Upload 1x1 photo clicked");
+    private void uploadPhotoBtnAction(ActionEvent event) {
     }
 
     @FXML
-    private void onUploadBirthCert() {
-        System.out.println("Upload birth certificate clicked");
+    private void uploadBirthCirtBtnAction(ActionEvent event) {
     }
 
     @FXML
-    private void onUploadReportCard() {
-        System.out.println("Upload report card clicked");
+    private void uploadReportCardBtnAction(ActionEvent event) {
     }
 
     @FXML
-    private void onBack() {
-        System.out.println("Back button clicked");
-        // Navigation logic can be added here (switch to Enrollment1.fxml)
+    private void uploadForm137BtnAction(ActionEvent event) {
     }
 
     @FXML
-    private void onSubmit() {
-        System.out.println("Submit button clicked");
-        // Submit or save logic here
+    private void backBtnAction(ActionEvent event) {
+        WindowOpener.openSceneWithCSS("/enrollmentsystem/Enrollment1.fxml", 
+                             "/enrollment.css",
+                             "ABAKADA UNIVERSITY - ENROLLEE FORM",
+                             900, 520);
+    }
+
+    @FXML
+    private void SubmitBtnAction(ActionEvent event) {
     }
 }

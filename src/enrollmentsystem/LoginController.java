@@ -269,7 +269,6 @@ public class LoginController implements Initializable {
         boolean isActive = rs.getBoolean("is_active");
         LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
 
-        // Set userId in session
         SessionManager.getInstance().setUserId(userId);
 
         switch (access) {
@@ -360,7 +359,6 @@ public class LoginController implements Initializable {
 //            ResultSet rs = ps.executeQuery();
 //            if (rs.next()) {
 //                String studentId = rs.getString("student_id");
-//                // Store student_id in session
 //                SessionManager.getInstance().setStudentId(studentId);
 //
 //                Student student = new Student(userId, username, email, password, 
@@ -374,24 +372,27 @@ public class LoginController implements Initializable {
 //    }
 
     private Enrollee createEnrollee(int userId, String username, String email, String password, 
-                                   LocalDateTime createdAt, boolean isActive) throws SQLException {
-        String query = "SELECT has_filled_up_form FROM enrollees WHERE user_id = ?";
+                               LocalDateTime createdAt, boolean isActive) throws SQLException {
+        String query = "SELECT enrollee_id, has_filled_up_form FROM enrollees WHERE user_id = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
+
             boolean hasFilled = false;
             String enrolleeId = null;
+
             if (rs.next()) {
+                enrolleeId = rs.getString("enrollee_id");
                 hasFilled = rs.getBoolean("has_filled_up_form");
-                // If enrollees table has an enrollee_id column, retrieve it
-                try {
-                    enrolleeId = rs.getString("enrollee_id");
-                    SessionManager.getInstance().setEnrolleeId(enrolleeId);
-                } catch (SQLException e) {
-                    // enrollee_id column doesn't exist, skip
-                }
+
+                SessionManager.getInstance().setEnrolleeId(enrolleeId);
+                System.out.println("Enrollee ID loaded: " + enrolleeId + ", hasFilled: " + hasFilled);
+            } else {
+                System.out.println("No enrollee record found for userId: " + userId);
             }
+
             return new Enrollee(userId, username, email, password, createdAt, isActive, hasFilled);
         }
     }

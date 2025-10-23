@@ -7,6 +7,7 @@ import java.util.Random;
 public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenerator{
     private String enrolleeId;
     private String firstName;
+    private String middleName;
     private String lastName;
     private String suffix;
     private LocalDate birthDate;
@@ -33,7 +34,7 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
 
       public Enrollee(int userId, String username, String email, String password,
                     String access, LocalDateTime createdAt, boolean isActive,
-                    String enrolleeId, String firstName, String lastName, String suffix,
+                    String enrolleeId, String firstName, String middleName,String lastName, String suffix,
                     LocalDate birthDate, String gender, String address, String province,
                     String city, String contactNumber, String emailAddress,
                     String guardianName, String guardianContact, String lastSchoolAttended,
@@ -43,6 +44,7 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
         super(userId, username, email, password, access, createdAt, isActive);
         this.enrolleeId = enrolleeId;
         this.firstName = firstName;
+        this.middleName = middleName;
         this.lastName = lastName;
         this.suffix = suffix;
         this.birthDate = birthDate;
@@ -65,10 +67,11 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
 
     public Enrollee(int userId, String username, String email, String access,
                     LocalDateTime createdAt, boolean isActive,
-                    String firstName, String lastName, String enrollmentStatus) {
+                    String firstName, String middleName ,String lastName, String enrollmentStatus) {
 
         super(userId, username, email, null, access, createdAt, isActive);
         this.firstName = firstName;
+        this.middleName = middleName;
         this.lastName = lastName;
         this.enrollmentStatus = enrollmentStatus;
     }
@@ -83,6 +86,9 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
+    
+    public String getMiddleName() { return middleName; }
+    public void setMiddleName(String middleName) { this.middleName = middleName; }
 
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }

@@ -13,29 +13,33 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="504.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.Enrollment2Controller">
 
     <children>
-      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="75.0" prefWidth="903.0" style="-fx-background-color: #191825;" />
+      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="71.0" prefWidth="903.0" style="-fx-background-color: #191825;">
+         <children>
+      
+                    <!-- Title -->
+              <Label layoutX="112.0" layoutY="16.0" prefHeight="40.0" prefWidth="490.0" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="ABACADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="71.0" fitWidth="77.0" layoutX="17.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/STARLIGHT%20ACADEMY.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
 
         <!-- Header -->
-        <HBox layoutX="20.0" layoutY="20.0" spacing="10">
-            <children>
-                <ImageView fitHeight="40" fitWidth="40">
-                    <image>
-                        <Image url="@logo.png" />
-                    </image>
-                </ImageView>
-            </children>
-        </HBox>
-
-        <!-- Title -->
-        <Label alignment="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" textFill="WHITE" />
+        <HBox layoutX="20.0" layoutY="20.0" spacing="10" />
 
         <!-- Blue Enrollment Bar -->
-        <Label layoutX="354.0" layoutY="82.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />
-      <GridPane hgap="20.0" layoutX="174.0" layoutY="155.0" prefHeight="236.0" prefWidth="572.0" vgap="15.0">
+        <Label layoutX="354.0" layoutY="92.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />
+      <GridPane hgap="20.0" layoutX="174.0" layoutY="139.0" prefHeight="275.0" prefWidth="572.0" vgap="15.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="309.3333435058594" minWidth="10.0" prefWidth="285.3333435058594" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="319.33331298828125" minWidth="10.0" prefWidth="286.6666564941406" />
@@ -77,7 +81,7 @@
       
                             <!-- Upload 1x1 -->
                       <Label text="Upload 1x1 Photo:" />
-                      <Button fx:id="uploadPhotoButton" text="Add file +" />
+                      <Button fx:id="uploadPhotoButton" onAction="#uploadPhotoBtnAction" text="Add file +" />
                </children>
             </VBox>
             <VBox GridPane.rowIndex="2">
@@ -93,7 +97,7 @@
       
                             <!-- Upload Birth Cert -->
                       <Label text="Upload Birth Certificate:" />
-                      <Button fx:id="uploadBirthCertButton" text="Add file +" />
+                      <Button fx:id="uploadBirthCertButton" onAction="#uploadBirthCirtBtnAction" text="Add file +" />
                </children>
             </VBox>
             <VBox GridPane.rowIndex="3">
@@ -117,16 +121,22 @@
       
                             <!-- Upload Report Card -->
                       <Label text="Upload Report Card:" />
-                      <Button fx:id="uploadReportCardButton" text="Add file +" />
+                      <Button fx:id="uploadReportCardButton" onAction="#uploadReportCardBtnAction" text="Add file +" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <Label text="Upload Form137" />
+                  <Button fx:id="uploadForm137Btn" onAction="#uploadForm137BtnAction" text="Add file +" />
                </children>
             </VBox>
          </children>
       </GridPane>
 
         <!-- Buttons -->
-        <Button fx:id="backButton" layoutX="353.0" layoutY="447.0" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Back" />
+        <Button fx:id="backButton" layoutX="353.0" layoutY="447.0" onAction="#backBtnAction" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Back" />
 
-        <Button fx:id="submitButton" layoutX="473.0" layoutY="447.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Submit" />
+        <Button fx:id="submitButton" layoutX="473.0" layoutY="447.0" onAction="#SubmitBtnAction" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Submit" />
 
     </children>
 </AnchorPane>
