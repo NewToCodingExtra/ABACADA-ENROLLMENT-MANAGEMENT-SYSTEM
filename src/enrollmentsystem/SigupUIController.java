@@ -329,7 +329,7 @@ public class SigupUIController implements Initializable {
     private void cancelButtonClicked(ActionEvent event) {
         ProceedDialogHelper.navigateToLogin();
     }
-
+    
     @FXML
     private void fShowPassAction(MouseEvent event) {
         isFPassVisible = togglePasswordVisibility(fShowPass, isFPassVisible, fPassField, fShowPassword);

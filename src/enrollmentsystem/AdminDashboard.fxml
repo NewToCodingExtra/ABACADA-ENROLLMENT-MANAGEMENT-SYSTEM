@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.StudentDashboardController">
+<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@admindashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.AdminDashboardController">
 
     <children>
 
@@ -29,16 +29,45 @@
         <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
 
             <!-- SIDEBAR -->
-            <VBox fx:id="sidebar" alignment="CENTER" prefWidth="240.0" spacing="10" styleClass="sidebar">
-                <ImageView fitHeight="100" fitWidth="100" styleClass="student-logo">
-                    <image>
-                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
-                    </image>
-                </ImageView>
-                <Label fx:id="studentNameLabel" styleClass="student-name" text="Student Full Name" />
-                <Label fx:id="studentEmailLabel" styleClass="student-email" text="student@abakada.student" />
-                <Label fx:id="studentIdLabel" styleClass="student-id" text="ID No. STUDENT" />
-            </VBox>
+
+<VBox fx:id="sidebar" prefWidth="250" alignment="TOP_CENTER" spacing="15" styleClass="sidebar">
+    <ImageView fx:id="adminLogo" fitHeight="100" fitWidth="100" styleClass="student-logo">
+        <image>
+            <Image url="@/images/abakada_logo.png" />
+        </image>
+    </ImageView>
+
+    <Label text="ADMIN Full Name" styleClass="student-name"/>
+    <Label text="admin@abakada.admin" styleClass="student-email"/>
+    <Label text="ADMIN" styleClass="student-id"/>
+
+    <VBox spacing="10" alignment="CENTER">
+        <HBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Enrolled" styleClass="stat-title" />
+            <Label text="5" styleClass="stat-value" />
+        </HBox>
+
+        <HBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Pending Enrollment" styleClass="stat-title" />
+            <Label text="5" styleClass="stat-value" />
+        </HBox>
+
+        <HBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Pending Payments" styleClass="stat-title" />
+            <Label text="5" styleClass="stat-value" />
+        </HBox>
+
+        <HBox alignment="CENTER" styleClass="stat-card">
+            <Label text="Paid" styleClass="stat-title" />
+            <Label text="5" styleClass="stat-value" />
+        </HBox>
+    </VBox>
+</VBox>
+
+
+
+
+
 
             <!-- MAIN CONTENT -->
             <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="0" styleClass="main-content" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">

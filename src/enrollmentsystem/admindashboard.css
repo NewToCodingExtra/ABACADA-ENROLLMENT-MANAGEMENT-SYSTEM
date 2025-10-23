@@ -1,0 +1,184 @@
+/* =======================
+   GLOBAL
+======================= */
+.root {
+    -fx-background-color: #FFFFFF;
+    -fx-font-family: "Montserrat";
+}
+
+/* =======================
+   TOP BAR
+======================= */
+.top-bar {
+    -fx-background-color: #191825;
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 0 20;
+    -fx-spacing: 20;
+}
+
+.title-label {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 2.2em;
+    -fx-font-weight: 200;
+    -fx-letter-spacing: 0.2em;
+    -fx-text-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 4, 0, 0, 4);
+}
+
+/* =======================
+   SIDEBAR
+======================= */
+.sidebar {
+    -fx-background-color: #002262;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    -fx-alignment: TOP_CENTER;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 4);
+}
+
+.student-logo {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0, 0, 6);
+}
+
+.student-name {
+    -fx-text-fill: white;
+    -fx-font-size: 1.6em;
+    -fx-font-weight: 500;
+    -fx-text-alignment: center;
+}
+
+.student-email {
+    -fx-text-fill: white;
+    -fx-font-size: 1.2em;
+    -fx-font-weight: 300;
+    -fx-opacity: 0.9;
+    -fx-text-alignment: center;
+}
+
+.student-id {
+    -fx-text-fill: white;
+    -fx-font-size: 1.2em;
+    -fx-font-weight: 300;
+    -fx-opacity: 0.7;
+    -fx-text-alignment: center;
+}
+
+/* =======================
+   ADMIN SIDEBAR CARDS
+======================= */
+
+/* =======================
+   ADMIN SIDEBAR CARDS
+======================= */
+
+.stat-card {
+    -fx-background-color: #002262;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-alignment: center;
+    -fx-spacing: 100; /* Adjust for text-number distance */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 4);
+}
+
+.stat-title {
+    -fx-text-fill: white;
+    -fx-font-size: 1.1em;
+    -fx-font-weight: 400;
+}
+
+.stat-value {
+    -fx-text-fill: white;
+    -fx-font-size: 1.5em;
+    -fx-font-weight: 700;
+}
+
+
+
+
+
+/* =======================
+   MAIN CONTENT
+======================= */
+.main-content {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 4, 0, 0, 4);
+    -fx-padding: 20;
+}
+
+.main-content-container{
+    -fx-padding: 20;
+}
+
+/* =======================
+   TABPANE
+======================= */
+.tab-pane {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-tab-min-width: 140;
+    -fx-tab-max-width: 180;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: #002262;
+    -fx-border-radius: 10 10 0 0;
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 1.1em;
+    -fx-font-weight: 300;
+}
+
+.tab-pane .tab:selected {
+    -fx-font-weight: 700;
+    -fx-background-color: #001b4d;
+}
+
+/* =======================
+   TAB CONTENT
+======================= */
+
+.tab-content {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 20;
+    -fx-border-color: #00000020;
+    -fx-border-radius: 0 0 10 10;
+}
+
+
+.tab-text {
+    -fx-font-size: 1.1em;
+    -fx-text-fill: #002262;
+    -fx-wrap-text: true;
+}
+
+/* =======================
+   RESPONSIVE SCALING
+======================= */
+@media screen and (max-width: 1366px) {
+    .title-label {
+        -fx-font-size: 1.8em;
+    }
+
+    .student-name {
+        -fx-font-size: 1.4em;
+    }
+
+    .student-email, .student-id {
+        -fx-font-size: 1em;
+    }
+
+    .tab-pane .tab {
+        -fx-font-size: 1em;
+    }
+
+    .tab-text {
+        -fx-font-size: 1em;
+    }
+}
+

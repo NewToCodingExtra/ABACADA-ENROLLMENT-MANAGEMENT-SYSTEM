@@ -1,77 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="950" prefHeight="550"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="enrollmentsystem.CashierDashboardController"
-            stylesheets="@cashierdashboard.css">
+<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@cashierdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.CashierDashboardController">
 
     <children>
 
-        <!-- Top Header -->
-        <HBox prefHeight="65" prefWidth="950" styleClass="top-bar">
+        <!-- HEADER -->
+        <HBox fx:id="topBar" prefHeight="100" styleClass="top-bar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <children>
-                <ImageView fitHeight="45" fitWidth="45" layoutX="20" layoutY="10" style="-fx-padding: 10;">
+                <ImageView fitHeight="60" fitWidth="60">
                     <image>
-                        <Image url="@logo.png" />
+                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" styleClass="title-label" />
+                <Label styleClass="title-label" text="ABAKADA ACADEMY ENROLLMENT SYSTEM" />
             </children>
         </HBox>
 
-        <!-- Left Sidebar -->
-        <VBox layoutX="20" layoutY="90" prefWidth="240" prefHeight="430" styleClass="sidebar" spacing="10" alignment="CENTER">
-            <ImageView fitHeight="100" fitWidth="100" styleClass="faculty-logo">
-                <image>
-                    <Image url="@logo.png" />
-                </image>
-            </ImageView>
+        <!-- MAIN BODY -->
+        <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
 
-            <Label fx:id="cashierNameLabel" text="Cashier Full Name" styleClass="faculty-name" />
-            <Label fx:id="cashierEmailLabel" text="cashiername@starlight.cashier" styleClass="faculty-email" />
-            <Label fx:id="cashierRoleLabel" text="CASHIER" styleClass="faculty-role" />
+            <!-- SIDEBAR -->
 
-            <VBox alignment="CENTER" spacing="10" styleClass="stats-box">
-                <Label text="Pending Payments" styleClass="stats-title"/>
-                <Label fx:id="pendingPaymentsLabel" text="5" styleClass="stats-value"/>
+<VBox fx:id="sidebar" alignment="TOP_CENTER" prefWidth="250" spacing="15" styleClass="sidebar">
+    <ImageView fx:id="adminLogo" fitHeight="100" fitWidth="100" styleClass="student-logo">
+        <image>
+            <Image url="@images/STARLIGHT%20ACADEMY.png" />
+        </image>
+    </ImageView>
+
+    <Label styleClass="student-name" text="Cashier Full Name" />
+    <Label styleClass="student-email" text="cashier@abakada.cashier" />
+    <Label styleClass="student-id" text="CASHIER" />
+
+    <VBox alignment="CENTER" spacing="50">
+        <HBox alignment="CENTER" prefHeight="90.0" prefWidth="210.0" styleClass="stat-card">
+            <Label minWidth="-Infinity" styleClass="stat-title" text="Pending Payments" />
+            <Label styleClass="stat-value" text="5" />
+        </HBox>
+
+        <HBox alignment="CENTER" prefHeight="91.0" prefWidth="210.0" styleClass="stat-card">
+            <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="18.0" prefWidth="150.0" styleClass="stat-title" text="Paid" />
+            <Label styleClass="stat-value" text="5" />
+        </HBox>
+
+     
+    </VBox>
+</VBox>
+
+
+
+
+
+
+            <!-- MAIN CONTENT -->
+            <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="0" styleClass="main-content" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                    <tabs>
+                        <Tab style="-fx-text-fill: #ffffff;" text="Home">
+                            <AnchorPane styleClass="tab-content">
+                        <children>
+                           <TableView layoutX="42.0" layoutY="22.0" prefHeight="75.0" prefWidth="753.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
+                           <TableView layoutX="40.0" layoutY="128.0" prefHeight="344.0" prefWidth="753.0">
+                              <columns>
+                                 <TableColumn prefWidth="75.0" text="C1" />
+                                 <TableColumn prefWidth="75.0" text="C2" />
+                              </columns>
+                           </TableView>
+                        </children>
+                            </AnchorPane>
+                        </Tab>
+                    </tabs>
+                </TabPane>
             </VBox>
 
-            <VBox alignment="CENTER" spacing="10" styleClass="stats-box">
-                <Label text="Paid" styleClass="stats-title"/>
-                <Label fx:id="paidLabel" text="5" styleClass="stats-value"/>
-            </VBox>
-        </VBox>
-
-        <!-- Main Content (AnchorPane for free resizing) -->
-        <AnchorPane layoutX="280" layoutY="90" prefWidth="640" prefHeight="430" styleClass="content-pane">
-
-            <Label text="Home" layoutX="20" layoutY="10"
-                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #0a1a3a;" />
-
-            <TableView fx:id="paymentTable"
-                       layoutX="20" layoutY="50"
-                       prefWidth="600" prefHeight="350"
-                       AnchorPane.topAnchor="50" AnchorPane.leftAnchor="20"
-                       AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
-
-                <columns>
-                    <TableColumn text="Student's Name" prefWidth="150" />
-                    <TableColumn text="Course" prefWidth="120" />
-                    <TableColumn text="Amount to Pay" prefWidth="120" />
-                    <TableColumn text="Action" prefWidth="100" />
-                    <TableColumn text="Admin Approval" prefWidth="120" />
-                    <TableColumn text="Payment Status" prefWidth="120" />
-                </columns>
-
-            </TableView>
-
-        </AnchorPane>
-
+        </HBox>
     </children>
 </AnchorPane>

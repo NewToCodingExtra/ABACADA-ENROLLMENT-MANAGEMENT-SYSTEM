@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.StudentDashboardController">
+<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.EnrolleeDashboardController">
 
     <children>
 
@@ -35,9 +35,8 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label fx:id="studentNameLabel" styleClass="student-name" text="Student Full Name" />
-                <Label fx:id="studentEmailLabel" styleClass="student-email" text="student@abakada.student" />
-                <Label fx:id="studentIdLabel" styleClass="student-id" text="ID No. STUDENT" />
+                <Label fx:id="studentNameLabel" styleClass="student-name" text="Enrollee Full Name" />
+                <Label fx:id="studentIdLabel" styleClass="student-id" text="ENROLLEE" />
             </VBox>
 
             <!-- MAIN CONTENT -->
@@ -45,16 +44,12 @@
                 <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
-                            <AnchorPane styleClass="tab-content">
-                                <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Welcome to your student dashboard!" />
-                                </children>
-                            </AnchorPane>
+                            <AnchorPane styleClass="tab-content" />
                         </Tab>
                         <Tab text="Schedule">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Your class schedule will appear here." />
+                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" />
                                 </children>
                             </AnchorPane>
                         </Tab>

@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 
-public class FacultyDashboardController {
+public class EnrolleeDashboardController {
 
     @FXML
     private Label studentNameLabel;

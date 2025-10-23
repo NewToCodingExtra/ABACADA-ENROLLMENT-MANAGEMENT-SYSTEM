@@ -1,76 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefWidth="950" prefHeight="550"
-            xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="enrollmentsystem.FacultyDashboardController"
-            stylesheets="@studentdashboard.css">
+<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.FacultyDashboardController">
 
     <children>
 
-        <!-- Top Header -->
-        <HBox prefHeight="65" prefWidth="950" styleClass="top-bar">
+        <!-- HEADER -->
+        <HBox fx:id="topBar" prefHeight="100" styleClass="top-bar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <children>
-                <ImageView fitHeight="45" fitWidth="45" layoutX="20" layoutY="10" style="-fx-padding: 10;">
+                <ImageView fitHeight="60" fitWidth="60">
                     <image>
-                        <Image url="@logo.png" />
+                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" styleClass="title-label" />
+                <Label styleClass="title-label" text="ABAKADA ACADEMY ENROLLMENT SYSTEM" />
             </children>
         </HBox>
 
-        <!-- Left Sidebar -->
-        <VBox layoutX="20" layoutY="90" prefWidth="240" prefHeight="430"
-              styleClass="sidebar" spacing="10" alignment="CENTER">
-            
-            <ImageView fitHeight="100" fitWidth="100" styleClass="faculty-logo">
-                <image>
-                    <Image url="@logo.png" />
-                </image>
-            </ImageView>
+        <!-- MAIN BODY -->
+        <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
 
-            <Label fx:id="facultyNameLabel" text="Faculty Full Name" styleClass="faculty-name" />
-            <Label fx:id="facultyEmailLabel" text="facultyname@starlight.faculty" styleClass="faculty-email" />
-            <Label text="FACULTY" styleClass="faculty-role" />
-        </VBox>
+            <!-- SIDEBAR -->
+            <VBox fx:id="sidebar" alignment="CENTER" prefWidth="240.0" spacing="10" styleClass="sidebar">
+                <ImageView fitHeight="100" fitWidth="100" styleClass="student-logo">
+                    <image>
+                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="studentNameLabel" styleClass="student-name" text="Faculty Full Name" />
+                <Label fx:id="studentEmailLabel" styleClass="student-email" text="faculty@abakada.faculty" />
+                <Label fx:id="studentIdLabel" styleClass="student-id" text="FACULTY" />
+            </VBox>
 
-        <!-- Main Content -->
-        <VBox layoutX="280" layoutY="90" prefWidth="640" prefHeight="430" spacing="10">
+            <!-- MAIN CONTENT -->
+            <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="0" styleClass="main-content" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+                    <tabs>
+                        <Tab style="-fx-text-fill: #ffffff;" text="Home">
+                            <AnchorPane styleClass="tab-content">
+                                <children>
+                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="FACULTY OVERVIEW:" />
+                           <Button layoutX="24.0" layoutY="428.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="136.0" styleClass="evaluate-btn" text="EVALUATE" />
+                                </children>
+                            </AnchorPane>
+                        </Tab>
+                        <Tab text="Schedule">
+                            <AnchorPane styleClass="tab-content">
+                                <children>
+                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Your class schedule will appear here." />
+                                </children>
+                            </AnchorPane>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+            </VBox>
 
-            <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
-                <tabs>
-
-                    <!-- HOME TAB -->
-                    <Tab text="Home">
-                        <AnchorPane styleClass="tab-content">
-                            <children>
-                                <Label layoutX="20" layoutY="20" wrapText="true" 
-                                       text="Dito ilalagay yung Overview ng Faculty: Evaluation, important notice bar for notices from higher ups."
-                                       styleClass="tab-text" />
-                            </children>
-                        </AnchorPane>
-                    </Tab>
-
-                    <!-- SCHEDULE TAB -->
-                    <Tab text="Schedule">
-                        <AnchorPane styleClass="tab-content">
-                            <children>
-                                <Label layoutX="20" layoutY="20"
-                                       text="Faculty schedule and classes handled will appear here."
-                                       styleClass="tab-text" />
-                            </children>
-                        </AnchorPane>
-                    </Tab>
-
-                </tabs>
-            </TabPane>
-        </VBox>
-
+        </HBox>
     </children>
 </AnchorPane>

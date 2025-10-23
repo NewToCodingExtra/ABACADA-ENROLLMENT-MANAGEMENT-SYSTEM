@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="504.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.EditDetails2Controller">
+
+    <children>
+      <Pane layoutX="-1.0" layoutY="-1.0" prefHeight="75.0" prefWidth="903.0" style="-fx-background-color: #191825;" />
+
+        <!-- Header -->
+        <HBox layoutX="20.0" layoutY="20.0" spacing="10">
+            <children>
+                <ImageView fitHeight="40" fitWidth="40">
+                    <image>
+                        <Image url="@logo.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+
+        <!-- Title -->
+        <Label alignment="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" textFill="WHITE" />
+
+        <!-- Blue Enrollment Bar -->
+        <Label layoutX="354.0" layoutY="82.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />
+      <GridPane hgap="20.0" layoutX="174.0" layoutY="155.0" prefHeight="236.0" prefWidth="572.0" vgap="15.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="309.3333435058594" minWidth="10.0" prefWidth="285.3333435058594" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="319.33331298828125" minWidth="10.0" prefWidth="286.6666564941406" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox>
+               <children>
+      
+                            <!-- Year Level -->
+                      <Label text="Year Level to Enroll:" />
+                      <ComboBox fx:id="yearLevelCombo" promptText="Select year level" />
+               </children>
+            </VBox>
+            <VBox GridPane.columnIndex="1">
+               <children>
+      
+                      <!-- Email -->
+                      <Label text="Email Address:" />
+                      <TextField fx:id="emailField" promptText="Email" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="1">
+               <children>
+      
+                            <!-- Course/Program -->
+                      <Label text="Course/Program:" />
+                      <ComboBox fx:id="courseCombo" promptText="Select course" />
+               </children>
+            </VBox>
+            <VBox prefHeight="47.0" prefWidth="178.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+      
+                            <!-- Upload 1x1 -->
+                      <Label text="Upload 1x1 Photo:" />
+                      <Button fx:id="uploadPhotoButton" text="Add file +" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="2">
+               <children>
+      
+                            <!-- Student Type -->
+                      <Label text="Student Type (New / Transferee / Returning):" />
+                      <ComboBox fx:id="studentTypeCombo" promptText="Select type" />
+               </children>
+            </VBox>
+            <VBox prefHeight="47.0" prefWidth="269.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+      
+                            <!-- Upload Birth Cert -->
+                      <Label text="Upload Birth Certificate:" />
+                      <Button fx:id="uploadBirthCertButton" text="Add file +" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="3">
+               <children>
+      
+                            <!-- Previous School -->
+                      <Label text="Previous School Attended:" />
+                      <TextField fx:id="previousSchoolField" promptText="School" />
+               </children>
+            </VBox>
+            <VBox GridPane.rowIndex="4">
+               <children>
+      
+                            <!-- School Year -->
+                      <Label text="School Year (e.g., 2025–2026):" />
+                      <TextField fx:id="schoolYearField" promptText="Year" />
+               </children>
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+      
+                            <!-- Upload Report Card -->
+                      <Label text="Upload Report Card:" />
+                      <Button fx:id="uploadReportCardButton" text="Add file +" />
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+
+        <!-- Buttons -->
+        <Button fx:id="backButton" layoutX="353.0" layoutY="447.0" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Back" />
+
+        <Button fx:id="submitButton" layoutX="473.0" layoutY="447.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Submit" />
+
+    </children>
+</AnchorPane>

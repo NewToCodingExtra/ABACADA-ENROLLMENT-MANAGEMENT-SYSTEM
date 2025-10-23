@@ -148,7 +148,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                      </image>
                   </ImageView>
-                  <Label id="registerLabel" contentDisplay="CENTER" layoutX="115.0" layoutY="16.0" prefHeight="46.0" prefWidth="776.0" styleClass="registyerPane" text="ACAKADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
+                  <Label id="registerLabel" contentDisplay="CENTER" layoutX="115.0" layoutY="16.0" prefHeight="46.0" prefWidth="776.0" styleClass="registyerPane" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>

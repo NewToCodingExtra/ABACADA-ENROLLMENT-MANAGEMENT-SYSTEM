@@ -13,7 +13,7 @@ import javafx.fxml.Initializable;
  *
  * @author Wes
  */
-public class CashierDashboardController implements Initializable {
+public class AdminDashboardController implements Initializable {
 
     /**
      * Initializes the controller class.
