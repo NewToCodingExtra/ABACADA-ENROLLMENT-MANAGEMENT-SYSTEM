@@ -134,7 +134,8 @@ public class SigupUIController implements Initializable {
 
             stmt.executeUpdate();
 
-            javax.swing.JOptionPane.showMessageDialog(null,"Account Created Successfully! You can now login.");
+            showProceedWindow();
+            
 
         } catch (SQLException e) {
             if (e.getMessage().contains("Duplicate entry")) {
@@ -171,35 +172,12 @@ public class SigupUIController implements Initializable {
 
     @FXML
     private void LogInClicked(ActionEvent event) {
-        backToLoginScreen();
+        ProceedDialogHelper.navigateToLogin();
     }
 
     @FXML
     private void cancelButtonClicked(ActionEvent event) {
-        backToLoginScreen();
-    }
-    public void backToLoginScreen() {
-        try {
-            System.out.println("I'm log in clicked");
-            Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
-            
-            Scene scene = new Scene(root, 898, 543);  
-            scene.getStylesheets().add(getClass().getResource("/loginui.css").toExternalForm());
-            Stage stage = EnrollmentSystem.mainStage;  
-
-            stage.setScene(scene);
-            stage.setTitle("ABAKADA UNIVERSITY - LOGIN PAGE");
-            stage.setResizable(false);
-
-            javafx.geometry.Rectangle2D screenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-            stage.setX((screenBounds.getWidth() - 898) / 2);
-            stage.setY((screenBounds.getHeight() - 543) / 2);
-
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ProceedDialogHelper.navigateToLogin();
     }
 
     @FXML
@@ -321,5 +299,9 @@ public class SigupUIController implements Initializable {
             ex.printStackTrace();
         } 
         return isPasswordVisible;
+    }
+
+    private void showProceedWindow() {
+        ProceedDialogHelper.showDialogAndNavigate(EnrollmentSystem.mainStage);
     }
 }

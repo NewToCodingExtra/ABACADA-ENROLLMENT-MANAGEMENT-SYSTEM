@@ -116,16 +116,16 @@ public class LoginController implements Initializable {
                 return;
             }
 
-            // ✅ Instantiate correct user type based on access
             User loggedInUser = createUserFromResultSet(rs);
 
             if (loggedInUser instanceof Enrollee enrollee) {
                 if (enrollee.hasFilledUpForm()) {
-                    openPage("/enrollmentsystem/EnrolleeDashboard.fxml",
+                    WindowOpener.openScene("/enrollmentsystem/EnrolleeDashboard.fxml",
                              "ABAKADA UNIVERSITY - ENROLLEE DASHBOARD",
                              1024, 600);
                 } else {
-                    openPage("/enrollmentsystem/Enrollment1.fxml",
+                    WindowOpener.openSceneWithCSS("/enrollmentsystem/Enrollment1.fxml", 
+                             "/enrollment.css",
                              "ABAKADA UNIVERSITY - ENROLLEE FORM",
                              900, 520);
                 }
@@ -134,19 +134,20 @@ public class LoginController implements Initializable {
 
             switch (loggedInUser.getAccess()) {
                 case "Admin" ->
-                    openPage("/enrollmentsystem/AdminDashboard.fxml",
+                    WindowOpener.openScene("/enrollmentsystem/AdminDashboard.fxml",
                              "ABAKADA UNIVERSITY - ADMIN DASHBOARD",
                              950, 550);
                 case "Cashier" ->
-                    openPage("/enrollmentsystem/CashierDashboard.fxml",
+                    WindowOpener.openScene("/enrollmentsystem/CashierDashboard.fxml",
                              "ABAKADA UNIVERSITY - CASHIER DASHBOARD",
                              950, 550);
                 case "Faculty" ->
-                    openPage("/enrollmentsystem/FacultyDashboard.fxml",
+                    WindowOpener.openScene("/enrollmentsystem/FacultyDashboard.fxml",
                              "ABAKADA UNIVERSITY - FACULTY DASHBOARD",
                              950, 550);
                 case "Student" ->
-                    openPage("/enrollmentsystem/StudentDashboard.fxml",
+                    WindowOpener.openSceneWithCSS("/enrollmentsystem/StudentDashboard.fxml",
+                              "/studentdashboard.css",
                              "ABAKADA UNIVERSITY - STUDENT DASHBOARD",
                              950, 550);
             }
@@ -253,7 +254,7 @@ public class LoginController implements Initializable {
 
     @FXML
     private void onRegisterAction(ActionEvent event) {
-        openPage("/enrollmentsystem/Register.fxml", "ABAKADA UNIVERSITY - SIGNUP PAGE", 898.4, 543.2);
+        WindowOpener.openSceneWithLoader("/enrollmentsystem/Register.fxml", "ABAKADA UNIVERSITY - SIGNUP PAGE", 898.4, 543.2);
     }
     private User createUserFromResultSet(ResultSet rs) throws SQLException {
         String access = rs.getString("access");
@@ -274,7 +275,6 @@ public class LoginController implements Initializable {
 //            case "Student":
 //                return new Student(userId, username, email, password, createdAt, isActive);
             default: {
-                // ✅ Fetch enrollee data (including has_filled_up_form)
                 String enrolleeQuery = "SELECT has_filled_up_form FROM enrollees WHERE user_id = ?";
                 try (Connection conn = DBConnection.getConnection();
                      PreparedStatement ps = conn.prepareStatement(enrolleeQuery)) {
@@ -292,29 +292,6 @@ public class LoginController implements Initializable {
             }
         }
     }
-    private void openPage(String fxmlPath, String title, double width, double height) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(root, width, height);
-            
-            if(fxmlPath.equals("/enrollmentsystem/Register.fxml")) 
-                scene.getStylesheets().add( getClass().getResource("/sigupui.css").toExternalForm() );
-            
-            Stage stage = EnrollmentSystem.mainStage;
-
-            stage.setScene(scene);
-            stage.setTitle(title);
-            stage.setResizable(false);
-
-            // Center the stage on screen (similar to your register code)
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((screenBounds.getWidth() - width) / 2);
-            stage.setY((screenBounds.getHeight() - height) / 2);
-
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    
 
 }
