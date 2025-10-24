@@ -1,5 +1,6 @@
 package enrollmentsystem;
 
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -30,6 +31,12 @@ public class Enrollment2Controller {
 
     @FXML
     private void uploadPhotoBtnAction(ActionEvent event) {
+        File file = new File("C:\\Users\\Joshua\\OneDrive\\Documents\\ACCT-LAST-LECTURE-SESSION-1.pdf");
+        if (!file.exists()) {
+            System.err.println("File not found: " + file.getAbsolutePath());
+        }
+        String response = DriveUploader.uploadToDrive(file, "JoshuaSantiago", "SA25-7859");
+        System.out.println(response);
     }
 
     @FXML
