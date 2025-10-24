@@ -22,6 +22,10 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
     private String lastSchoolAttended;
     private String lastSchoolYear;
     private String programAppliedFor;
+    private String photoLink;
+    private String birthCertLink;
+    private String reportCardLink;
+    private String form137Link;
     private String enrollmentStatus;
     private LocalDateTime dateApplied;
     private Integer reviewedBy;
@@ -131,6 +135,18 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
 
     public String getProgramAppliedFor() { return programAppliedFor; }
     public void setProgramAppliedFor(String programAppliedFor) { this.programAppliedFor = programAppliedFor; }
+    
+    public String getPhotoLink() { return photoLink; }
+    public void setPhotoLink(String photoLink) { this.photoLink = photoLink; }
+
+    public String getBirthCertLink() { return birthCertLink; }
+    public void setBirthCertLink(String birthCertLink) { this.birthCertLink = birthCertLink; }
+
+    public String getReportCardLink() { return reportCardLink; }
+    public void setReportCardLink(String reportCardLink) { this.reportCardLink = reportCardLink; }
+
+    public String getForm137Link() { return form137Link; }
+    public void setForm137Link(String form137Link) { this.form137Link = form137Link; }
 
     public String getEnrollmentStatus() { return enrollmentStatus; }
     public void setEnrollmentStatus(String enrollmentStatus) { this.enrollmentStatus = enrollmentStatus; }
