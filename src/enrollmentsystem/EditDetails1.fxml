@@ -24,7 +24,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label contentDisplay="CENTER" layoutX="102.0" prefHeight="71.0" prefWidth="572.0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font: Montserrat;" text="ABACADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
+                <Label contentDisplay="CENTER" layoutX="102.0" prefHeight="71.0" prefWidth="572.0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font: Montserrat;" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>

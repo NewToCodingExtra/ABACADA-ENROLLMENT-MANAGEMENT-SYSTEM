@@ -3,10 +3,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@admindashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.AdminDashboardController">
@@ -21,7 +24,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label styleClass="title-label" text="ABAKADA ACADEMY ENROLLMENT SYSTEM" />
+                <Label styleClass="title-label" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" />
             </children>
         </HBox>
 
@@ -44,21 +47,25 @@
     <VBox alignment="CENTER" spacing="10">
         <HBox alignment="CENTER" styleClass="stat-card">
             <Label styleClass="stat-title" text="Enrolled" />
+                  <Region prefHeight="23.0" prefWidth="66.0" HBox.hgrow="ALWAYS" />
             <Label styleClass="stat-value" text="5" />
         </HBox>
 
         <HBox alignment="CENTER" styleClass="stat-card">
             <Label styleClass="stat-title" text="Pending Enrollment" />
+                  <Region prefHeight="23.0" prefWidth="3.0" HBox.hgrow="ALWAYS" />
             <Label styleClass="stat-value" text="5" />
         </HBox>
 
         <HBox alignment="CENTER" styleClass="stat-card">
             <Label styleClass="stat-title" text="Pending Payments" />
+                  <Region prefHeight="23.0" prefWidth="13.0" HBox.hgrow="ALWAYS" />
             <Label styleClass="stat-value" text="5" />
         </HBox>
 
         <HBox alignment="CENTER" styleClass="stat-card">
             <Label styleClass="stat-title" text="Paid" />
+                  <Region prefHeight="23.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
             <Label styleClass="stat-value" text="5" />
         </HBox>
     </VBox>
@@ -76,14 +83,26 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Welcome to your student dashboard!" />
+                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" />
+                           <TableView layoutX="20.0" layoutY="10.0" prefHeight="467.0" prefWidth="834.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>
                         <Tab text="Account Creation">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" prefHeight="18.0" prefWidth="105.0" styleClass="tab-text" text="Create Account" />
+                                    <Label layoutX="20" layoutY="20" prefHeight="18.0" prefWidth="105.0" styleClass="tab-text" />
+                           <TableView layoutX="32.0" layoutY="20.0" prefHeight="100.0" prefWidth="807.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>

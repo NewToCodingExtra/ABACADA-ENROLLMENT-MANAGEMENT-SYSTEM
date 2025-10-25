@@ -22,7 +22,7 @@
          <children>
       
                     <!-- Title -->
-              <Label layoutX="112.0" layoutY="16.0" prefHeight="40.0" prefWidth="490.0" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="ABACADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
+              <Label layoutX="112.0" layoutY="16.0" prefHeight="40.0" prefWidth="490.0" style="-fx-font-size: 22px; -fx-font-weight: bold;" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>

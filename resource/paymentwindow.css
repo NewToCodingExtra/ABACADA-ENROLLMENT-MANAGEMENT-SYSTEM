@@ -1,0 +1,51 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.mainFxmlClass {
+    
+}
+
+.container{
+    -fx-alignment: TOP_CENTER;
+    -fx-padding: 20 40 20 40;
+}
+
+.title-label {
+    -fx-alignment: CENTER;
+}
+
+.credit-card-grid {
+    -fx-padding: 10;
+    -fx-alignment: CENTER;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+.date-cvc-spacing {
+    -fx-spacing: 10;
+}
+
+.form {
+    -fx-spacing: 10;
+}
+
+.button {
+    -fx-background-color: #191825;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.return-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #191825;
+    -fx-background-radius: 4;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-border-color: #191825;
+    -fx-border-radius: 4; 
+}

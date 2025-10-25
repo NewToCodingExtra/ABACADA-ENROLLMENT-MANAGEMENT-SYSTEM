@@ -25,7 +25,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label contentDisplay="CENTER" layoutX="102.0" prefHeight="71.0" prefWidth="572.0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font: Montserrat;" text="ABACADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
+                <Label contentDisplay="CENTER" layoutX="102.0" prefHeight="71.0" prefWidth="572.0" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-font: Montserrat;" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" textFill="WHITE">
                <font>
                   <Font size="22.0" />
                </font>
@@ -45,7 +45,7 @@
             <children>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-      
+     
                       <Label text="First Name:" />
                       <TextField fx:id="firstNameField" promptText="Firstname" />
                </children>
@@ -73,7 +73,7 @@
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="4">
                <children>
       
-                                  <Label text="Contact No.:" />
+                      <Label text="Contact No.:" />
                       <TextField fx:id="contactField" promptText="09XXXXXXXXX" />
                </children>
             </VBox>
@@ -121,7 +121,7 @@
             <RowConstraints maxHeight="264.66668701171875" />
          </rowConstraints>
         </GridPane>
-
+        
         <!-- Buttons -->
         <HBox layoutX="350.0" layoutY="520.0" spacing="20" />
           <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="342.0" layoutY="449.0" onAction="#homeBtnAction" style="-fx-background-color: #F5C518; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 100;" text="Home" />

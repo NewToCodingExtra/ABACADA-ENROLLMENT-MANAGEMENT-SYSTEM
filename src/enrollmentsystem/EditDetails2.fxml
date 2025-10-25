@@ -31,7 +31,7 @@
         </HBox>
 
         <!-- Title -->
-        <Label alignment="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="STARLIGHT ACADEMY ENROLLMENT SYSTEM" textFill="WHITE" />
+        <Label alignment="CENTER" layoutX="274.0" layoutY="20.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="ABAKADA ACADEMY ENROLLMENT SYSTEM" textFill="WHITE" />
 
         <!-- Blue Enrollment Bar -->
         <Label layoutX="354.0" layoutY="82.0" style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 5 50; -fx-background-radius: 4;" text="ENROLLMENT" />

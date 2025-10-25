@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -48,15 +50,26 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="FACULTY OVERVIEW:" />
                            <Button layoutX="24.0" layoutY="428.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="136.0" styleClass="evaluate-btn" text="EVALUATE" />
+                           <TableView layoutX="34.0" layoutY="22.0" prefHeight="152.0" prefWidth="802.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>
                         <Tab text="Schedule">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" text="Your class schedule will appear here." />
+                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" />
+                           <TableView layoutX="20.0" layoutY="20.0" prefHeight="464.0" prefWidth="827.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>

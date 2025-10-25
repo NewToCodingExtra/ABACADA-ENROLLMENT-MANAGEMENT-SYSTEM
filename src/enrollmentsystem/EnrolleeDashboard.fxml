@@ -21,7 +21,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label styleClass="title-label" text="ABAKADA ACADEMY ENROLLMENT SYSTEM" />
+                <Label styleClass="title-label" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" />
             </children>
         </HBox>
 
