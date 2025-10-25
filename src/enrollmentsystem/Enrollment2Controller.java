@@ -55,7 +55,9 @@ public class Enrollment2Controller {
         if (enrollee.getProgramAppliedFor() != null) courseCombo.setValue(enrollee.getProgramAppliedFor());
         if (enrollee.getLastSchoolAttended() != null) previousSchoolField.setText(enrollee.getLastSchoolAttended());
         if (enrollee.getLastSchoolYear() != null) schoolYearField.setText(enrollee.getLastSchoolYear());
-        
+        if (enrollee.getYearLevel() != null) yearLevelCombo.setValue(enrollee.getYearLevel());
+        if (enrollee.getStudentType() != null) studentTypeCombo.setValue(enrollee.getStudentType());
+
         // Load existing file links
         photoLink = enrollee.getPhotoLink();
         birthCertLink = enrollee.getBirthCertLink();
@@ -68,19 +70,19 @@ public class Enrollment2Controller {
     private void updateButtonLabels() {
         if (photoLink != null && !photoLink.isEmpty()) {
             uploadPhotoButton.setText("✓ Photo Uploaded");
-            uploadPhotoButton.setStyle("-fx-background-color: #4CAF50;");
+            uploadPhotoButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         }
         if (birthCertLink != null && !birthCertLink.isEmpty()) {
             uploadBirthCertButton.setText("✓ Birth Cert Uploaded");
-            uploadBirthCertButton.setStyle("-fx-background-color: #4CAF50;");
+            uploadBirthCertButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         }
         if (reportCardLink != null && !reportCardLink.isEmpty()) {
             uploadReportCardButton.setText("✓ Report Card Uploaded");
-            uploadReportCardButton.setStyle("-fx-background-color: #4CAF50;");
+            uploadReportCardButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         }
         if (form137Link != null && !form137Link.isEmpty()) {
             uploadForm137Btn.setText("✓ Form 137 Uploaded");
-            uploadForm137Btn.setStyle("-fx-background-color: #4CAF50;");
+            uploadForm137Btn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         }
     }
 
@@ -89,7 +91,7 @@ public class Enrollment2Controller {
         uploadFile("Photo", "image", photoLink, link -> {
             photoLink = link;
             uploadPhotoButton.setText("✓ Photo Uploaded");
-            uploadPhotoButton.setStyle("-fx-background-color: #4CAF50;");
+            uploadPhotoButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         });
     }
 
@@ -98,7 +100,7 @@ public class Enrollment2Controller {
         uploadFile("Birth Certificate", "document", birthCertLink, link -> {
             birthCertLink = link;
             uploadBirthCertButton.setText("✓ Birth Cert Uploaded");
-            uploadBirthCertButton.setStyle("-fx-background-color: #4CAF50;");
+            uploadBirthCertButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         });
     }
 
@@ -107,7 +109,7 @@ public class Enrollment2Controller {
         uploadFile("Report Card", "document", reportCardLink, link -> {
             reportCardLink = link;
             uploadReportCardButton.setText("✓ Report Card Uploaded");
-            uploadReportCardButton.setStyle("-fx-background-color: #4CAF50;");
+            uploadReportCardButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         });
     }
 
@@ -116,18 +118,23 @@ public class Enrollment2Controller {
         uploadFile("Form 137", "document", form137Link, link -> {
             form137Link = link;
             uploadForm137Btn.setText("✓ Form 137 Uploaded");
-            uploadForm137Btn.setStyle("-fx-background-color: #4CAF50;");
+            uploadForm137Btn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
         });
     }
 
     private void uploadFile(String documentName, String fileType, String existingLink, FileUploadCallback callback) {
+        // Check if file already exists and show warning
         if (existingLink != null && !existingLink.isEmpty()) {
             int choice = JOptionPane.showConfirmDialog(null,
-                    documentName + " already uploaded. Do you want to replace it?",
-                    "Replace File",
-                    JOptionPane.YES_NO_OPTION);
+                    documentName + " has already been uploaded.\n\n" +
+                    "Do you want to replace it?\n" +
+                    "Note: The old file will be deleted from Google Drive.",
+                    "Replace Existing File?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.WARNING_MESSAGE);
+            
             if (choice != JOptionPane.YES_OPTION) {
-                return;
+                return; // User cancelled
             }
         }
 
@@ -151,7 +158,7 @@ public class Enrollment2Controller {
             // Validate file size (10MB limit)
             if (selectedFile.length() > 10 * 1024 * 1024) {
                 JOptionPane.showMessageDialog(null,
-                        "File size exceeds 10MB limit. Please choose a smaller file.",
+                        "File size exceeds 10MB limit.\nPlease choose a smaller file.",
                         "File Too Large",
                         JOptionPane.ERROR_MESSAGE);
                 return;
@@ -172,9 +179,8 @@ public class Enrollment2Controller {
             Task<String> uploadTask = new Task<String>() {
                 @Override
                 protected String call() throws Exception {
-                    // uploadToDrive(File file, String name, String enrolleeId)
-                    // name = document type, enrolleeId = folder name
-                    return DriveUploader.uploadToDrive(selectedFile, documentName, folderName);
+                    // Pass existing link for deletion
+                    return DriveUploader.uploadToDrive(selectedFile, documentName, folderName, existingLink);
                 }
             };
 
@@ -182,53 +188,68 @@ public class Enrollment2Controller {
                 progressDialog.close();
                 String response = uploadTask.getValue();
                 
-                System.out.println("Raw Response: " + response); // Debug output
+                System.out.println("Raw Response: " + response);
                 
                 try {
-                    // Clean the response - remove any HTML tags or extra content
+                    // Clean the response
                     String cleanedResponse = response.trim();
                     
-                    // If response contains HTML, extract JSON
                     if (cleanedResponse.contains("{") && cleanedResponse.contains("}")) {
                         int jsonStart = cleanedResponse.indexOf("{");
                         int jsonEnd = cleanedResponse.lastIndexOf("}") + 1;
                         cleanedResponse = cleanedResponse.substring(jsonStart, jsonEnd);
                     }
                     
-                    System.out.println("Cleaned Response: " + cleanedResponse); // Debug output
+                    System.out.println("Cleaned Response: " + cleanedResponse);
                     
                     JSONObject jsonResponse = new JSONObject(cleanedResponse);
                     
                     String status = jsonResponse.optString("status", "");
-                    System.out.println("Status: " + status); // Debug output
+                    System.out.println("Status: " + status);
                     
                     if ("success".equalsIgnoreCase(status)) {
-                        // Try both "link" and "fileLink" keys
+                        // Try "link" first, then "fileLink"
                         String fileLink = jsonResponse.optString("link", "");
                         if (fileLink.isEmpty()) {
                             fileLink = jsonResponse.optString("fileLink", "");
                         }
-                        System.out.println("File Link: " + fileLink); // Debug output
+                        System.out.println("File Link: " + fileLink);
                         
                         if (fileLink != null && !fileLink.isEmpty()) {
+                            // Update the link in memory
                             callback.onUploadSuccess(fileLink);
                             
-                            JOptionPane.showMessageDialog(null,
-                                    documentName + " uploaded successfully!",
-                                    "Success",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            // ✅ SAVE TO DATABASE IMMEDIATELY
+                            if (saveFileLink(documentName, fileLink)) {
+                                // Show success message
+                                String message = documentName + " uploaded successfully!";
+                                if (existingLink != null && !existingLink.isEmpty()) {
+                                    message += "\n\nThe old file has been replaced.";
+                                }
+                                
+                                JOptionPane.showMessageDialog(null,
+                                        message,
+                                        "Upload Successful",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(null,
+                                        documentName + " uploaded to Drive but failed to save link to database.\n\n" +
+                                        "Please try uploading again or contact support.",
+                                        "Database Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null,
-                                    "Upload completed but no file link returned.\nResponse: " + cleanedResponse,
+                                    "Upload completed but no file link returned.\n\nResponse: " + cleanedResponse,
                                     "Warning",
                                     JOptionPane.WARNING_MESSAGE);
                         }
                     } else {
                         String errorMsg = jsonResponse.optString("message", "Unknown error");
-                        System.out.println("Error Message: " + errorMsg); // Debug output
+                        System.out.println("Error Message: " + errorMsg);
                         
                         JOptionPane.showMessageDialog(null,
-                                "Failed to upload " + documentName + ".\nError: " + errorMsg,
+                                "Failed to upload " + documentName + ".\n\nError: " + errorMsg,
                                 "Upload Failed",
                                 JOptionPane.ERROR_MESSAGE);
                     }
@@ -252,7 +273,7 @@ public class Enrollment2Controller {
                 exception.printStackTrace();
                 
                 JOptionPane.showMessageDialog(null,
-                        "Failed to upload " + documentName + ".\nError: " + exception.getMessage(),
+                        "Failed to upload " + documentName + ".\n\nError: " + exception.getMessage(),
                         "Upload Failed",
                         JOptionPane.ERROR_MESSAGE);
             });
@@ -264,9 +285,10 @@ public class Enrollment2Controller {
     @FXML
     private void backBtnAction(ActionEvent event) {
         int choice = JOptionPane.showConfirmDialog(null,
-                "Any unsaved changes will be lost. Go back to previous page?",
-                "Confirm",
-                JOptionPane.YES_NO_OPTION);
+                "Any unsaved changes will be lost.\n\nGo back to previous page?",
+                "Confirm Navigation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
         
         if (choice == JOptionPane.YES_OPTION) {
             WindowOpener.openSceneWithCSS("/enrollmentsystem/Enrollment1.fxml", 
@@ -283,27 +305,31 @@ public class Enrollment2Controller {
         }
 
         int choice = JOptionPane.showConfirmDialog(null,
-                "Are you sure you want to submit your enrollment application?\n" +
-                "Make sure all information is correct before submitting.",
+                "Are you sure you want to submit your enrollment application?\n\n" +
+                "Make sure all information is correct before submitting.\n" +
+                "You will not be able to edit your application after submission.",
                 "Confirm Submission",
-                JOptionPane.YES_NO_OPTION);
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
 
         if (choice == JOptionPane.YES_OPTION) {
             updateEnrolleeFromFields();
 
             if (saveCompleteEnrollment()) {
                 JOptionPane.showMessageDialog(null,
-                        "Enrollment application submitted successfully!\n" +
-                        "Your application is now pending review.",
-                        "Success",
+                        "Enrollment application submitted successfully!\n\n" +
+                        "Your application status: PENDING\n" +
+                        "Please wait for the admin to review your application.",
+                        "Submission Successful",
                         JOptionPane.INFORMATION_MESSAGE);
                 
                 // Navigate to enrollee dashboard or login
                 ProceedDialogHelper.navigateToLogin();
             } else {
                 JOptionPane.showMessageDialog(null,
-                        "Failed to submit enrollment application.\nPlease try again.",
-                        "Error",
+                        "Failed to submit enrollment application.\n\n" +
+                        "Please check your internet connection and try again.",
+                        "Submission Failed",
                         JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -312,6 +338,8 @@ public class Enrollment2Controller {
     private void updateEnrolleeFromFields() {
         currentEnrollee.setEmailAddress(emailField.getText().trim());
         currentEnrollee.setProgramAppliedFor(courseCombo.getValue());
+        currentEnrollee.setYearLevel(yearLevelCombo.getValue());
+        currentEnrollee.setStudentType(studentTypeCombo.getValue());
         currentEnrollee.setLastSchoolAttended(previousSchoolField.getText().trim());
         currentEnrollee.setLastSchoolYear(schoolYearField.getText().trim());
         
@@ -325,34 +353,44 @@ public class Enrollment2Controller {
     }
 
     private boolean saveCompleteEnrollment() {
-        String query = "UPDATE enrollees SET email_address = ?, last_school_attended = ?, last_school_year = ?, " +
-                "program_applied_for = ?, photo_link = ?, birth_cert_link = ?, " +
-                "report_card_link = ?, form_137_link = ?, enrollment_status = ?, " +
-                "date_applied = ?, has_filled_up_form = ? " +
-                "WHERE enrollee_id = ? AND user_id = ?";
+        String query = "UPDATE enrollees SET email_address = ?, last_school_attended = ?, school_year_to_enroll = ?, " +
+            "program_applied_for = ?, year_level = ?, student_type = ?, " +
+            "photo_link = ?, birth_cert_link = ?, report_card_link = ?, form_137_link = ?, " +
+            "enrollment_status = ?, date_applied = ?, has_filled_up_form = ? " +
+            "WHERE enrollee_id = ? AND user_id = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
+
+            if (conn == null) {
+                System.err.println("Database connection is null!");
+                return false;
+            }
 
             ps.setString(1, currentEnrollee.getEmailAddress());
             ps.setString(2, currentEnrollee.getLastSchoolAttended());
             ps.setString(3, currentEnrollee.getLastSchoolYear());
             ps.setString(4, currentEnrollee.getProgramAppliedFor());
-            ps.setString(5, currentEnrollee.getPhotoLink());
-            ps.setString(6, currentEnrollee.getBirthCertLink());
-            ps.setString(7, currentEnrollee.getReportCardLink());
-            ps.setString(8, currentEnrollee.getForm137Link());
-            ps.setString(9, currentEnrollee.getEnrollmentStatus());
-            ps.setTimestamp(10, Timestamp.valueOf(currentEnrollee.getDateApplied()));
-            ps.setBoolean(11, currentEnrollee.hasFilledUpForm());
-            ps.setString(12, currentEnrollee.getEnrolleeId());
-            ps.setInt(13, currentEnrollee.getUserId());
+            ps.setString(5, currentEnrollee.getYearLevel());
+            ps.setString(6, currentEnrollee.getStudentType());
+            ps.setString(7, currentEnrollee.getPhotoLink());
+            ps.setString(8, currentEnrollee.getBirthCertLink());
+            ps.setString(9, currentEnrollee.getReportCardLink());
+            ps.setString(10, currentEnrollee.getForm137Link());
+            ps.setString(11, currentEnrollee.getEnrollmentStatus());
+            ps.setTimestamp(12, Timestamp.valueOf(currentEnrollee.getDateApplied()));
+            ps.setBoolean(13, currentEnrollee.hasFilledUpForm());
+            ps.setString(14, currentEnrollee.getEnrolleeId());
+            ps.setInt(15, currentEnrollee.getUserId());
 
             int rowsAffected = ps.executeUpdate();
 
             if (rowsAffected > 0) {
                 System.out.println("Complete enrollment data saved successfully");
                 return true;
+            } else {
+                System.err.println("No rows affected - enrollee record may not exist");
+                return false;
             }
 
         } catch (SQLException e) {
@@ -373,11 +411,13 @@ public class Enrollment2Controller {
         }
 
         if (courseCombo.getValue() == null) emptyFields.add("Course/Program");
+        if (yearLevelCombo.getValue() == null) emptyFields.add("Year Level");
+        if (studentTypeCombo.getValue() == null) emptyFields.add("Student Type");
         if (previousSchoolField.getText() == null || previousSchoolField.getText().trim().isEmpty()) {
             emptyFields.add("Previous School");
         }
         if (schoolYearField.getText() == null || schoolYearField.getText().trim().isEmpty()) {
-            emptyFields.add("School Year");
+            emptyFields.add("School Year to Enroll");
         }
 
         // Check uploaded files
@@ -395,6 +435,62 @@ public class Enrollment2Controller {
 
     private boolean isValidEmail(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+    }
+
+    /**
+     * Save individual file link to database immediately after upload
+     */
+    private boolean saveFileLink(String documentName, String fileLink) {
+        String columnName;
+        
+        // Map document name to database column
+        switch (documentName) {
+            case "Photo":
+                columnName = "photo_link";
+                break;
+            case "Birth Certificate":
+                columnName = "birth_cert_link";
+                break;
+            case "Report Card":
+                columnName = "report_card_link";
+                break;
+            case "Form 137":
+                columnName = "form_137_link";
+                break;
+            default:
+                System.err.println("Unknown document type: " + documentName);
+                return false;
+        }
+        
+        String query = "UPDATE enrollees SET " + columnName + " = ? WHERE enrollee_id = ? AND user_id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            
+            if (conn == null) {
+                System.err.println("Database connection is null!");
+                return false;
+            }
+            
+            ps.setString(1, fileLink);
+            ps.setString(2, currentEnrollee.getEnrolleeId());
+            ps.setInt(3, currentEnrollee.getUserId());
+            
+            int rowsAffected = ps.executeUpdate();
+            
+            if (rowsAffected > 0) {
+                System.out.println(documentName + " link saved to database: " + fileLink);
+                return true;
+            } else {
+                System.err.println("Failed to save " + documentName + " link - no rows affected");
+                return false;
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error saving " + documentName + " link: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void showValidationDialog(List<String> emptyFields) {
@@ -417,15 +513,14 @@ public class Enrollment2Controller {
         void onUploadSuccess(String fileLink);
     }
 
-    // Simple progress dialog class
     private static class ProgressDialog {
         private final Alert alert;
 
         public ProgressDialog(String message) {
             alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Uploading");
+            alert.setTitle("Uploading File");
             alert.setHeaderText(message);
-            alert.setContentText("Please wait...");
+            alert.setContentText("Please wait while the file is being uploaded to Google Drive...");
             alert.getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
         }
 

@@ -19,6 +19,8 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
     private String emailAddress;
     private String guardianName;
     private String guardianContact;
+    private String yearLevel;
+    private String studentType;
     private String lastSchoolAttended;
     private String lastSchoolYear;
     private String programAppliedFor;
@@ -41,7 +43,7 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
                     String enrolleeId, String firstName, String middleName,String lastName, String suffix,
                     LocalDate birthDate, String gender, String address, String province,
                     String city, String contactNumber, String emailAddress,
-                    String guardianName, String guardianContact, String lastSchoolAttended,
+                    String guardianName, String guardianContact, String yearLevel, String studentType, String lastSchoolAttended,
                     String lastSchoolYear, String programAppliedFor, String enrollmentStatus,
                     LocalDateTime dateApplied, Integer reviewedBy, LocalDateTime reviewedOn) {
 
@@ -60,6 +62,8 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
         this.emailAddress = emailAddress;
         this.guardianName = guardianName;
         this.guardianContact = guardianContact;
+        this.yearLevel = yearLevel;
+        this.studentType = studentType;
         this.lastSchoolAttended = lastSchoolAttended;
         this.lastSchoolYear = lastSchoolYear;
         this.programAppliedFor = programAppliedFor;
@@ -126,6 +130,12 @@ public class Enrollee extends User implements DashBoardAccesible, UniqueIDGenera
 
     public String getGuardianContact() { return guardianContact; }
     public void setGuardianContact(String guardianContact) { this.guardianContact = guardianContact; }
+    
+    public String getYearLevel() { return yearLevel; }
+    public void setYearLevel(String yearLevel) { this.yearLevel = yearLevel; }
+    
+    public String getStudentType() { return studentType; }
+    public void setStudentType(String studentType) { this.studentType = studentType; }
 
     public String getLastSchoolAttended() { return lastSchoolAttended; }
     public void setLastSchoolAttended(String lastSchoolAttended) { this.lastSchoolAttended = lastSchoolAttended; }

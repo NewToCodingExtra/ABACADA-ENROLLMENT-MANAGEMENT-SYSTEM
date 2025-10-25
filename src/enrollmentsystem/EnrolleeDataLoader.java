@@ -78,10 +78,16 @@ public class EnrolleeDataLoader {
         String guardianName = rs.getString("guardian_name");
         String guardianContact = rs.getString("guardian_contact");
         String lastSchoolAttended = rs.getString("last_school_attended");
-        String lastSchoolYear = rs.getString("last_school_year");
+        String lastSchoolYear = rs.getString("school_year_to_enroll");
+        String yearLevel = rs.getString("year_level");
+        String studentType = rs.getString("student_type");
         String programAppliedFor = rs.getString("program_applied_for");
         String enrollmentStatus = rs.getString("enrollment_status");
         Timestamp dateAppliedTs = rs.getTimestamp("date_applied");
+        String photoLink = rs.getString("photo_link");
+        String birthCertLink = rs.getString("birth_cert_link");
+        String reportCardLink = rs.getString("report_card_link");
+        String form137Link = rs.getString("form_137_link");
         LocalDateTime dateApplied = dateAppliedTs != null ? dateAppliedTs.toLocalDateTime() : null;
         Integer reviewedBy = (Integer) rs.getObject("reviewed_by");
         Timestamp reviewedOnTs = rs.getTimestamp("reviewed_on");
@@ -91,9 +97,14 @@ public class EnrolleeDataLoader {
         Enrollee enrollee = new Enrollee(userId, username, email, password, access, createdAt, isActive,
                 enrolleeId, firstName, middleName, lastName, suffix, birthDate, gender,
                 address, province, city, contactNumber, emailAddress,
-                guardianName, guardianContact, lastSchoolAttended, lastSchoolYear,
+                guardianName, guardianContact, yearLevel, studentType, lastSchoolAttended, lastSchoolYear,
                 programAppliedFor, enrollmentStatus, dateApplied, reviewedBy, reviewedOn);
         enrollee.setHasFilledUpForm(hasFilledUpForm);
+        
+        enrollee.setPhotoLink(photoLink);
+        enrollee.setBirthCertLink(birthCertLink);
+        enrollee.setReportCardLink(reportCardLink);
+        enrollee.setForm137Link(form137Link);
         return enrollee;
     }
 }
