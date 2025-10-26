@@ -323,8 +323,10 @@ public class Enrollment2Controller {
                         "Submission Successful",
                         JOptionPane.INFORMATION_MESSAGE);
                 
-                // Navigate to enrollee dashboard or login
-                ProceedDialogHelper.navigateToLogin();
+                WindowOpener.openSceneWithCSS("/enrollmentsystem/EnrolleeDashboard.fxml", 
+                             "/studentdashboard.css",
+                             "ABAKADA UNIVERSITY - ENROLLEE DASHBOARD",
+                             1200, 700);
             } else {
                 JOptionPane.showMessageDialog(null,
                         "Failed to submit enrollment application.\n\n" +
@@ -437,9 +439,6 @@ public class Enrollment2Controller {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     }
 
-    /**
-     * Save individual file link to database immediately after upload
-     */
     private boolean saveFileLink(String documentName, String fileLink) {
         String columnName;
         

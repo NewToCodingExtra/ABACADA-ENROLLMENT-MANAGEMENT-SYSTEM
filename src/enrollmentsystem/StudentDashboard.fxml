@@ -49,17 +49,19 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView layoutX="33.0" layoutY="30.0" prefHeight="107.0" prefWidth="804.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
+                           <TableView fx:id="overViewTable" layoutX="51.0" layoutY="69.0" prefHeight="60.0" prefWidth="777.0" tableMenuButtonVisible="true">
+                              <columns>
+                                 <TableColumn fx:id="semCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="SEMESTER" />
+                                 <TableColumn fx:id="courseCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="COURSE" />
+                                 <TableColumn fx:id="sectionCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="SECTION" />
+                                 <TableColumn fx:id="yearCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="YEAR" />
+                              </columns>
                            </TableView>
-                           <TableView layoutX="33.0" layoutY="158.0" prefHeight="298.0" prefWidth="804.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
+                           <TableView fx:id="evalTable" layoutX="170.0" layoutY="139.0" prefHeight="282.0" prefWidth="530.0">
+                              <columns>
+                                 <TableColumn fx:id="evalCol" prefWidth="211.99999618530273" text="EVALUATION" />
+                                 <TableColumn fx:id="statusCol" prefWidth="317.6000122070312" text="STATUS" />
+                              </columns>
                            </TableView>
                         </children>
                             </AnchorPane>
@@ -67,11 +69,15 @@
                         <Tab text="Schedule">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView layoutX="28.0" layoutY="14.0" prefHeight="444.0" prefWidth="822.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
+                           <TableView layoutX="23.0" layoutY="33.0" prefHeight="453.0" prefWidth="824.0">
+                              <columns>
+                                 <TableColumn fx:id="courseCode" editable="false" prefWidth="124.00002670288086" resizable="false" sortable="false" text="Course Code" />
+                                 <TableColumn fx:id="courseNameCol" editable="false" prefWidth="278.40000915527344" resizable="false" sortable="false" text="Course Name" />
+                                 <TableColumn fx:id="faculrtCol" editable="false" prefWidth="199.20001220703125" resizable="false" sortable="false" text="Faculty Name" />
+                                 <TableColumn fx:id="roomCol" editable="false" prefWidth="75.2000732421875" resizable="false" sortable="false" text="Room" />
+                                 <TableColumn fx:id="dayCol" editable="false" prefWidth="75.2000732421875" resizable="false" sortable="false" text="Day" />
+                                 <TableColumn fx:id="timeCol" editable="false" prefWidth="75.2000732421875" resizable="false" sortable="false" text="Time" />
+                              </columns>
                            </TableView>
                         </children>
                             </AnchorPane>

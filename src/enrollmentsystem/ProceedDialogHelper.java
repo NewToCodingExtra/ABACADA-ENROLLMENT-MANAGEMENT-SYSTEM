@@ -94,7 +94,8 @@ public class ProceedDialogHelper {
     public static void navigateToEnrollment() {
         WindowOpener.openSceneWithCSS("/enrollmentsystem/Enrollment1.fxml", "/enrollment.css", "ABAKADA UNIVERSITY - SIGN UP", 900, 520);
     }
- 
+   
+
     public static void navigateToLogin() {
         try {
             Parent root = FXMLLoader.load(ProceedDialogHelper.class.getResource("/enrollmentsystem/NewLoginUI.fxml"));

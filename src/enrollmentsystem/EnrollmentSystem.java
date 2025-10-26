@@ -7,12 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.sql.*;
 
 public class EnrollmentSystem extends Application {
     public static Stage mainStage;
     @Override
     public void start(Stage primaryStage) {
         try {
+            
+             
             
             mainStage = primaryStage;  
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
@@ -25,9 +28,10 @@ public class EnrollmentSystem extends Application {
             primaryStage.show();
             
             
+            
         } catch (IOException ex) {
             System.getLogger(EnrollmentSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        } 
     }
 
  

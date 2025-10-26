@@ -123,7 +123,7 @@ public class LoginController implements Initializable {
                     WindowOpener.openSceneWithCSS("/enrollmentsystem/EnrolleeDashboard.fxml", 
                              "/studentdashboard.css",
                              "ABAKADA UNIVERSITY - ENROLLEE DASHBOARD",
-                             1024, 600);
+                             1200, 700);
                 } else {
                     WindowOpener.openSceneWithCSS("/enrollmentsystem/Enrollment1.fxml", 
                              "/enrollment.css",

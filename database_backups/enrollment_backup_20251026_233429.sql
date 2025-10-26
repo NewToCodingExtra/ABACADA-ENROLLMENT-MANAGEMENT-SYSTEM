@@ -50,11 +50,11 @@ DROP TABLE IF EXISTS `admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `admin_id` varchar(20) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `first_name` varchar(100) DEFAULT NULL,
   `last_name` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`admin_id`),
-  KEY `user_id` (`user_id`),
+  KEY `admin_ibfk_1` (`user_id`),
   CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -65,6 +65,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES ('ADM25-1415',6,'Alice','Santos');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,9 +201,10 @@ CREATE TABLE `courses` (
   `course_title` varchar(255) DEFAULT NULL,
   `course_units` decimal(4,1) DEFAULT NULL,
   `program_id` varchar(20) DEFAULT NULL,
+  `year_level` tinyint(1) DEFAULT NULL,
+  `semester` enum('1st','2nd') DEFAULT NULL,
   PRIMARY KEY (`course_id`),
-  KEY `program_id` (`program_id`),
-  CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`program_id`) REFERENCES `programs` (`program_id`) ON DELETE SET NULL
+  KEY `program_id` (`program_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -212,6 +214,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES ('IT101','IT101','Introduction to Computing',3.0,'PROG-01',1,'1st'),('IT102','IT102','Computer Programming 1',3.0,'PROG-01',1,'1st'),('IT103','IT103','Computer Programming 2',3.0,'PROG-01',1,'2nd'),('IT104','IT104','Computer Hardware Fundamentals',3.0,'PROG-01',1,'1st'),('IT105','IT105','Mathematics in the Modern World',3.0,'PROG-01',1,'1st'),('IT106','IT106','Purposive Communication',3.0,'PROG-01',1,'1st'),('IT107','IT107','Understanding the Self',3.0,'PROG-01',1,'2nd'),('IT108','IT108','Programming Logic and Design',3.0,'PROG-01',1,'2nd'),('IT109','IT109','Physical Education 1',2.0,'PROG-01',1,'1st'),('IT110','IT110','Physical Education 2',2.0,'PROG-01',1,'2nd'),('IT111','IT111','NSTP 1',3.0,'PROG-01',1,'1st'),('IT112','IT112','NSTP 2',3.0,'PROG-01',1,'2nd'),('IT113','IT113','Introduction to Human Computer Interaction',3.0,'PROG-01',1,'2nd'),('IT114','IT114','Ethics',3.0,'PROG-01',1,'2nd'),('IT115','IT115','Science, Technology and Society',3.0,'PROG-01',1,'2nd'),('IT116','IT116','Introduction to Networking',3.0,'PROG-01',1,'2nd'),('IT201','IT201','Data Structures and Algorithms',3.0,'PROG-01',2,'1st'),('IT202','IT202','Database Management Systems',3.0,'PROG-01',2,'1st'),('IT203','IT203','Object-Oriented Programming',3.0,'PROG-01',2,'1st'),('IT204','IT204','Operating Systems',3.0,'PROG-01',2,'2nd'),('IT205','IT205','Networking 1 (LAN Technologies)',3.0,'PROG-01',2,'1st'),('IT206','IT206','Networking 2 (WAN Technologies)',3.0,'PROG-01',2,'2nd'),('IT207','IT207','IT Elective 1 (Web Development)',3.0,'PROG-01',2,'2nd'),('IT208','IT208','Discrete Mathematics',3.0,'PROG-01',2,'1st'),('IT209','IT209','Data Communications',3.0,'PROG-01',2,'2nd'),('IT210','IT210','PE 3',2.0,'PROG-01',2,'1st'),('IT211','IT211','PE 4',2.0,'PROG-01',2,'2nd'),('IT212','IT212','Professional Ethics',3.0,'PROG-01',2,'1st'),('IT213','IT213','IT Project Management',3.0,'PROG-01',2,'2nd'),('IT214','IT214','Advanced Database Systems',3.0,'PROG-01',2,'2nd'),('IT215','IT215','Web Systems and Technologies 1',3.0,'PROG-01',2,'1st'),('IT216','IT216','Web Systems and Technologies 2',3.0,'PROG-01',2,'2nd'),('IT301','IT301','Software Engineering 1',3.0,'PROG-01',3,'1st'),('IT302','IT302','Software Engineering 2',3.0,'PROG-01',3,'2nd'),('IT303','IT303','System Integration and Architecture',3.0,'PROG-01',3,'2nd'),('IT304','IT304','Mobile Application Development',3.0,'PROG-01',3,'1st'),('IT305','IT305','Human-Computer Interaction',3.0,'PROG-01',3,'2nd'),('IT306','IT306','Information Assurance and Security 1',3.0,'PROG-01',3,'1st'),('IT307','IT307','Information Assurance and Security 2',3.0,'PROG-01',3,'2nd'),('IT308','IT308','Technopreneurship',3.0,'PROG-01',3,'1st'),('IT309','IT309','IT Elective 2 (Cloud Computing)',3.0,'PROG-01',3,'1st'),('IT310','IT310','IT Elective 3 (Game Development)',3.0,'PROG-01',3,'2nd'),('IT311','IT311','Research Methods in IT',3.0,'PROG-01',3,'2nd'),('IT312','IT312','Free Elective 1',3.0,'PROG-01',3,'2nd'),('IT313','IT313','Free Elective 2',3.0,'PROG-01',3,'1st'),('IT314','IT314','IT Practicum Orientation',1.0,'PROG-01',3,'2nd'),('IT315','IT315','IT Seminar 1',1.0,'PROG-01',3,'2nd'),('IT316','IT316','Web Hosting and Deployment',3.0,'PROG-01',3,'1st'),('IT401','IT401','Capstone Project 1',3.0,'PROG-01',4,'1st'),('IT402','IT402','Capstone Project 2',3.0,'PROG-01',4,'2nd'),('IT403','IT403','System Administration and Maintenance',3.0,'PROG-01',4,'1st'),('IT404','IT404','IT Seminar 2',1.0,'PROG-01',4,'2nd'),('IT405','IT405','IT Practicum / OJT',6.0,'PROG-01',4,'2nd'),('IT406','IT406','Emerging Technologies',3.0,'PROG-01',4,'1st'),('IT407','IT407','IT Elective 4 (Cybersecurity)',3.0,'PROG-01',4,'2nd'),('IT408','IT408','IT Elective 5 (AI Basics)',3.0,'PROG-01',4,'1st'),('IT409','IT409','IT Research Colloquium',3.0,'PROG-01',4,'2nd'),('IT410','IT410','Free Elective 3',3.0,'PROG-01',4,'1st'),('IT411','IT411','Free Elective 4',3.0,'PROG-01',4,'2nd'),('IT412','IT412','IT in the Modern Enterprise',3.0,'PROG-01',4,'1st'),('IT413','IT413','Cloud Security',3.0,'PROG-01',4,'2nd'),('IT414','IT414','Server Management',3.0,'PROG-01',4,'2nd'),('IT415','IT415','Digital Ethics',3.0,'PROG-01',4,'1st'),('IT416','IT416','Data Analytics',3.0,'PROG-01',4,'2nd');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +227,7 @@ DROP TABLE IF EXISTS `enrollees`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `enrollees` (
   `enrollee_id` varchar(20) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `first_name` varchar(100) DEFAULT NULL,
   `middle_name` varchar(100) DEFAULT NULL,
   `last_name` varchar(100) DEFAULT NULL,
@@ -258,7 +261,6 @@ CREATE TABLE `enrollees` (
   KEY `idx_enrollees_program` (`program_applied_for`),
   KEY `idx_enrollees_status` (`enrollment_status`),
   CONSTRAINT `enrollees_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
-  CONSTRAINT `enrollees_ibfk_2` FOREIGN KEY (`program_applied_for`) REFERENCES `programs` (`program_id`) ON DELETE SET NULL,
   CONSTRAINT `enrollees_ibfk_3` FOREIGN KEY (`reviewed_by`) REFERENCES `admin` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -269,6 +271,7 @@ CREATE TABLE `enrollees` (
 
 LOCK TABLES `enrollees` WRITE;
 /*!40000 ALTER TABLE `enrollees` DISABLE KEYS */;
+INSERT INTO `enrollees` VALUES ('SA25-2111',1,'Joshua','Simugan','Santiago',NULL,'2006-09-21',NULL,'#002, Zone 1, Sta. Lucia','Nueva Ecija','Guimba','09603376884','joshuasantiago0921@gmail.com',NULL,NULL,'1st Year','New','Bartolome Sangalang National High School','2016-2022','BSIT','Pending','2025-10-27 06:14:58',NULL,NULL,1,'https://drive.google.com/file/d/1ymjB6ixfU5o52LLoDM_7vwHktStSqNu4/view?usp=drivesdk','https://drive.google.com/file/d/1Dbfdio9BIl3FB_g7npLB86ivj2S1HRCx/view?usp=drivesdk','https://drive.google.com/file/d/1h4E78QPnoiZO9U7ijueIbpkTVqgN9CWX/view?usp=drivesdk','https://drive.google.com/file/d/1U8YM0Wi1yMTVywqjtoSluoR-EKtiSedD/view?usp=drivesdk');
 /*!40000 ALTER TABLE `enrollees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -545,6 +548,7 @@ CREATE TABLE `programs` (
 
 LOCK TABLES `programs` WRITE;
 /*!40000 ALTER TABLE `programs` DISABLE KEYS */;
+INSERT INTO `programs` VALUES ('PROG-01','BSIT','Bachelor of Science in Information Technology',1),('PROG-02','BSCS','Bachelor of Science in Computer Science',1),('PROG-03','BSED','Bachelor of Secondary Education',1),('PROG-04','BSBA','Bachelor of Science in Business Administration',1);
 /*!40000 ALTER TABLE `programs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -705,7 +709,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -714,6 +718,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'Joshua_Santiago','joshuasantiago0921@gmail.com','Joshua@21','Enrollees','2025-10-26 13:57:36',1),(6,'adminUser','admin@email.com','securePass123','Admin','2025-10-27 06:36:29',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.EnrolleeDashboardController">
 
@@ -29,7 +31,7 @@
         </HBox>
 
         <!-- MAIN BODY -->
-        <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
+        <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
 
             <!-- SIDEBAR -->
             <VBox fx:id="sidebar" alignment="CENTER" prefWidth="240.0" spacing="10" styleClass="sidebar">
@@ -40,6 +42,15 @@
                 </ImageView>
                 <Label fx:id="studentNameLabel" styleClass="student-name" text="Enrollee Full Name" />
                 <Label fx:id="studentIdLabel" styleClass="student-id" text="ENROLLEE" />
+            <AnchorPane prefHeight="348.0" prefWidth="200.0" />
+            <Hyperlink fx:id="updateBtn" alignment="CENTER" onAction="#updateBtnAction" prefHeight="74.0" prefWidth="210.0" text="Update Enrollee Information" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+               <effect>
+                  <ColorAdjust hue="-0.04" />
+               </effect>
+            </Hyperlink>
             </VBox>
 
             <!-- MAIN CONTENT -->
@@ -49,26 +60,21 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView layoutX="14.0" layoutY="14.0" prefHeight="458.0" prefWidth="822.0">
+                           <TableView fx:id="overViewTable" layoutX="47.0" layoutY="72.0" prefHeight="60.0" prefWidth="777.0" tableMenuButtonVisible="true">
                              <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn fx:id="semCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="SEMESTER" />
+                                 <TableColumn fx:id="courseCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="COURSE" />
+                                 <TableColumn fx:id="sectionCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="SECTION" />
+                                 <TableColumn fx:id="yearCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="YEAR" />
+                             </columns>
+                           </TableView>
+                           <TableView fx:id="evalTable" layoutX="166.0" layoutY="142.0" prefHeight="282.0" prefWidth="530.0">
+                             <columns>
+                               <TableColumn fx:id="evalCol" prefWidth="211.99999618530273" text="EVALUATION" />
+                                 <TableColumn fx:id="statusCol" prefWidth="317.6000122070312" text="STATUS" />
                              </columns>
                            </TableView>
                         </children></AnchorPane>
-                        </Tab>
-                        <Tab text="Schedule">
-                            <AnchorPane styleClass="tab-content">
-                                <children>
-                                    <Label layoutX="20" layoutY="20" styleClass="tab-text" />
-                           <TableView layoutX="14.0" layoutY="20.0" prefHeight="453.0" prefWidth="824.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
-                           </TableView>
-                                </children>
-                            </AnchorPane>
                         </Tab>
                     </tabs>
                 </TabPane>

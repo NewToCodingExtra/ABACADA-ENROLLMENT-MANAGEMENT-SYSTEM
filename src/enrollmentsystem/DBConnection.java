@@ -7,9 +7,9 @@ import java.net.InetAddress;
 import javax.swing.JOptionPane;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12802419";
-    private static final String USER = "sql12802419";
-    private static final String PASSWORD = "MTiIEPUBmh";
+    private static final String URL = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12804580";
+    private static final String USER = "sql12804580";
+    private static final String PASSWORD = "JSrtCUQHCb";
     
     /**
      * Check if device has internet connection
