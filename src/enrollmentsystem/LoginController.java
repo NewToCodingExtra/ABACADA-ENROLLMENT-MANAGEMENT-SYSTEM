@@ -143,7 +143,7 @@ public class LoginController implements Initializable {
                     WindowOpener.openSceneWithCSS("/enrollmentsystem/CashierDashboard.fxml", 
                              "/cashierdashboard.css",
                              "ABAKADA UNIVERSITY - CASHIER DASHBOARD",
-                             950, 550);
+                             1200, 700);
                 case "Faculty" ->
                     WindowOpener.openSceneWithCSS("/enrollmentsystem/FacultyDashboard.fxml",
                              "/studentdashboard.css",
@@ -275,8 +275,8 @@ public class LoginController implements Initializable {
         switch (access) {
             case "Admin":
                 return createAdmin(userId, username, email, password, access, createdAt, isActive);
-//            case "Cashier":
-//                return createCashier(userId, username, email, password, access, createdAt, isActive);
+            case "Cashier":
+                return createCashier(userId, username, email, password, access, createdAt, isActive);
 //            case "Faculty":
 //                return createFaculty(userId, username, email, password, access, createdAt, isActive);
 //            case "Student":
@@ -307,27 +307,26 @@ public class LoginController implements Initializable {
         return new Admin(userId, username, email, password, createdAt, isActive);
     }
 
-//    private Cashier createCashier(int userId, String username, String email, String password, 
-//                                 String access, LocalDateTime createdAt, boolean isActive) throws SQLException {
-//        String query = "SELECT cashier_id, first_name, last_name FROM cashier WHERE user_id = ?";
-//        try (Connection conn = DBConnection.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(query)) {
-//            ps.setInt(1, userId);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                String cashierId = rs.getString("cashier_id");
-//                // Store cashier_id in session
-//                SessionManager.getInstance().setCashierId(cashierId);
-//
-//                Cashier cashier = new Cashier(userId, username, email, password, 
-//                                             access, createdAt, isActive, cashierId);
-//                cashier.setFirstName(rs.getString("first_name"));
-//                cashier.setLastName(rs.getString("last_name"));
-//                return cashier;
-//            }
-//        }
-//        return new Cashier(userId, username, email, password, createdAt, isActive);
-//    }
+    private Cashier createCashier(int userId, String username, String email, String password, 
+                                 String access, LocalDateTime createdAt, boolean isActive) throws SQLException {
+        String query = "SELECT cashier_id, first_name, last_name FROM cashier WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String cashierId = rs.getString("cashier_id");
+                SessionManager.getInstance().setCashierId(cashierId);
+
+                Cashier cashier = new Cashier(userId, username, email, password, 
+                                             access, createdAt, isActive, cashierId);
+                cashier.setFirstName(rs.getString("first_name"));
+                cashier.setLastName(rs.getString("last_name"));
+                return cashier;
+            }
+        }
+        return new Cashier(userId, username, email, password, createdAt, isActive);
+    }
 //
 //    private Faculty createFaculty(int userId, String username, String email, String password, 
 //                                 String access, LocalDateTime createdAt, boolean isActive) throws SQLException {

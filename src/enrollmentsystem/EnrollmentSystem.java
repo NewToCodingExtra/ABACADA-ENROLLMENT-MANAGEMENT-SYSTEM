@@ -8,15 +8,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class EnrollmentSystem extends Application {
     public static Stage mainStage;
     @Override
     public void start(Stage primaryStage) {
         try {
-            
-             
-            
+           
             mainStage = primaryStage;  
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
             Scene scene = new Scene(root, 898, 543);

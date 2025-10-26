@@ -10,6 +10,7 @@ public class Admin extends User implements UniqueIDGenerator, AccountCreation {
     private String adminId;
     private String firstName;
     private String lastName;
+    
 
     public Admin() {
         super();
@@ -56,14 +57,14 @@ public class Admin extends User implements UniqueIDGenerator, AccountCreation {
 
     @Override
     public void createCashier(User user) throws SQLException {
-//        if (!(user instanceof Cashier)) {
-//            throw new IllegalArgumentException("User must be a Cashier instance");
-//        }
-//        Cashier cashier = (Cashier) user;
-//        String cashierId = cashier.generateID();
-//        int userId = insertUser(user, "Cashier");
-//        insertIntoRoleTable("cashier", "cashier_id", cashierId, userId, cashier);
-//        System.out.println("Cashier created with ID: " + cashierId);
+        if (!(user instanceof Cashier)) {
+            throw new IllegalArgumentException("User must be a Cashier instance");
+        }
+        Cashier cashier = (Cashier) user;
+        String cashierId = cashier.generateID();
+        int userId = insertUser(user, "Cashier");
+        insertIntoRoleTable("cashier", "cashier_id", cashierId, userId, cashier);
+        System.out.println("Cashier created with ID: " + cashierId);
     }
 
     @Override
@@ -134,12 +135,17 @@ public class Admin extends User implements UniqueIDGenerator, AccountCreation {
                 Admin admin = (Admin) user;
                 firstName = admin.getFName();
                 lastName = admin.getLName();
+                
+                SessionManager.getInstance().setAdminId(idColumn);
             } 
-//            else if (user instanceof Cashier) {
-//                Cashier cashier = (Cashier) user;
-//                firstName = cashier.getFName();
-//                lastName = cashier.getLName();
-//            } else if (user instanceof Faculty) {
+            else if (user instanceof Cashier) {
+                Cashier cashier = (Cashier) user;
+                firstName = cashier.getFName();
+                lastName = cashier.getLName();
+                
+                SessionManager.getInstance().setAdminId(idColumn);
+            } 
+//              else if (user instanceof Faculty) {
 //                Faculty faculty = (Faculty) user;
 //                firstName = faculty.getFName();
 //                lastName = faculty.getLName();
