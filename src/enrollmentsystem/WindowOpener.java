@@ -12,32 +12,17 @@ import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
-
-/**
- * Utility class for opening windows/scenes in the application
- * All methods are static - no need to create an instance
- */
 public class WindowOpener {
    
-    // Private constructor to prevent instantiation
     private WindowOpener() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
-    
-    /**
-     * Opens a new scene with the specified FXML file
-     * @param fxmlPath Path to the FXML file
-     * @param title Window title
-     * @param width Window width
-     * @param height Window height
-     */
+  
     public static void openScene(String fxmlPath, String title, double width, double height) {
         try {
             Parent root = FXMLLoader.load(WindowOpener.class.getResource(fxmlPath));
             Scene scene = new Scene(root, width, height);
             
-            // Apply stylesheets based on the FXML path
             if(fxmlPath.equals("/enrollmentsystem/Register.fxml")) {
                 scene.getStylesheets().add(
                     WindowOpener.class.getResource("/sigupui.css").toExternalForm()
@@ -53,7 +38,6 @@ public class WindowOpener {
             stage.setTitle(title);
             stage.setResizable(false);
             
-            // Center the window on screen
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             stage.setX((screenBounds.getWidth() - width) / 2);
             stage.setY((screenBounds.getHeight() - height) / 2);
@@ -125,7 +109,6 @@ public class WindowOpener {
             stage.setTitle(title);
             stage.setResizable(false);
             
-            // Center the window on screen
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             stage.setX((screenBounds.getWidth() - width) / 2);
             stage.setY((screenBounds.getHeight() - height) / 2);

@@ -120,7 +120,8 @@ public class LoginController implements Initializable {
 
             if (loggedInUser instanceof Enrollee enrollee) {
                 if (enrollee.hasFilledUpForm()) {
-                    WindowOpener.openScene("/enrollmentsystem/EnrolleeDashboard.fxml",
+                    WindowOpener.openSceneWithCSS("/enrollmentsystem/EnrolleeDashboard.fxml", 
+                             "/studentdashboard.css",
                              "ABAKADA UNIVERSITY - ENROLLEE DASHBOARD",
                              1024, 600);
                 } else {

@@ -64,9 +64,6 @@
     -fx-text-alignment: center;
 }
 
-/* =======================
-   MAIN CONTENT
-======================= */
 .main-content {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
