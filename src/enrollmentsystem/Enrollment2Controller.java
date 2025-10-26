@@ -324,7 +324,7 @@ public class Enrollment2Controller {
                         JOptionPane.INFORMATION_MESSAGE);
                 
                 WindowOpener.openSceneWithCSS("/enrollmentsystem/EnrolleeDashboard.fxml", 
-                             "/studentdashboard.css",
+                             "/enrolleedashboard.css",
                              "ABAKADA UNIVERSITY - ENROLLEE DASHBOARD",
                              1200, 700);
             } else {

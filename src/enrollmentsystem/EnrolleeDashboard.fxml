@@ -40,8 +40,8 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label fx:id="studentNameLabel" styleClass="student-name" text="Enrollee Full Name" />
-                <Label fx:id="studentIdLabel" styleClass="student-id" text="ENROLLEE" />
+                <Label fx:id="studentNameLabel" alignment="CENTER" prefHeight="28.0" prefWidth="222.0" styleClass="student-name" text="Enrollee Full Name" textAlignment="CENTER" />
+                <Label fx:id="studentIdLabel" styleClass="student-id" stylesheets="@../../resource/enrolleedashboard.css" text="ENROLLEE" />
             <AnchorPane prefHeight="348.0" prefWidth="200.0" />
             <Hyperlink fx:id="updateBtn" alignment="CENTER" onAction="#updateBtnAction" prefHeight="74.0" prefWidth="210.0" text="Update Enrollee Information" textAlignment="CENTER" textFill="WHITE">
                <font>
@@ -60,7 +60,7 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView fx:id="overViewTable" layoutX="47.0" layoutY="72.0" prefHeight="60.0" prefWidth="777.0" tableMenuButtonVisible="true">
+                           <TableView fx:id="overViewTable" layoutX="45.0" layoutY="38.0" prefHeight="60.0" prefWidth="777.0" tableMenuButtonVisible="true">
                              <columns>
                                <TableColumn fx:id="semCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="SEMESTER" />
                                  <TableColumn fx:id="courseCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="COURSE" />
@@ -68,10 +68,10 @@
                                  <TableColumn fx:id="yearCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="YEAR" />
                              </columns>
                            </TableView>
-                           <TableView fx:id="evalTable" layoutX="166.0" layoutY="142.0" prefHeight="282.0" prefWidth="530.0">
+                           <TableView fx:id="evalTable" layoutX="80.0" layoutY="129.0" prefHeight="334.0" prefWidth="708.0">
                              <columns>
                                <TableColumn fx:id="evalCol" prefWidth="211.99999618530273" text="EVALUATION" />
-                                 <TableColumn fx:id="statusCol" prefWidth="317.6000122070312" text="STATUS" />
+                                 <TableColumn fx:id="statusCol" prefWidth="495.1999816894531" text="STATUS" />
                              </columns>
                            </TableView>
                         </children></AnchorPane>
