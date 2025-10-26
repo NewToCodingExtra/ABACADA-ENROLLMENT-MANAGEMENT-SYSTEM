@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -44,12 +46,26 @@
                 <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
-                            <AnchorPane styleClass="tab-content" />
+                            <AnchorPane styleClass="tab-content">
+                        <children>
+                           <TableView layoutX="14.0" layoutY="14.0" prefHeight="458.0" prefWidth="822.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
+                        </children></AnchorPane>
                         </Tab>
                         <Tab text="Schedule">
                             <AnchorPane styleClass="tab-content">
                                 <children>
                                     <Label layoutX="20" layoutY="20" styleClass="tab-text" />
+                           <TableView layoutX="14.0" layoutY="20.0" prefHeight="453.0" prefWidth="824.0">
+                             <columns>
+                               <TableColumn prefWidth="75.0" text="C1" />
+                               <TableColumn prefWidth="75.0" text="C2" />
+                             </columns>
+                           </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>
