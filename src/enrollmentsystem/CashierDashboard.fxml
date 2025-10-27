@@ -71,9 +71,13 @@
                             <AnchorPane styleClass="tab-content">
                         <children>
                            <TableView layoutX="40.0" layoutY="12.0" prefHeight="460.0" prefWidth="753.0">
-                              <columns>
-                                 <TableColumn prefWidth="75.0" text="C1" />
-                                 <TableColumn prefWidth="75.0" text="C2" />
+                              <columns> 
+                                 <TableColumn prefWidth="241.0" text="Student's Name" />
+                               <TableColumn minWidth="0.0" prefWidth="96.0" text="Course" />
+                               <TableColumn minWidth="0.0" prefWidth="110.0" text="Amount Paid" />
+                               <TableColumn minWidth="0.0" prefWidth="120.0" text="Action" />
+                               <TableColumn minWidth="0.0" prefWidth="148.0" text="Approval Status" />
+                               <TableColumn minWidth="0.0" prefWidth="118.0" text="Payment Status" />
                               </columns>
                            </TableView>
                         </children>

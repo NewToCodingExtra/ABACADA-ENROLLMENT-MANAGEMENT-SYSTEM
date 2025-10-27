@@ -31,14 +31,14 @@
         <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
 
             <!-- SIDEBAR -->
-            <VBox fx:id="sidebar" alignment="CENTER" prefWidth="240.0" spacing="10" styleClass="sidebar">
+            <VBox fx:id="sidebar" alignment="CENTER" prefHeight="560.0" prefWidth="251.0" spacing="10" styleClass="sidebar">
                 <ImageView fitHeight="100" fitWidth="100" styleClass="student-logo">
                     <image>
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
                 <Label fx:id="studentNameLabel" styleClass="student-name" text="Student Full Name" />
-                <Label fx:id="studentEmailLabel" styleClass="student-email" text="student@abakada.student" />
+                <Label fx:id="studentEmailLabel" prefHeight="20.0" prefWidth="197.0" styleClass="student-email" text="student@abakada.student" />
                 <Label fx:id="studentIdLabel" styleClass="student-id" text="ID No. STUDENT" />
             </VBox>
 
@@ -49,7 +49,7 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView fx:id="overViewTable" layoutX="51.0" layoutY="69.0" prefHeight="60.0" prefWidth="777.0" tableMenuButtonVisible="true">
+                           <TableView fx:id="overViewTable" layoutX="46.0" layoutY="22.0" prefHeight="60.0" prefWidth="777.0" style="-fx-background-color: ffffff;" tableMenuButtonVisible="true">
                               <columns>
                                  <TableColumn fx:id="semCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="SEMESTER" />
                                  <TableColumn fx:id="courseCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="COURSE" />
@@ -57,10 +57,10 @@
                                  <TableColumn fx:id="yearCol" editable="false" prefWidth="194.4" resizable="false" sortable="false" text="YEAR" />
                               </columns>
                            </TableView>
-                           <TableView fx:id="evalTable" layoutX="170.0" layoutY="139.0" prefHeight="282.0" prefWidth="530.0">
+                           <TableView fx:id="evalTable" layoutX="45.0" layoutY="128.0" prefHeight="282.0" prefWidth="778.0">
                               <columns>
-                                 <TableColumn fx:id="evalCol" prefWidth="211.99999618530273" text="EVALUATION" />
-                                 <TableColumn fx:id="statusCol" prefWidth="317.6000122070312" text="STATUS" />
+                                 <TableColumn fx:id="evalCol" prefWidth="398.0" text="EVALUATION" />
+                                 <TableColumn fx:id="statusCol" prefWidth="379.0" text="STATUS" />
                               </columns>
                            </TableView>
                         </children>
@@ -69,7 +69,7 @@
                         <Tab text="Schedule">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView layoutX="23.0" layoutY="33.0" prefHeight="453.0" prefWidth="824.0">
+                           <TableView layoutX="23.0" layoutY="33.0" prefHeight="331.0" prefWidth="824.0">
                               <columns>
                                  <TableColumn fx:id="courseCode" editable="false" prefWidth="124.00002670288086" resizable="false" sortable="false" text="Course Code" />
                                  <TableColumn fx:id="courseNameCol" editable="false" prefWidth="278.40000915527344" resizable="false" sortable="false" text="Course Name" />
