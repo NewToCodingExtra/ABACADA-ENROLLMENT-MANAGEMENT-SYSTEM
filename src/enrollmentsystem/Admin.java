@@ -69,26 +69,28 @@ public class Admin extends User implements UniqueIDGenerator, AccountCreation {
 
     @Override
     public void createFaculty(User user) throws SQLException {
-//        if (!(user instanceof Faculty)) {
-//            throw new IllegalArgumentException("User must be a Faculty instance");
-//        }
-//        Faculty faculty = (Faculty) user;
-//        String facultyId = faculty.generateID();
-//        int userId = insertUser(user, "Faculty");
-//        insertIntoRoleTable("faculty", "faculty_number", facultyId, userId, faculty);
-//        System.out.println("Faculty created with ID: " + facultyId);
+        if (!(user instanceof Faculty)) {
+            throw new IllegalArgumentException("User must be a Faculty instance");
+        }
+        Faculty faculty = (Faculty) user;
+        String facultyId = faculty.generateID();
+        int userId = insertUser(user, "Faculty");
+        insertIntoRoleTable("faculty", "faculty_id", facultyId, userId, faculty);
+        System.out.println("Faculty created with ID: " + facultyId);
     }
 
     @Override
     public void createStudent(User user) throws SQLException {
-//        if (!(user instanceof Student)) {
-//            throw new IllegalArgumentException("User must be a Student instance");
-//        }
-//        Student student = (Student) user;
-//        String studentId = student.generateID();
-//        int userId = insertUser(user, "Student");
-//        insertIntoRoleTable("students", "student_id", studentId, userId, student);
-//        System.out.println("Student created with ID: " + studentId);
+        if (!(user instanceof Student)) {
+            throw new IllegalArgumentException("User must be a Student instance");
+        }
+        Student student = (Student) user;
+        String studentId = student.generateID();
+        
+        int userId = insertUser(user, "Student");
+
+        insertStudent(studentId, userId, student);
+        System.out.println("Student created with ID: " + studentId);
     }
 
     private int insertUser(User user, String access) throws SQLException {
@@ -127,7 +129,6 @@ public class Admin extends User implements UniqueIDGenerator, AccountCreation {
             stmt.setInt(1, userId);
             stmt.setString(2, generatedId);
             
-            // Determine first and last name based on user type
             String firstName = null;
             String lastName = null;
             
@@ -143,22 +144,37 @@ public class Admin extends User implements UniqueIDGenerator, AccountCreation {
                 firstName = cashier.getFName();
                 lastName = cashier.getLName();
                 
-                SessionManager.getInstance().setAdminId(idColumn);
+                SessionManager.getInstance().setCashierId(idColumn);
+            } else if (user instanceof Faculty) {
+                Faculty faculty = (Faculty) user;
+                firstName = faculty.getFirstName();
+                lastName = faculty.getLastName();
+                
+                SessionManager.getInstance().setFacultyId(idColumn);
             } 
-//              else if (user instanceof Faculty) {
-//                Faculty faculty = (Faculty) user;
-//                firstName = faculty.getFName();
-//                lastName = faculty.getLName();
-//            } else if (user instanceof Student) {
-//                Student student = (Student) user;
-//                firstName = student.getFName();
-//                lastName = student.getLName();
-//            }
             
             stmt.setString(3, firstName);
             stmt.setString(4, lastName);
             stmt.executeUpdate();
         }
+    }
+    private void insertStudent(String studentId, int userId, Student student) throws SQLException {
+        String sql = "INSERT INTO students (student_id, user_id, program_id, enrollment_status, date_enrolled) " +
+                     "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, studentId);
+            stmt.setInt(2, userId);
+            stmt.setString(3, student.getProgramId());  
+            stmt.setString(4, student.getEnrollmentStatus());  
+            stmt.setTimestamp(5, Timestamp.valueOf(student.getDateEnrolled())); 
+
+            stmt.executeUpdate();
+        }
+
+        SessionManager.getInstance().setStudentId(studentId);
     }
 
     @Override

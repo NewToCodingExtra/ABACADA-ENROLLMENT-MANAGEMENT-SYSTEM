@@ -38,7 +38,7 @@
                     </image>
                 </ImageView>
                 <Label fx:id="studentNameLabel" styleClass="student-name" text="Student Full Name" />
-                <Label fx:id="studentEmailLabel" prefHeight="20.0" prefWidth="197.0" styleClass="student-email" text="student@abakada.student" />
+                <Label fx:id="studentEmailLabel" alignment="CENTER" prefHeight="20.0" prefWidth="197.0" styleClass="student-email" text="student@abakada.student" />
                 <Label fx:id="studentIdLabel" styleClass="student-id" text="ID No. STUDENT" />
             </VBox>
 

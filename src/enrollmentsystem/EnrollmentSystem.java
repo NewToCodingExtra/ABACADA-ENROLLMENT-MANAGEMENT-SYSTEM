@@ -15,7 +15,7 @@ public class EnrollmentSystem extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-           
+            
             mainStage = primaryStage;  
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
             Scene scene = new Scene(root, 898, 543);

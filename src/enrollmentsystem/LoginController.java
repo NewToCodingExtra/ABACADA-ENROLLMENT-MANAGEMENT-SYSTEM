@@ -148,12 +148,12 @@ public class LoginController implements Initializable {
                     WindowOpener.openSceneWithCSS("/enrollmentsystem/FacultyDashboard.fxml",
                              "/studentdashboard.css",
                              "ABAKADA UNIVERSITY - FACULTY DASHBOARD",
-                             950, 550);
+                             1200, 700);
                 case "Student" ->
                     WindowOpener.openSceneWithCSS("/enrollmentsystem/StudentDashboard.fxml",
                               "/studentdashboard.css",
                              "ABAKADA UNIVERSITY - STUDENT DASHBOARD",
-                             950, 550);
+                             1200, 700);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,10 +277,10 @@ public class LoginController implements Initializable {
                 return createAdmin(userId, username, email, password, access, createdAt, isActive);
             case "Cashier":
                 return createCashier(userId, username, email, password, access, createdAt, isActive);
-//            case "Faculty":
-//                return createFaculty(userId, username, email, password, access, createdAt, isActive);
-//            case "Student":
-//                return createStudent(userId, username, email, password, access, createdAt, isActive);
+            case "Faculty":
+                return createFaculty(userId, username, email, password, access, createdAt, isActive);
+            case "Student":
+                return createStudent(userId, username, email, password, access, createdAt, isActive);
             default:
                 return createEnrollee(userId, username, email, password, createdAt, isActive);
         }
@@ -327,49 +327,59 @@ public class LoginController implements Initializable {
         }
         return new Cashier(userId, username, email, password, createdAt, isActive);
     }
-//
-//    private Faculty createFaculty(int userId, String username, String email, String password, 
-//                                 String access, LocalDateTime createdAt, boolean isActive) throws SQLException {
-//        String query = "SELECT faculty_number, first_name, last_name FROM faculty WHERE user_id = ?";
-//        try (Connection conn = DBConnection.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(query)) {
-//            ps.setInt(1, userId);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                String facultyId = rs.getString("faculty_number");
-//                // Store faculty_id in session
-//                SessionManager.getInstance().setFacultyId(facultyId);
-//
-//                Faculty faculty = new Faculty(userId, username, email, password, 
-//                                             access, createdAt, isActive, facultyId);
-//                faculty.setFirstName(rs.getString("first_name"));
-//                faculty.setLastName(rs.getString("last_name"));
-//                return faculty;
-//            }
-//        }
-//        return new Faculty(userId, username, email, password, createdAt, isActive);
-//    }
-//
-//    private Student createStudent(int userId, String username, String email, String password, 
-//                                 String access, LocalDateTime createdAt, boolean isActive) throws SQLException {
-//        String query = "SELECT student_id, first_name, last_name FROM students WHERE user_id = ?";
-//        try (Connection conn = DBConnection.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(query)) {
-//            ps.setInt(1, userId);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                String studentId = rs.getString("student_id");
-//                SessionManager.getInstance().setStudentId(studentId);
-//
-//                Student student = new Student(userId, username, email, password, 
-//                                             access, createdAt, isActive, studentId);
-//                student.setFirstName(rs.getString("first_name"));
-//                student.setLastName(rs.getString("last_name"));
-//                return student;
-//            }
-//        }
-//        return new Student(userId, username, email, password, createdAt, isActive);
-//    }
+
+    private Faculty createFaculty(int userId, String username, String email, String password, 
+                                 String access, LocalDateTime createdAt, boolean isActive) throws SQLException {
+        String query = "SELECT faculty_id, first_name, last_name FROM faculty WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String facultyId = rs.getString("faculty_id");
+                // Store faculty_id in session
+                SessionManager.getInstance().setFacultyId(facultyId);
+
+                Faculty faculty = new Faculty(userId, username, email, password, 
+                                             access, createdAt, isActive, facultyId);
+                faculty.setFirstName(rs.getString("first_name"));
+                faculty.setLastName(rs.getString("last_name"));
+                return faculty;
+            }
+        }
+        return new Faculty(userId, username, email, password, createdAt, isActive);
+    }
+
+    private Student createStudent(int userId, String username, String email, String password, 
+                                String access, LocalDateTime createdAt, boolean isActive) throws SQLException {
+       String query = "SELECT student_id, program_id, enrollment_status, date_enrolled " +
+                      "FROM students WHERE user_id = ?";
+       try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query)) {
+
+           ps.setInt(1, userId);
+           ResultSet rs = ps.executeQuery();
+
+           if (rs.next()) {
+               String studentId = rs.getString("student_id");
+               String programId = rs.getString("program_id");
+               String enrollmentStatus = rs.getString("enrollment_status");
+               LocalDateTime dateEnrolled = rs.getTimestamp("date_enrolled").toLocalDateTime();
+
+               SessionManager.getInstance().setStudentId(studentId);
+
+               Student student = new Student(userId, username, email, password, access, createdAt, isActive, studentId);
+               student.setProgramId(programId);
+               student.setEnrollmentStatus(enrollmentStatus);
+               student.setDateEnrolled(dateEnrolled);
+
+               return student;
+           }
+       }
+
+       return new Student(userId, username, email, password, createdAt, isActive);
+   }
+
 
     private Enrollee createEnrollee(int userId, String username, String email, String password, 
                                LocalDateTime createdAt, boolean isActive) throws SQLException {

@@ -39,7 +39,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label fx:id="studentNameLabel" styleClass="student-name" text="Faculty Full Name" />
+                <Label fx:id="studentNameLabel" alignment="CENTER" styleClass="student-name" text="Faculty Full Name" />
                 <Label fx:id="studentEmailLabel" styleClass="student-email" text="faculty@abakada.faculty" />
                 <Label fx:id="studentIdLabel" styleClass="student-id" text="FACULTY" />
             </VBox>
@@ -60,17 +60,53 @@
                                  <Font name="Montserrat Regular" size="20.0" />
                               </font>
                            </Label>
-                           <VBox layoutX="24.0" layoutY="60.0" prefHeight="265.0" prefWidth="190.0" styleClass="body-text">
+                           <VBox layoutX="24.0" layoutY="60.0" prefHeight="266.0" prefWidth="816.0" styleClass="body-text">
                               <children>
-                                 <Label text="Name" />
-                                 <Label text="Department" />
-                                 <Label text="College" />
-                                 <Label text="Specialization" />
-                                 <Label text="Education" />
-                                 <Label text="Years in Service" />
-                                 <Label text="Subjects" />
+                                 <HBox>
+                                    <children>
+                                       <Label prefHeight="18.0" prefWidth="43.0" text="Name:" />
+                                       <Label fx:id="nameLabel" prefHeight="18.0" prefWidth="782.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox>
+                                    <children>
+                                       <Label prefHeight="18.0" prefWidth="126.0" text="Department:" />
+                                       <Label fx:id="depatmentLabel" prefHeight="18.0" prefWidth="782.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox>
+                                    <children>
+                                       <Label text="Specialization:" />
+                                       <Label fx:id="specalizationLabel" prefHeight="18.0" prefWidth="711.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox>
+                                    <children>
+                                       <Label text="Years in Service:" />
+                                       <Label fx:id="yearISLabel" prefHeight="18.0" prefWidth="705.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox>
+                                    <children>
+                                       <Label text="Subjects Handled: " />
+                                       <Label fx:id="subjectHandledLabel" prefHeight="18.0" prefWidth="688.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox>
+                                    <children>
+                                       <Label text="Section Handled: " />
+                                       <Label fx:id="sectionHandledLabel" prefHeight="18.0" prefWidth="706.0" />
+                                    </children>
+                                 </HBox>
+                                 <HBox>
+                                    <children>
+                                       <Label text="Subjects:" />
+                                       <Label fx:id="subjectsIcon" prefHeight="18.0" prefWidth="752.0" />
+                                    </children>
+                                 </HBox>
                               </children>
                            </VBox>
+                           <Label fx:id="nameLabel5" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="782.0" />
                                 </children>
                             </AnchorPane>
                         </Tab>
