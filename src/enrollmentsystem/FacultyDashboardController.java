@@ -25,12 +25,12 @@ public class FacultyDashboardController {
     
     // Faculty Profile Labels
     @FXML private Label nameLabel;
-    @FXML private Label departmentLabel;
-    @FXML private Label specializationLabel;
+    @FXML private Label depatmentLabel; // Note: typo from FXML
+    @FXML private Label specalizationLabel; // Note: typo from FXML
     @FXML private Label yearISLabel;
     @FXML private Label subjectHandledLabel;
     @FXML private Label sectionHandledLabel;
-    @FXML private Label subjectsLabel;
+    @FXML private Label subjectsIcon; // From your original FXML
     @FXML private Label nameLabel5;
     
     // Schedule Table
@@ -84,22 +84,36 @@ public class FacultyDashboardController {
             // Update teaching load counts
             currentFaculty.updateTeachingLoad();
             
-            // Set profile information
-            nameLabel.setText(currentFaculty.getFirstName() + " " + currentFaculty.getLastName());
-            departmentLabel.setText(currentFaculty.getDepartment() != null ? 
-                                   currentFaculty.getDepartment() : "N/A");
-            specializationLabel.setText(currentFaculty.getSpecialization() != null ? 
-                                       currentFaculty.getSpecialization() : "N/A");
-            yearISLabel.setText(String.valueOf(currentFaculty.getYearsOfService()));
-            subjectHandledLabel.setText(String.valueOf(currentFaculty.getSubjectHolding()));
-            sectionHandledLabel.setText(String.valueOf(currentFaculty.getSectionsHandled()));
+            // Set profile information (with null checks for FXML labels)
+            if (nameLabel != null) {
+                nameLabel.setText(currentFaculty.getFirstName() + " " + currentFaculty.getLastName());
+            }
+            if (depatmentLabel != null) {
+                depatmentLabel.setText(currentFaculty.getDepartment() != null ? 
+                                       currentFaculty.getDepartment() : "N/A");
+            }
+            if (specalizationLabel != null) {
+                specalizationLabel.setText(currentFaculty.getSpecialization() != null ? 
+                                           currentFaculty.getSpecialization() : "N/A");
+            }
+            if (yearISLabel != null) {
+                yearISLabel.setText(String.valueOf(currentFaculty.getYearsOfService()));
+            }
+            if (subjectHandledLabel != null) {
+                subjectHandledLabel.setText(String.valueOf(currentFaculty.getSubjectHolding()));
+            }
+            if (sectionHandledLabel != null) {
+                sectionHandledLabel.setText(String.valueOf(currentFaculty.getSectionsHandled()));
+            }
             
             // Get and display subjects list
             List<String> subjects = currentFaculty.getSubjectsList();
-            if (!subjects.isEmpty()) {
-                subjectsLabel.setText(String.join(", ", subjects));
-            } else {
-                subjectsLabel.setText("No subjects assigned");
+            if (subjectsIcon != null) {
+                if (!subjects.isEmpty()) {
+                    subjectsIcon.setText(String.join(", ", subjects));
+                } else {
+                    subjectsIcon.setText("No subjects assigned");
+                }
             }
             
             // Set top bar info (optional)
@@ -175,10 +189,7 @@ public class FacultyDashboardController {
             }
         }
     }
-    
-    /**
-     * Refresh schedule data (call this after adding/updating schedules)
-     */
+
     public void refreshSchedule() {
         if (currentFaculty != null) {
             currentFaculty.updateTeachingLoad();
