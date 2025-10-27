@@ -86,8 +86,12 @@
                                     <Label layoutX="20" layoutY="20" styleClass="tab-text" />
                            <TableView layoutX="20.0" layoutY="10.0" prefHeight="467.0" prefWidth="834.0">
                              <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
+                               <TableColumn prefWidth="241.0" text="Student's Name" />
+                               <TableColumn minWidth="0.0" prefWidth="96.0" text="Course" />
+                               <TableColumn minWidth="0.0" prefWidth="110.0" text="Amount Paid" />
+                               <TableColumn minWidth="0.0" prefWidth="120.0" text="Action" />
+                               <TableColumn minWidth="0.0" prefWidth="148.0" text="Approval Status" />
+                               <TableColumn minWidth="0.0" prefWidth="118.0" text="Payment Status" />
                              </columns>
                            </TableView>
                                 </children>
@@ -97,11 +101,15 @@
                             <AnchorPane styleClass="tab-content">
                                 <children>
                                     <Label layoutX="20" layoutY="20" prefHeight="18.0" prefWidth="105.0" styleClass="tab-text" />
-                           <TableView layoutX="32.0" layoutY="20.0" prefHeight="100.0" prefWidth="807.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
+                           <TableView layoutX="20.0" layoutY="14.0" prefHeight="467.0" prefWidth="834.0">
+                              <columns>
+                                 <TableColumn prefWidth="241.0" text="Student's Name" />
+                                 <TableColumn minWidth="0.0" prefWidth="96.0" text="Course" />
+                                 <TableColumn minWidth="0.0" prefWidth="110.0" text="Amount Paid" />
+                                 <TableColumn minWidth="0.0" prefWidth="120.0" text="Action" />
+                                 <TableColumn minWidth="0.0" prefWidth="148.0" text="Approval Status" />
+                                 <TableColumn minWidth="0.0" prefWidth="118.0" text="Payment Status" />
+                              </columns>
                            </TableView>
                                 </children>
                             </AnchorPane>

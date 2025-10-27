@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.FacultyDashboardController">
 
@@ -32,7 +33,7 @@
         <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
 
             <!-- SIDEBAR -->
-            <VBox fx:id="sidebar" alignment="CENTER" prefWidth="240.0" spacing="10" styleClass="sidebar">
+            <VBox fx:id="sidebar" alignment="CENTER" prefHeight="560.0" prefWidth="271.0" spacing="10" styleClass="sidebar">
                 <ImageView fitHeight="100" fitWidth="100" styleClass="student-logo">
                     <image>
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
@@ -50,13 +51,26 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                           <Button layoutX="24.0" layoutY="428.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="136.0" styleClass="evaluate-btn" text="EVALUATE" />
-                           <TableView layoutX="34.0" layoutY="22.0" prefHeight="152.0" prefWidth="802.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
-                           </TableView>
+                           <Button layoutX="24.0" layoutY="428.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" style="-fx-background-color: #002262;" styleClass="evaluate-btn" text="EVALUATE" textFill="WHITE">
+                              <font>
+                                 <Font name="Montserrat Bold" size="21.0" />
+                              </font></Button>
+                           <Label layoutX="24.0" layoutY="12.0" prefHeight="34.0" prefWidth="202.0" styleClass="overview" text="FACULTY OVERVIEW">
+                              <font>
+                                 <Font name="Montserrat Regular" size="20.0" />
+                              </font>
+                           </Label>
+                           <VBox layoutX="24.0" layoutY="60.0" prefHeight="265.0" prefWidth="190.0" styleClass="body-text">
+                              <children>
+                                 <Label text="Name" />
+                                 <Label text="Department" />
+                                 <Label text="College" />
+                                 <Label text="Specialization" />
+                                 <Label text="Education" />
+                                 <Label text="Years in Service" />
+                                 <Label text="Subjects" />
+                              </children>
+                           </VBox>
                                 </children>
                             </AnchorPane>
                         </Tab>
@@ -64,12 +78,16 @@
                             <AnchorPane styleClass="tab-content">
                                 <children>
                                     <Label layoutX="20" layoutY="20" styleClass="tab-text" />
-                           <TableView layoutX="20.0" layoutY="20.0" prefHeight="464.0" prefWidth="827.0">
-                             <columns>
-                               <TableColumn prefWidth="75.0" text="C1" />
-                               <TableColumn prefWidth="75.0" text="C2" />
-                             </columns>
-                           </TableView>
+                                <TableView fx:id="tblSchedule" layoutX="19.0" layoutY="26.0" prefHeight="420.0" prefWidth="860.0">
+                                     <columns>
+                                         <TableColumn fx:id="colCode" prefWidth="161.60001373291016" text="Subject Code" />
+                                         <TableColumn fx:id="colName" minWidth="0.0" prefWidth="217.60000610351562" text="Subject Name" />
+                                         <TableColumn fx:id="colSec" minWidth="0.0" prefWidth="180.79995727539062" text="Section" />
+                                         <TableColumn fx:id="colDay" minWidth="0.0" prefWidth="92.79998779296875" text="Day" />
+                                         <TableColumn fx:id="colTime" minWidth="0.0" prefWidth="108.7999267578125" text="Time" />
+                                         <TableColumn fx:id="colRoom" minWidth="0.0" prefWidth="105.599853515625" text="Room" />
+                                     </columns>
+                                </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>

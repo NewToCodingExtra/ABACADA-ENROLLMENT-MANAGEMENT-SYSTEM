@@ -1,14 +1,9 @@
-/* =======================
-   GLOBAL
-======================= */
+
 .root {
     -fx-background-color: #FFFFFF;
     -fx-font-family: "Montserrat";
 }
 
-/* =======================
-   TOP BAR
-======================= */
 .top-bar {
     -fx-background-color: #191825;
     -fx-alignment: center-left;
@@ -25,9 +20,6 @@
     -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.25), 4, 0, 0, 4);
 }
 
-/* =======================
-   SIDEBAR
-======================= */
 .sidebar {
     -fx-background-color: #002262;
     -fx-background-radius: 10;
@@ -46,6 +38,8 @@
     -fx-font-size: 1.6em;
     -fx-font-weight: 500;
     -fx-text-alignment: center;
+    -fx-max-width: 300px; 
+    -fx-text-overrun: ellipsis;
 }
 
 .student-email {
@@ -64,39 +58,6 @@
     -fx-text-alignment: center;
 }
 
-/* =======================
-   ADMIN SIDEBAR CARDS
-======================= */
-
-.stat-card {
-    -fx-background-color: #001b4d;
-    -fx-background-radius: 10;
-    -fx-padding: 8 16;
-    -fx-spacing: 70;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 3);
-}
-
-.stat-title {
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    
-    -fx-alignment: CENTER_LEFT;
-}
-
-.stat-value {
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-spacing: 50;
-    -fx-font-weight: bold;
-}
-
-
-
-
-
-/* =======================
-   MAIN CONTENT
-======================= */
 .main-content {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
@@ -107,10 +68,18 @@
 .main-content-container{
     -fx-padding: 20;
 }
+.evaluate-btn {
+  background-color: #002262; 
+  color: #002262;               
+  font-weight: bold;       
+  border: none;         
+  border-radius: 8px;         
+  padding: 10px 20px;        
+  cursor: pointer;           
+  font-family: Arial, sans-serif;  
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-/* =======================
-   TABPANE
-======================= */
 .tab-pane {
     -fx-background-color: #FFFFFF;
     -fx-border-radius: 10;
@@ -136,9 +105,7 @@
     -fx-background-color: #001b4d;
 }
 
-/* =======================
-   TAB CONTENT
-======================= */
+
 
 .tab-content {
     -fx-background-color: #FFFFFF;
@@ -154,9 +121,17 @@
     -fx-wrap-text: true;
 }
 
-/* =======================
-   RESPONSIVE SCALING
-======================= */
+.overview {
+    -fx-font-size: 1.5em;
+    -fx-font-weight: BOLD;
+
+}
+
+.body-text{
+    -fx-spacing: 19;
+    -fx-font-weight: BOLD;
+}
+
 @media screen and (max-width: 1366px) {
     .title-label {
         -fx-font-size: 1.8em;
@@ -177,5 +152,5 @@
     .tab-text {
         -fx-font-size: 1em;
     }
+    
 }
-

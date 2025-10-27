@@ -47,5 +47,21 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-border-color: #191825;
-    -fx-border-radius: 4; 
+    -fx-border-radius: 4;
+   
+}
+
+.title-font {
+    -fx-font-family: "Montserrat";
+    
+}
+
+.paymentButton {
+    -fx-spacing: 8;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+    -fx-background-radius: 4;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
 }
