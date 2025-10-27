@@ -54,15 +54,12 @@ public class AutoScheduler {
             return true;
         }
         
-        // Sort offerings by priority (required courses, larger capacity first)
         offerings.sort((a, b) -> {
-            // Priority: larger capacity first, then by course code
             int capacityCompare = Integer.compare(b.getCapacity(), a.getCapacity());
             if (capacityCompare != 0) return capacityCompare;
-            return a.getCourseId().compareTo(b.getCourseId());
+                return a.getCourseId().compareTo(b.getCourseId());
         });
         
-        // Schedule each offering
         for (CourseOffering offering : offerings) {
             if (scheduleOffering(offering)) {
                 successCount++;
@@ -79,7 +76,6 @@ public class AutoScheduler {
         long endTime = System.currentTimeMillis();
         int executionTime = (int) (endTime - startTime);
         
-        // Log the generation
         logGeneration(offerings.size(), successCount, executionTime);
         
         System.out.println("\n=== Schedule Generation Complete ===");
@@ -90,34 +86,24 @@ public class AutoScheduler {
         
         return failCount == 0;
     }
-    
-    /**
-     * Schedule a single offering
-     */
+   
     private boolean scheduleOffering(CourseOffering offering) {
-        // Get course requirements
         CourseRequirements requirements = getCourseRequirements(offering.getCourseId());
         
-        // Get faculty availability
         List<TimeSlot> facultyAvailableSlots = getFacultyAvailableSlots(offering.getFacultyId());
         
-        // Try each time slot
         for (TimeSlot timeSlot : availableTimeSlots) {
-            // Check if faculty is available at this time
             if (!isFacultyAvailable(offering.getFacultyId(), timeSlot.getTimeSlotId())) {
                 continue;
             }
             
-            // Find suitable room
             Room suitableRoom = findSuitableRoom(timeSlot.getTimeSlotId(), 
                                                  requirements, 
                                                  offering.getCapacity());
             
             if (suitableRoom != null) {
-                // Assign schedule
                 boolean assigned = assignSchedule(offering, timeSlot, suitableRoom);
                 if (assigned) {
-                    // Mark as occupied
                     markFacultyOccupied(offering.getFacultyId(), timeSlot.getTimeSlotId());
                     markRoomOccupied(suitableRoom.getRoomId(), timeSlot.getTimeSlotId());
                     return true;
@@ -128,43 +114,29 @@ public class AutoScheduler {
         return false;
     }
     
-    /**
-     * Check if faculty is available at time slot
-     */
     private boolean isFacultyAvailable(String facultyId, String timeSlotId) {
         if (!facultySchedule.containsKey(facultyId)) {
             return true;
         }
         return !facultySchedule.get(facultyId).contains(timeSlotId);
     }
-    
-    /**
-     * Mark faculty as occupied at time slot
-     */
+
     private void markFacultyOccupied(String facultyId, String timeSlotId) {
         facultySchedule.computeIfAbsent(facultyId, k -> new ArrayList<>()).add(timeSlotId);
     }
     
-    /**
-     * Mark room as occupied at time slot
-     */
     private void markRoomOccupied(String roomId, String timeSlotId) {
         roomSchedule.computeIfAbsent(roomId, k -> new ArrayList<>()).add(timeSlotId);
     }
     
-    /**
-     * Find suitable room for the offering
-     */
     private Room findSuitableRoom(String timeSlotId, CourseRequirements requirements, int capacity) {
         for (Room room : availableRooms) {
-            // Check if room meets requirements
             if (!room.meetsRequirements(requirements.requiresLab, 
                                        requirements.requiresComputer, 
                                        capacity)) {
                 continue;
             }
             
-            // Check if room is available at this time
             if (!isRoomAvailable(room.getRoomId(), timeSlotId)) {
                 continue;
             }
@@ -174,9 +146,6 @@ public class AutoScheduler {
         return null;
     }
     
-    /**
-     * Check if room is available at time slot
-     */
     private boolean isRoomAvailable(String roomId, String timeSlotId) {
         if (!roomSchedule.containsKey(roomId)) {
             return true;
@@ -184,9 +153,6 @@ public class AutoScheduler {
         return !roomSchedule.get(roomId).contains(timeSlotId);
     }
     
-    /**
-     * Assign schedule to offering in database
-     */
     private boolean assignSchedule(CourseOffering offering, TimeSlot timeSlot, Room room) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -268,10 +234,7 @@ public class AutoScheduler {
         }
         return offerings;
     }
-    
-    /**
-     * Get course requirements
-     */
+  
     private CourseRequirements getCourseRequirements(String courseId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -305,10 +268,7 @@ public class AutoScheduler {
         }
         return new CourseRequirements();
     }
-    
-    /**
-     * Get faculty available time slots
-     */
+  
     private List<TimeSlot> getFacultyAvailableSlots(String facultyId) {
         List<TimeSlot> slots = new ArrayList<>();
         Connection conn = null;
@@ -349,13 +309,9 @@ public class AutoScheduler {
             }
         }
         
-        // If no availability defined, return all slots
         return slots.isEmpty() ? availableTimeSlots : slots;
     }
-    
-    /**
-     * Log generation to database
-     */
+  
     private void logGeneration(int total, int scheduled, int executionTime) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -393,7 +349,6 @@ public class AutoScheduler {
         }
     }
     
-    // Inner class for course requirements
     private static class CourseRequirements {
         boolean requiresLab;
         boolean requiresComputer;
@@ -412,7 +367,6 @@ public class AutoScheduler {
         }
     }
     
-    // Inner class for course offering
     private static class CourseOffering {
         private String offeringId;
         private String courseId;
