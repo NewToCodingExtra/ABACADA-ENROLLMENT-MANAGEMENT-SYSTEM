@@ -60,17 +60,14 @@ public class PaymentMethodController implements Initializable {
 
     @FXML
     private void gCashBtnAction(ActionEvent event) {
-        if (dialogOpen) return; // Prevent multiple opens
+        if (dialogOpen) return; 
         dialogOpen = true;
         
-        // Disable all buttons immediately
         disableAllButtons(true);
         
-        // Get current dialog stage to pass as owner
         Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
         
         try {
-            // Open new dialog with current dialog as owner
             WindowOpener.openDialogWithOwner(
                 "/enrollmentsystem/PaymentWindow2.fxml", 
                 "Paying Tuition using GCash", 
@@ -78,7 +75,6 @@ public class PaymentMethodController implements Initializable {
                 329,
                 currentStage
             );
-            // After GCash dialog closes, close this dialog
             closeDialog();
         } catch (Exception e) {
             System.err.println("Error opening GCash dialog: " + e.getMessage());
