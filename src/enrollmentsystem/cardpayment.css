@@ -1,0 +1,211 @@
+/*
+ * Payment Window Stylesheet
+ * Matches enrolleedashboard.css color scheme
+ */
+
+/* Root styling */
+.mainFxmlClass {
+    -fx-background-color: #FFFFFF;
+    -fx-font-family: "Montserrat";
+}
+
+/* Top header bar - dark background */
+.header-pane {
+    -fx-background-color: #191825;
+}
+
+/* Main content area - light gray background */
+.content-area {
+    -fx-background-color: #e1e1e1;
+}
+
+/* Container alignment */
+.container {
+    -fx-alignment: TOP_CENTER;
+}
+
+/* Title label styling - in header */
+.title-label {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #002262;
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-font-family: "Montserrat";
+}
+
+/* Credit card grid */
+.credit-card-grid {
+    -fx-alignment: CENTER;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+/* Form spacing */
+.date-cvc-spacing {
+    -fx-spacing: 10;
+}
+
+.form {
+    -fx-spacing: 10;
+}
+
+/* Labels - darker blue */
+Label {
+    -fx-text-fill: #002262;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+    -fx-font-family: "Montserrat";
+}
+
+/* Text fields - white background with dark blue border */
+TextField {
+    -fx-background-color: white;
+    -fx-border-color: #002262;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10 12;
+    -fx-font-size: 14px;
+    -fx-text-fill: #002262;
+    -fx-font-family: "Montserrat";
+    -fx-prompt-text-fill: #00226280;
+}
+
+TextField:focused {
+    -fx-border-color: #001b4d;
+    -fx-border-width: 2px;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 34, 98, 0.3), 6, 0, 0, 0);
+}
+
+TextField:hover {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Primary button (Confirm) - dark blue background */
+Button {
+    -fx-background-color: #002262;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 24;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+}
+
+Button:hover {
+    -fx-background-color: #001b4d;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0, 0, 2);
+}
+
+Button:pressed {
+    -fx-background-color: #000f33;
+}
+
+/* Return button (Secondary) - white with dark blue border */
+.return-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #002262;
+    -fx-background-radius: 8;
+    -fx-font-family: "Montserrat";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-color: #002262;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8;
+    -fx-padding: 12 24;
+    -fx-cursor: hand;
+}
+
+.return-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 6, 0, 0, 2);
+}
+
+.return-button:pressed {
+    -fx-background-color: #e0e0e0;
+}
+
+/* Title font */
+.title-font {
+    -fx-font-family: "Montserrat";
+}
+
+/* Payment button styling for payment method dialog */
+.paymentButton {
+    -fx-spacing: 8;
+    -fx-alignment: CENTER;
+}
+
+.paymentButton Button {
+    -fx-background-color: #002262;
+    -fx-text-fill: white;
+    -fx-min-width: 180px;
+    -fx-pref-height: 40px;
+    -fx-font-size: 14px;
+}
+
+.paymentButton Button:hover {
+    -fx-background-color: #001b4d;
+}
+
+/* Error labels - red color */
+#nameError, #creditCardNoError, #expirationError, #cvcError {
+    -fx-text-fill: #F44336;
+    -fx-font-size: 11px;
+    -fx-font-weight: 500;
+    -fx-font-style: italic;
+}
+
+/* HBox and VBox general styling */
+HBox {
+    -fx-alignment: CENTER_LEFT;
+}
+
+VBox {
+    -fx-alignment: TOP_LEFT;
+}
+
+/* Cancel button styling (yellow) */
+Button[style*="febe11"] {
+    -fx-background-color: #febe11;
+    -fx-text-fill: #191825;
+}
+
+Button[style*="febe11"]:hover {
+    -fx-background-color: #e5a800;
+}
+
+/* Via Cashier button styling */
+Button[style*="#002e6d"] {
+    -fx-background-color: #002e6d;
+    -fx-text-fill: white;
+}
+
+Button[style*="#002e6d"]:hover {
+    -fx-background-color: #001b4d;
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 1366px) {
+    .title-label {
+        -fx-font-weight: 750;
+        -fx-font-size: 16px;
+    }
+    
+    Button, .return-button {
+        -fx-font-size: 13px;
+        -fx-padding: 10 20;
+    }
+    
+    TextField {
+        -fx-font-size: 13px;
+        -fx-padding: 8 10;
+    }
+    
+    Label {
+        -fx-font-size: 12px;
+    }
+}

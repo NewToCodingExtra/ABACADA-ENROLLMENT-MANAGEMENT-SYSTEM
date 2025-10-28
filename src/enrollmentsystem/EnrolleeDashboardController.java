@@ -384,16 +384,14 @@ public class EnrolleeDashboardController {
         
         System.out.println("Evaluation table setup complete with " + rowCount + " rows");
     }
-    
-    /**
-     * Handle payment link click
-     */
+
     private void handlePaymentLink() {
-        showInfoDialog("Payment Required", 
-            "Your enrollment is not yet paid.\n\n" +
-            "Please proceed to the cashier to complete your payment.\n\n" +
-            "Enrollment Fee: ₱5,000.00\n" +
-            "Location: Cashier's Office, Ground Floor");
+        WindowOpener.openDialogWithCSS("/enrollmentsystem/PaymentMethod.fxml", "/paymentwindow.css", "Choose payment method", 429, 300);
+//        showInfoDialog("Payment Required", 
+//            "Your enrollment is not yet paid.\n\n" +
+//            "Please proceed to the cashier to complete your payment.\n\n" +
+//            "Enrollment Fee: ₱5,000.00\n" +
+//            "Location: Cashier's Office, Ground Floor");
     }
   
     private String checkDocumentStatus() {

@@ -54,7 +54,7 @@
                               <HBox>
                                  <children>
                                     <Label text="Confirm amount of: " />
-                                    <Label fx:id="amountPlaceholder" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="63.0" textAlignment="CENTER" textFill="#273aab" />
+                                    <Label fx:id="amountPlaceholder" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="96.0" textAlignment="CENTER" textFill="#273aab" />
                                  </children>
                               </HBox>
                               <HBox styleClass="date-cvc-spacing">

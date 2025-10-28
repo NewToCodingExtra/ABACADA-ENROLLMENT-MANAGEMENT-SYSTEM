@@ -1,24 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package enrollmentsystem;
 
 import java.math.BigDecimal;
 
 public class CardPayment extends Payment {
-    private String cardType;
-    private String cardLastFour;
+    private String cardNo;
     private String cardHolderName;
+    private String expireMonth;
+    private String expireYear;
+    private String cvcNo;
     private String approvalCode;
     private String transactionId;
     private String bankName;
 
     public CardPayment(int paymentId, String cashierId, String enrolleeId, BigDecimal amount,
-                       String cardType, String cardLastFour) {
+                       String cardNo, String cardHolderName, String expireMonth,
+                       String expireYear, String cvcNo) {
         super(paymentId, cashierId, enrolleeId, amount, null);
-        this.cardType = cardType;
-        this.cardLastFour = cardLastFour;
+        this.cardNo = cardNo;
+        this.cardHolderName = cardHolderName;
+        this.expireMonth = expireMonth;
+        this.expireYear = expireYear;
+        this.cvcNo = cvcNo;
     }
 
     @Override
@@ -31,20 +33,12 @@ public class CardPayment extends Payment {
         return approvalCode != null;
     }
 
-    public String getCardType() {
-        return cardType;
+    public String getCardNo() {
+        return cardNo;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
-
-    public String getCardLastFour() {
-        return cardLastFour;
-    }
-
-    public void setCardLastFour(String cardLastFour) {
-        this.cardLastFour = cardLastFour;
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 
     public String getCardHolderName() {
@@ -53,6 +47,30 @@ public class CardPayment extends Payment {
 
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
+    }
+
+    public String getExpireMonth() {
+        return expireMonth;
+    }
+
+    public void setExpireMonth(String expireMonth) {
+        this.expireMonth = expireMonth;
+    }
+
+    public String getExpireYear() {
+        return expireYear;
+    }
+
+    public void setExpireYear(String expireYear) {
+        this.expireYear = expireYear;
+    }
+
+    public String getCvcNo() {
+        return cvcNo;
+    }
+
+    public void setCvcNo(String cvcNo) {
+        this.cvcNo = cvcNo;
     }
 
     public String getApprovalCode() {
@@ -78,5 +96,4 @@ public class CardPayment extends Payment {
     public void setBankName(String bankName) {
         this.bankName = bankName;
     }
-    
 }

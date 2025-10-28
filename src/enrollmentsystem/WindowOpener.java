@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package enrollmentsystem;
 
 import java.io.IOException;
@@ -11,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 
 public class WindowOpener {
    
@@ -122,5 +119,107 @@ public class WindowOpener {
             return null;
         }
     }
-}
+    
+    public static void openDialogWithCSS(String fxmlPath, String cssPath, String title, double width, double height) {
+        openDialogWithCSSAndOwner(fxmlPath, cssPath, title, width, height, EnrollmentSystem.mainStage);
+    }
+    
+    public static void openDialogWithCSSAndOwner(String fxmlPath, String cssPath, String title, double width, double height, Stage owner) {
+        try {
+            // Verify resources exist before attempting to load
+            if (WindowOpener.class.getResource(fxmlPath) == null) {
+                System.err.println("FXML resource not found: " + fxmlPath);
+                return;
+            }
+            
+            if (cssPath != null && !cssPath.isEmpty() && WindowOpener.class.getResource(cssPath) == null) {
+                System.err.println("CSS resource not found: " + cssPath);
+                // Continue without CSS rather than failing completely
+                openDialogWithOwner(fxmlPath, title, width, height, owner);
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(WindowOpener.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            
+            // Verify root was loaded successfully
+            if (root == null) {
+                System.err.println("Failed to load root from FXML: " + fxmlPath);
+                return;
+            }
+            
+            Scene scene = new Scene(root, width, height);
 
+            if (cssPath != null && !cssPath.isEmpty()) {
+                scene.getStylesheets().add(WindowOpener.class.getResource(cssPath).toExternalForm());
+            }
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(title);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(owner);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            dialogStage.setX((screenBounds.getWidth() - width) / 2);
+            dialogStage.setY((screenBounds.getHeight() - height) / 2);
+
+            dialogStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading dialog with CSS: " + fxmlPath);
+            System.err.println("IOException message: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Unexpected error loading dialog: " + fxmlPath);
+            System.err.println("Exception message: " + e.getMessage());
+        }
+    }
+    
+    public static void openDialog(String fxmlPath, String title, double width, double height) {
+        openDialogWithOwner(fxmlPath, title, width, height, EnrollmentSystem.mainStage);
+    }
+    
+    public static void openDialogWithOwner(String fxmlPath, String title, double width, double height, Stage owner) {
+        try {
+            // Verify resource exists
+            if (WindowOpener.class.getResource(fxmlPath) == null) {
+                System.err.println("FXML resource not found: " + fxmlPath);
+                return;
+            }
+            
+            FXMLLoader loader = new FXMLLoader(WindowOpener.class.getResource(fxmlPath));
+            Parent root = loader.load();
+            
+            // Verify root was loaded successfully
+            if (root == null) {
+                System.err.println("Failed to load root from FXML: " + fxmlPath);
+                return;
+            }
+            
+            Scene scene = new Scene(root, width, height);
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(title);
+            dialogStage.setScene(scene);
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(owner);  
+            dialogStage.initModality(Modality.WINDOW_MODAL); 
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            dialogStage.setX((screenBounds.getWidth() - width) / 2);
+            dialogStage.setY((screenBounds.getHeight() - height) / 2);
+
+            dialogStage.showAndWait();  
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error loading dialog: " + fxmlPath);
+            System.err.println("IOException message: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Unexpected error loading dialog: " + fxmlPath);
+            System.err.println("Exception message: " + e.getMessage());
+        }
+    }
+}

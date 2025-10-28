@@ -15,7 +15,13 @@ public class EnrollmentSystem extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            
+//            String semesterId = "SEM25-01";
+//            AutoScheduler scheduler = new AutoScheduler(semesterId);
+//            boolean success = scheduler.generateSchedules();
+//
+//            if (success) {
+//                System.out.println("Schedules generated successfully!");
+//            }
             mainStage = primaryStage;  
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));
             Scene scene = new Scene(root, 898, 543);

@@ -78,12 +78,14 @@ DROP TABLE IF EXISTS `card_payment`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `card_payment` (
   `payment_id` int(11) NOT NULL,
-  `card_type` enum('Visa','Mastercard','Amex','Debit') NOT NULL,
-  `card_last_four` varchar(4) DEFAULT NULL,
   `card_holder_name` varchar(100) DEFAULT NULL,
   `approval_code` varchar(50) DEFAULT NULL,
   `transaction_id` varchar(100) DEFAULT NULL,
   `bank_name` varchar(100) DEFAULT NULL,
+  `card_no` char(16) NOT NULL,
+  `expire_month` char(2) NOT NULL,
+  `expire_year` char(2) NOT NULL,
+  `cvc_no` char(3) NOT NULL,
   PRIMARY KEY (`payment_id`),
   CONSTRAINT `card_payment_ibfk_1` FOREIGN KEY (`payment_id`) REFERENCES `payment` (`payment_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -257,6 +259,39 @@ LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
 INSERT INTO `courses` VALUES ('IT101','IT101','Introduction to Computing',3.0,'PROG-01',1,'1st',0,0,30),('IT102','IT102','Computer Programming 1',3.0,'PROG-01',1,'1st',0,0,30),('IT103','IT103','Computer Programming 2',3.0,'PROG-01',1,'2nd',0,0,30),('IT104','IT104','Computer Hardware Fundamentals',3.0,'PROG-01',1,'1st',0,0,30),('IT105','IT105','Mathematics in the Modern World',3.0,'PROG-01',1,'1st',0,0,30),('IT106','IT106','Purposive Communication',3.0,'PROG-01',1,'1st',0,0,30),('IT107','IT107','Understanding the Self',3.0,'PROG-01',1,'2nd',0,0,30),('IT108','IT108','Programming Logic and Design',3.0,'PROG-01',1,'2nd',0,0,30),('IT109','IT109','Physical Education 1',2.0,'PROG-01',1,'1st',0,0,30),('IT110','IT110','Physical Education 2',2.0,'PROG-01',1,'2nd',0,0,30),('IT111','IT111','NSTP 1',3.0,'PROG-01',1,'1st',0,0,30),('IT112','IT112','NSTP 2',3.0,'PROG-01',1,'2nd',0,0,30),('IT113','IT113','Introduction to Human Computer Interaction',3.0,'PROG-01',1,'2nd',0,0,30),('IT114','IT114','Ethics',3.0,'PROG-01',1,'2nd',0,0,30),('IT115','IT115','Science, Technology and Society',3.0,'PROG-01',1,'2nd',0,0,30),('IT116','IT116','Introduction to Networking',3.0,'PROG-01',1,'2nd',0,0,30),('IT201','IT201','Data Structures and Algorithms',3.0,'PROG-01',2,'1st',0,0,30),('IT202','IT202','Database Management Systems',3.0,'PROG-01',2,'1st',0,0,30),('IT203','IT203','Object-Oriented Programming',3.0,'PROG-01',2,'1st',0,0,30),('IT204','IT204','Operating Systems',3.0,'PROG-01',2,'2nd',0,0,30),('IT205','IT205','Networking 1 (LAN Technologies)',3.0,'PROG-01',2,'1st',0,0,30),('IT206','IT206','Networking 2 (WAN Technologies)',3.0,'PROG-01',2,'2nd',0,0,30),('IT207','IT207','IT Elective 1 (Web Development)',3.0,'PROG-01',2,'2nd',0,0,30),('IT208','IT208','Discrete Mathematics',3.0,'PROG-01',2,'1st',0,0,30),('IT209','IT209','Data Communications',3.0,'PROG-01',2,'2nd',0,0,30),('IT210','IT210','PE 3',2.0,'PROG-01',2,'1st',0,0,30),('IT211','IT211','PE 4',2.0,'PROG-01',2,'2nd',0,0,30),('IT212','IT212','Professional Ethics',3.0,'PROG-01',2,'1st',0,0,30),('IT213','IT213','IT Project Management',3.0,'PROG-01',2,'2nd',0,0,30),('IT214','IT214','Advanced Database Systems',3.0,'PROG-01',2,'2nd',0,0,30),('IT215','IT215','Web Systems and Technologies 1',3.0,'PROG-01',2,'1st',0,0,30),('IT216','IT216','Web Systems and Technologies 2',3.0,'PROG-01',2,'2nd',0,0,30),('IT301','IT301','Software Engineering 1',3.0,'PROG-01',3,'1st',0,0,30),('IT302','IT302','Software Engineering 2',3.0,'PROG-01',3,'2nd',0,0,30),('IT303','IT303','System Integration and Architecture',3.0,'PROG-01',3,'2nd',0,0,30),('IT304','IT304','Mobile Application Development',3.0,'PROG-01',3,'1st',0,0,30),('IT305','IT305','Human-Computer Interaction',3.0,'PROG-01',3,'2nd',0,0,30),('IT306','IT306','Information Assurance and Security 1',3.0,'PROG-01',3,'1st',0,0,30),('IT307','IT307','Information Assurance and Security 2',3.0,'PROG-01',3,'2nd',0,0,30),('IT308','IT308','Technopreneurship',3.0,'PROG-01',3,'1st',0,0,30),('IT309','IT309','IT Elective 2 (Cloud Computing)',3.0,'PROG-01',3,'1st',0,0,30),('IT310','IT310','IT Elective 3 (Game Development)',3.0,'PROG-01',3,'2nd',0,0,30),('IT311','IT311','Research Methods in IT',3.0,'PROG-01',3,'2nd',0,0,30),('IT312','IT312','Free Elective 1',3.0,'PROG-01',3,'2nd',0,0,30),('IT313','IT313','Free Elective 2',3.0,'PROG-01',3,'1st',0,0,30),('IT314','IT314','IT Practicum Orientation',1.0,'PROG-01',3,'2nd',0,0,30),('IT315','IT315','IT Seminar 1',1.0,'PROG-01',3,'2nd',0,0,30),('IT316','IT316','Web Hosting and Deployment',3.0,'PROG-01',3,'1st',0,0,30),('IT401','IT401','Capstone Project 1',3.0,'PROG-01',4,'1st',0,0,30),('IT402','IT402','Capstone Project 2',3.0,'PROG-01',4,'2nd',0,0,30),('IT403','IT403','System Administration and Maintenance',3.0,'PROG-01',4,'1st',0,0,30),('IT404','IT404','IT Seminar 2',1.0,'PROG-01',4,'2nd',0,0,30),('IT405','IT405','IT Practicum / OJT',6.0,'PROG-01',4,'2nd',0,0,30),('IT406','IT406','Emerging Technologies',3.0,'PROG-01',4,'1st',0,0,30),('IT407','IT407','IT Elective 4 (Cybersecurity)',3.0,'PROG-01',4,'2nd',0,0,30),('IT408','IT408','IT Elective 5 (AI Basics)',3.0,'PROG-01',4,'1st',0,0,30),('IT409','IT409','IT Research Colloquium',3.0,'PROG-01',4,'2nd',0,0,30),('IT410','IT410','Free Elective 3',3.0,'PROG-01',4,'1st',0,0,30),('IT411','IT411','Free Elective 4',3.0,'PROG-01',4,'2nd',0,0,30),('IT412','IT412','IT in the Modern Enterprise',3.0,'PROG-01',4,'1st',0,0,30),('IT413','IT413','Cloud Security',3.0,'PROG-01',4,'2nd',0,0,30),('IT414','IT414','Server Management',3.0,'PROG-01',4,'2nd',0,0,30),('IT415','IT415','Digital Ethics',3.0,'PROG-01',4,'1st',0,0,30),('IT416','IT416','Data Analytics',3.0,'PROG-01',4,'2nd',0,0,30);
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `credit_card`
+--
+
+DROP TABLE IF EXISTS `credit_card`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `credit_card` (
+  `card_id` int(11) NOT NULL AUTO_INCREMENT,
+  `card_no` char(16) NOT NULL,
+  `card_holder_name` varchar(100) NOT NULL,
+  `expire_month` char(2) NOT NULL,
+  `expire_year` char(2) NOT NULL,
+  `cvc_no` char(3) NOT NULL,
+  `bank_name` varchar(100) DEFAULT NULL,
+  `money` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `status` enum('Active','Blocked','Expired') DEFAULT 'Active',
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`card_id`),
+  UNIQUE KEY `card_no` (`card_no`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `credit_card`
+--
+
+LOCK TABLES `credit_card` WRITE;
+/*!40000 ALTER TABLE `credit_card` DISABLE KEYS */;
+INSERT INTO `credit_card` VALUES (1,'9999 9999 9999 9','Joshua S. Santiago','08','28','321','BPI',100000000.00,'Active','2025-10-28 03:36:59'),(2,'1234 1234 1234 1','Wesley Tadique','12','27','456','BDO',10000.00,'Active','2025-10-28 03:34:05'),(3,'4321 4321 4321 4','Kyle Soriano','06','29','789','Metrobank',20000.00,'Active','2025-10-28 03:34:05');
+/*!40000 ALTER TABLE `credit_card` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -923,7 +958,7 @@ CREATE TABLE `time_slots` (
 
 LOCK TABLES `time_slots` WRITE;
 /*!40000 ALTER TABLE `time_slots` DISABLE KEYS */;
-INSERT INTO `time_slots` VALUES ('TS-MWF-0730','Monday','07:30:00','09:00:00','1',0),('TS-MWF-0900','Monday','09:00:00','10:30:00','1',0),('TS-MWF-1030','Monday','10:30:00','12:00:00','1',0),('TS-MWF-1300','Monday','13:00:00','14:30:00','1',0),('TS-MWF-1430','Monday','14:30:00','16:00:00','1',0),('TS-MWF-1600','Monday','16:00:00','17:30:00','1',0),('TS-TTH-0730','Tuesday','07:30:00','09:00:00','1',0),('TS-TTH-0900','Tuesday','09:00:00','10:30:00','1',0),('TS-TTH-1030','Tuesday','10:30:00','12:00:00','1',0),('TS-TTH-1300','Tuesday','13:00:00','14:30:00','1',0),('TS-TTH-1430','Tuesday','14:30:00','16:00:00','1',0),('TS-TTH-1600','Tuesday','16:00:00','17:30:00','1',0);
+INSERT INTO `time_slots` VALUES ('TS001','Monday','08:00:00','09:00:00','Period 1',1),('TS002','Monday','09:00:00','10:00:00','Period 2',1),('TS003','Monday','10:00:00','11:00:00','Period 3',1),('TS004','Monday','11:00:00','12:00:00','Period 4',1),('TS005','Monday','12:00:00','13:00:00','Universal Free Time',0),('TS006','Monday','13:00:00','14:00:00','Period 5',1),('TS007','Monday','14:00:00','15:00:00','Period 6',1),('TS008','Monday','15:00:00','16:00:00','Period 7',1),('TS009','Monday','16:00:00','17:00:00','Period 8',1),('TS010','Tuesday','08:00:00','09:00:00','Period 1',1),('TS011','Tuesday','09:00:00','10:00:00','Period 2',1),('TS012','Tuesday','10:00:00','11:00:00','Period 3',1),('TS013','Tuesday','11:00:00','12:00:00','Period 4',1),('TS014','Tuesday','12:00:00','13:00:00','Universal Free Time',0),('TS015','Tuesday','13:00:00','14:00:00','Period 5',1),('TS016','Tuesday','14:00:00','15:00:00','Period 6',1),('TS017','Tuesday','15:00:00','16:00:00','Period 7',1),('TS018','Tuesday','16:00:00','17:00:00','Period 8',1),('TS019','Wednesday','08:00:00','09:00:00','Period 1',1),('TS020','Wednesday','09:00:00','10:00:00','Period 2',1),('TS021','Wednesday','10:00:00','11:00:00','Period 3',1),('TS022','Wednesday','11:00:00','12:00:00','Period 4',1),('TS023','Wednesday','12:00:00','13:00:00','Universal Free Time',0),('TS024','Wednesday','13:00:00','14:00:00','Period 5',1),('TS025','Wednesday','14:00:00','15:00:00','Period 6',1),('TS026','Wednesday','15:00:00','16:00:00','Period 7',1),('TS027','Wednesday','16:00:00','17:00:00','Period 8',1),('TS028','Thursday','08:00:00','09:00:00','Period 1',1),('TS029','Thursday','09:00:00','10:00:00','Period 2',1),('TS030','Thursday','10:00:00','11:00:00','Period 3',1),('TS031','Thursday','11:00:00','12:00:00','Period 4',1),('TS032','Thursday','12:00:00','13:00:00','Universal Free Time',0),('TS033','Thursday','13:00:00','14:00:00','Period 5',1),('TS034','Thursday','14:00:00','15:00:00','Period 6',1),('TS035','Thursday','15:00:00','16:00:00','Period 7',1),('TS036','Thursday','16:00:00','17:00:00','Period 8',1),('TS037','Friday','08:00:00','09:00:00','Period 1',1),('TS038','Friday','09:00:00','10:00:00','Period 2',1),('TS039','Friday','10:00:00','11:00:00','Period 3',1),('TS040','Friday','11:00:00','12:00:00','Period 4',1),('TS041','Friday','12:00:00','13:00:00','Universal Free Time',0),('TS042','Friday','13:00:00','14:00:00','Period 5',1),('TS043','Friday','14:00:00','15:00:00','Period 6',1),('TS044','Friday','15:00:00','16:00:00','Period 7',1),('TS045','Friday','16:00:00','17:00:00','Period 8',1);
 /*!40000 ALTER TABLE `time_slots` ENABLE KEYS */;
 UNLOCK TABLES;
 
