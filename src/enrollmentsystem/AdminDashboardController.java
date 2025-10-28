@@ -330,8 +330,15 @@ public class AdminDashboardController implements Initializable {
             String username = studentId;
             String password = "1234" + fullEnrollee.getLastName();
             
-            // 3. Create user account
-            int userId = createUserAccount(username, fullEnrollee.getEmailAddress(), password, "Student", conn);
+            // 3. Generate unique university email
+            String universityEmail = generateUniqueEmail(
+                fullEnrollee.getFirstName(), 
+                fullEnrollee.getLastName(), 
+                conn
+            );
+            
+            // 4. Create user account with university email
+            int userId = createUserAccount(username, universityEmail, password, "Student", conn);
             if (userId == 0) {
                 conn.rollback();
                 return false;
@@ -357,8 +364,9 @@ public class AdminDashboardController implements Initializable {
                 "You are officially enrolled! Log in using your student account.\n\n" +
                 "Student ID: %s\n" +
                 "Username: %s\n" +
-                "Password: %s",
-                studentId, username, password
+                "Password: %s\n" +
+                "University Email: %s",
+                studentId, username, password, universityEmail
             );
             
             if (!updateEnrolleeStatus(enrollee.getEnrolleeId(), "Enrolled", credentialsMessage, conn)) {
@@ -372,7 +380,7 @@ public class AdminDashboardController implements Initializable {
             conn.commit();
             
             // Show success message with credentials
-            showCredentialsDialog(enrollee.getStudentName(), studentId, username, password);
+            showCredentialsDialog(enrollee.getStudentName(), studentId, username, password, universityEmail);
             
             return true;
             
@@ -400,7 +408,7 @@ public class AdminDashboardController implements Initializable {
     /**
      * Shows credentials dialog with copy functionality
      */
-    private void showCredentialsDialog(String studentName, String studentId, String username, String password) {
+    private void showCredentialsDialog(String studentName, String studentId, String username, String password, String universityEmail) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Enrollment Approved");
         alert.setHeaderText("Student Account Created for " + studentName);
@@ -411,7 +419,8 @@ public class AdminDashboardController implements Initializable {
             "╚═══════════════════════════════════╝\n\n" +
             "Student ID: %s\n" +
             "Username: %s\n" +
-            "Password: %s\n\n" +
+            "Password: %s\n" +
+            "University Email: %s\n\n" +
             "═══════════════════════════════════════\n\n" +
             "IMPORTANT INSTRUCTIONS:\n\n" +
             "1. These credentials have been sent to the\n" +
@@ -421,22 +430,24 @@ public class AdminDashboardController implements Initializable {
             "3. The enrollee account will remain active\n" +
             "   until the student logs in for the first time.\n\n" +
             "═══════════════════════════════════════",
-            studentId, username, password
+            studentId, username, password, universityEmail
         );
         
         alert.setContentText(content);
-        alert.getDialogPane().setPrefWidth(500);
+        alert.getDialogPane().setPrefWidth(550);
         
-        // Add copy button
-        ButtonType copyButton = new ButtonType("Copy Credentials");
-        alert.getButtonTypes().add(0, copyButton);
+        // Remove default OK button and add custom buttons in order
+        alert.getButtonTypes().clear();
+        ButtonType copyButton = new ButtonType("Copy Credentials", ButtonBar.ButtonData.LEFT);
+        ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().addAll(copyButton, okButton);
         
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == copyButton) {
             // Copy to clipboard
             String credentials = String.format(
-                "Student ID: %s\nUsername: %s\nPassword: %s",
-                studentId, username, password
+                "Student ID: %s\nUsername: %s\nPassword: %s\nUniversity Email: %s",
+                studentId, username, password, universityEmail
             );
             javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
             javafx.scene.input.ClipboardContent content2 = new javafx.scene.input.ClipboardContent();
@@ -444,7 +455,7 @@ public class AdminDashboardController implements Initializable {
             clipboard.setContent(content2);
             
             showInfo("Copied", "Credentials copied to clipboard!");
-            showCredentialsDialog(studentName, studentId, username, password); // Show again
+            showCredentialsDialog(studentName, studentId, username, password, universityEmail); // Show again
         }
     }
     
@@ -570,6 +581,45 @@ public class AdminDashboardController implements Initializable {
         int year = java.time.LocalDate.now().getYear() % 100;
         int random = (int)(Math.random() * 9000) + 1000;
         return String.format("STU%02d-%04d", year, random);
+    }
+    
+    /**
+     * Generate unique university email in format: LastName.FirstName@abakadauni.edu.ph
+     * If exists, append number: LastName.FirstName2@abakadauni.edu.ph
+     */
+    private String generateUniqueEmail(String firstName, String lastName, Connection conn) throws SQLException {
+        // Clean names (remove spaces, special chars, convert to lowercase)
+        String cleanFirstName = firstName.replaceAll("[^a-zA-Z]", "").toLowerCase();
+        String cleanLastName = lastName.replaceAll("[^a-zA-Z]", "").toLowerCase();
+        
+        String baseEmail = cleanLastName + "." + cleanFirstName + "@abakadauni.edu.ph";
+        String email = baseEmail;
+        int counter = 2;
+        
+        // Check if email exists
+        String checkQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
+        
+        while (true) {
+            try (PreparedStatement ps = conn.prepareStatement(checkQuery)) {
+                ps.setString(1, email);
+                ResultSet rs = ps.executeQuery();
+                
+                if (rs.next() && rs.getInt(1) == 0) {
+                    // Email doesn't exist, we can use it
+                    System.out.println("Generated unique university email: " + email);
+                    return email;
+                }
+                
+                // Email exists, try next number
+                email = cleanLastName + "." + cleanFirstName + counter + "@abakadauni.edu.ph";
+                counter++;
+                
+                // Safety limit to prevent infinite loop
+                if (counter > 100) {
+                    throw new SQLException("Unable to generate unique email after 100 attempts");
+                }
+            }
+        }
     }
     
     private int createUserAccount(String username, String email, String password, String access, Connection conn) throws SQLException {
