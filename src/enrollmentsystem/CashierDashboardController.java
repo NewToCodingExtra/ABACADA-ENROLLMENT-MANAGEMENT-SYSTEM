@@ -3,9 +3,12 @@ package enrollmentsystem;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
+import javafx.util.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -74,6 +77,8 @@ public class CashierDashboardController implements Initializable {
     private String cashierId;
     private ObservableList<PendingPayment> pendingPaymentsList;
 
+    private Timeline refreshTimeline;
+
     /**
      * Initializes the controller class.
      */
@@ -95,10 +100,7 @@ public class CashierDashboardController implements Initializable {
         
         System.out.println("Cashier Dashboard initialized for cashier: " + cashierId);
     }
-    
-    /**
-     * Setup table columns with proper cell factories
-     */
+ 
     private void setupTableColumns() {
         // Enrollee ID Column
         enrolleeIDCol.setCellValueFactory(new PropertyValueFactory<>("enrolleeId"));
@@ -310,5 +312,23 @@ public class CashierDashboardController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    private void startAutoRefresh(int intervalSeconds) {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+        }
+
+        refreshTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(intervalSeconds), event -> loadPendingPayments())
+        );
+        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.play();
+    }
+
+    // Stop refreshing when the controller is closed (optional)
+    public void stopAutoRefresh() {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+        }
     }
 }

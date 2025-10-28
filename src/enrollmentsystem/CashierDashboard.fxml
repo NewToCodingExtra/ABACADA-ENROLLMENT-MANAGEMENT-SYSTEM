@@ -72,15 +72,14 @@
                         <children>
                            <TableView fx:id="paidEnrolleeTable" layoutX="40.0" layoutY="12.0" prefHeight="460.0" prefWidth="833.0">
                               <columns>
-                                 <TableColumn editable="false" prefWidth="89.60003280639648" text="Payment ID" />
                                  <TableColumn fx:id="enrolleeIDCol" editable="false" prefWidth="89.60003280639648" text="Enrollee ID" /> 
-                                 <TableColumn fx:id="enrolleeCol" editable="false" prefWidth="227.1999969482422" text="Enrollee's Name" />
-                               <TableColumn fx:id="programCol" editable="false" minWidth="0.0" prefWidth="96.0" text="Program" />
-                                 <TableColumn fx:id="yearLevelCol" editable="false" minWidth="0.0" prefWidth="50.4000244140625" text="Year" />
-                               <TableColumn fx:id="amountPaidCol" editable="false" minWidth="0.0" prefWidth="127.20001220703125" text="Amount Paid" />
-                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="94.40008544921875" text="Payment Date" />
-                               <TableColumn fx:id="paymentTypeCol" minWidth="0.0" prefWidth="70.0" text="Payment Method" />
-                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="200.0" text="Accept/Decline" />
+                                 <TableColumn fx:id="enrolleeCol" editable="false" prefWidth="216.80006408691406" text="Enrollee's Name" />
+                               <TableColumn fx:id="programCol" editable="false" minWidth="0.0" prefWidth="77.5999755859375" text="Program" />
+                                 <TableColumn fx:id="yearLevelCol" editable="false" minWidth="0.0" prefWidth="48.7999267578125" text="Year" />
+                               <TableColumn fx:id="amountPaidCol" editable="false" minWidth="0.0" prefWidth="111.99993896484375" text="Amount Paid" />
+                               <TableColumn fx:id="paymentTypeCol" minWidth="0.0" prefWidth="120.79998779296875" text="Pay Method" />
+                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="166.39996337890625" text="Accept/Decline" />
+                                 <TableColumn prefWidth="75.0" text="Column X" />
                               </columns>
                            </TableView>
                         </children>
