@@ -44,14 +44,14 @@
     <Label styleClass="student-id" text="CASHIER" />
 
     <VBox alignment="CENTER" spacing="50">
-        <HBox alignment="CENTER" prefHeight="90.0" prefWidth="210.0" styleClass="stat-card">
-            <Label minWidth="-Infinity" styleClass="stat-title" text="Pending Payments" />
-            <Label styleClass="stat-value" text="5" />
+        <HBox alignment="CENTER" prefHeight="58.0" prefWidth="250.0" styleClass="stat-card">
+            <Label minWidth="-Infinity" prefHeight="18.0" prefWidth="154.0" styleClass="stat-title" text="Pending Payments" />
+            <Label fx:id="pendingLabel" styleClass="stat-value" text="5" />
         </HBox>
 
-        <HBox alignment="CENTER" prefHeight="91.0" prefWidth="210.0" styleClass="stat-card">
+        <HBox alignment="CENTER" prefHeight="51.0" prefWidth="250.0" styleClass="stat-card">
             <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="18.0" prefWidth="150.0" styleClass="stat-title" text="Paid" />
-            <Label styleClass="stat-value" text="5" />
+            <Label fx:id="paidLabel" styleClass="stat-value" text="5" />
         </HBox>
 
      
@@ -70,14 +70,17 @@
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView layoutX="40.0" layoutY="12.0" prefHeight="460.0" prefWidth="753.0">
-                              <columns> 
-                                 <TableColumn prefWidth="241.0" text="Student's Name" />
-                               <TableColumn minWidth="0.0" prefWidth="96.0" text="Course" />
-                               <TableColumn minWidth="0.0" prefWidth="110.0" text="Amount Paid" />
-                               <TableColumn minWidth="0.0" prefWidth="120.0" text="Action" />
-                               <TableColumn minWidth="0.0" prefWidth="148.0" text="Approval Status" />
-                               <TableColumn minWidth="0.0" prefWidth="118.0" text="Payment Status" />
+                           <TableView fx:id="paidEnrolleeTable" layoutX="40.0" layoutY="12.0" prefHeight="460.0" prefWidth="833.0">
+                              <columns>
+                                 <TableColumn editable="false" prefWidth="89.60003280639648" text="Payment ID" />
+                                 <TableColumn fx:id="enrolleeIDCol" editable="false" prefWidth="89.60003280639648" text="Enrollee ID" /> 
+                                 <TableColumn fx:id="enrolleeCol" editable="false" prefWidth="227.1999969482422" text="Enrollee's Name" />
+                               <TableColumn fx:id="programCol" editable="false" minWidth="0.0" prefWidth="96.0" text="Program" />
+                                 <TableColumn fx:id="yearLevelCol" editable="false" minWidth="0.0" prefWidth="50.4000244140625" text="Year" />
+                               <TableColumn fx:id="amountPaidCol" editable="false" minWidth="0.0" prefWidth="127.20001220703125" text="Amount Paid" />
+                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="94.40008544921875" text="Payment Date" />
+                               <TableColumn fx:id="paymentTypeCol" minWidth="0.0" prefWidth="70.0" text="Payment Method" />
+                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="118.0" text="Accept/Decline" />
                               </columns>
                            </TableView>
                         </children>

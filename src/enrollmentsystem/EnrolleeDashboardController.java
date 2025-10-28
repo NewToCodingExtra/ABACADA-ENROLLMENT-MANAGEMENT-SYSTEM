@@ -8,9 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.geometry.Pos;
-import java.time.LocalDateTime;
 import java.sql.*;
 
 public class EnrolleeDashboardController {
@@ -19,6 +17,7 @@ public class EnrolleeDashboardController {
     private boolean isPaid = false;
     private String cashierComment = "None";
     private String adminComment = "None";
+    private InvoiceInfo invoiceInfo = null;
     
     @FXML
     private Label studentNameLabel;
@@ -68,12 +67,12 @@ public class EnrolleeDashboardController {
     public void initialize() {
         System.out.println("Initializing Enrollee Dashboard...");
         
-        // Load enrollee data using EnrolleeDataLoader
         enrollee = EnrolleeDataLoader.loadEnrolleeData();
         
         if (enrollee != null) {
             System.out.println("Enrollee loaded successfully: " + enrollee.getEnrolleeId());
             loadPaymentAndComments();
+            loadInvoiceInfo();
             loadEnrolleeInfo();
             setupOverviewTable();
             setupEvaluationTable();
@@ -88,10 +87,9 @@ public class EnrolleeDashboardController {
      */
     private void loadPaymentAndComments() {
         String query = "SELECT " +
-                      "(SELECT COUNT(*) FROM payment p WHERE p.enrollee_id = e.enrollee_id) as payment_count, " +
-                      "(SELECT c.first_name FROM cashier c WHERE c.cashier_id = " +
-                      "(SELECT p.cashier_id FROM payment p WHERE p.enrollee_id = e.enrollee_id ORDER BY p.payment_date DESC LIMIT 1)) as cashier_name, " +
-                      "(SELECT p.remarks FROM payment p WHERE p.enrollee_id = e.enrollee_id ORDER BY p.payment_date DESC LIMIT 1) as cashier_comment, " +
+                      "e.payment_status, " +
+                      "(SELECT p.remarks FROM payment p WHERE p.enrollee_id = e.enrollee_id ORDER BY p.payment_date DESC LIMIT 1) as payment_remarks, " +
+                      "e.cashier_rejection_reason, " +
                       "e.reviewed_by " +
                       "FROM enrollees e " +
                       "WHERE e.enrollee_id = ?";
@@ -103,12 +101,22 @@ public class EnrolleeDashboardController {
             ResultSet rs = ps.executeQuery();
             
             if (rs.next()) {
-                int paymentCount = rs.getInt("payment_count");
-                isPaid = paymentCount > 0;
+                String paymentStatus = rs.getString("payment_status");
                 
-                String cashierName = rs.getString("cashier_name");
-                String remarks = rs.getString("cashier_comment");
-                cashierComment = (remarks != null && !remarks.isEmpty()) ? remarks : "None";
+                if ("Verified".equals(paymentStatus)) {
+                    isPaid = true;
+                    cashierComment = "Payment verified and accepted";
+                } else if ("Rejected".equals(paymentStatus)) {
+                    isPaid = false;
+                    String rejectionReason = rs.getString("cashier_rejection_reason");
+                    cashierComment = "Payment rejected: " + (rejectionReason != null ? rejectionReason : "No reason provided");
+                } else if ("Paid_Pending_Verification".equals(paymentStatus)) {
+                    isPaid = false;
+                    cashierComment = "Payment pending cashier verification";
+                } else {
+                    isPaid = false;
+                    cashierComment = "No payment made yet";
+                }
                 
                 Integer reviewedBy = (Integer) rs.getObject("reviewed_by");
                 if (reviewedBy != null) {
@@ -119,6 +127,18 @@ public class EnrolleeDashboardController {
         } catch (SQLException e) {
             System.err.println("Error loading payment and comments: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Load invoice information if payment is verified
+     */
+    private void loadInvoiceInfo() {
+        if (isPaid) {
+            invoiceInfo = PaymentMonitor.getEnrolleeInvoice(enrollee.getEnrolleeId());
+            if (invoiceInfo != null) {
+                System.out.println("Invoice loaded: " + invoiceInfo.getInvoiceNumber());
+            }
         }
     }
     
@@ -148,15 +168,12 @@ public class EnrolleeDashboardController {
     }
   
     private void loadEnrolleeInfo() {
-        // Set student name with tooltip for long names
         String fullName = buildFullName();
         studentNameLabel.setText(fullName);
         
-        // Add tooltip to show full name on hover
         Tooltip nameTooltip = new Tooltip(fullName);
         Tooltip.install(studentNameLabel, nameTooltip);
         
-        // Set student ID (enrollee ID)
         studentIdLabel.setText(enrollee.getEnrolleeId() != null ? enrollee.getEnrolleeId() : "N/A");
         
         System.out.println("Dashboard loaded for: " + fullName);
@@ -185,119 +202,60 @@ public class EnrolleeDashboardController {
     }
 
     private void setupOverviewTable() {
-        // Make table unscrollable - disable scrollbars
-        overViewTable.setFixedCellSize(50); // Fixed row height
-        
-        // Disable scrollbars
+        overViewTable.setFixedCellSize(50);
         overViewTable.setStyle("-fx-background-color: transparent;");
         
-        // Setup cell value factories with centered text
         semCol.setCellValueFactory(cellData -> cellData.getValue().semesterProperty());
         courseCol.setCellValueFactory(cellData -> cellData.getValue().courseProperty());
         sectionCol.setCellValueFactory(cellData -> cellData.getValue().sectionProperty());
         yearCol.setCellValueFactory(cellData -> cellData.getValue().yearProperty());
         
-        // Center align all columns
-        semCol.setCellFactory(col -> {
-            TableCell<OverviewData, String> cell = new TableCell<OverviewData, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item);
-                        setAlignment(Pos.CENTER);
-                    }
-                }
-            };
-            return cell;
-        });
+        semCol.setCellFactory(col -> createCenteredCell());
+        courseCol.setCellFactory(col -> createCenteredCell());
+        sectionCol.setCellFactory(col -> createCenteredCell());
+        yearCol.setCellFactory(col -> createCenteredCell());
         
-        courseCol.setCellFactory(col -> {
-            TableCell<OverviewData, String> cell = new TableCell<OverviewData, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item);
-                        setAlignment(Pos.CENTER);
-                    }
-                }
-            };
-            return cell;
-        });
-        
-        sectionCol.setCellFactory(col -> {
-            TableCell<OverviewData, String> cell = new TableCell<OverviewData, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item);
-                        setAlignment(Pos.CENTER);
-                    }
-                }
-            };
-            return cell;
-        });
-        
-        yearCol.setCellFactory(col -> {
-            TableCell<OverviewData, String> cell = new TableCell<OverviewData, String>() {
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(item);
-                        setAlignment(Pos.CENTER);
-                    }
-                }
-            };
-            return cell;
-        });
-        
-        // Create data for the table
         ObservableList<OverviewData> overviewData = FXCollections.observableArrayList();
         
-        // Since enrollee is not yet enrolled, show N/A for most fields
-        String currentYear = String.valueOf(LocalDateTime.now().getYear());
+        String currentYear = String.valueOf(java.time.LocalDateTime.now().getYear());
         
-        OverviewData data = new OverviewData(
-            "N/A",  // Semester - not enrolled yet
-            "N/A",  // Course - not enrolled yet
-            "N/A",  // Section - not enrolled yet
-            currentYear  // Current year
-        );
-        
+        OverviewData data = new OverviewData("N/A", "N/A", "N/A", currentYear);
         overviewData.add(data);
         overViewTable.setItems(overviewData);
         
-        // Set table height based on content (1 row + header)
-        overViewTable.setPrefHeight(80); // Header + 1 row
+        overViewTable.setPrefHeight(80);
         overViewTable.setMinHeight(80);
         overViewTable.setMaxHeight(80);
         
         System.out.println("Overview table setup complete");
     }
+    
+    private TableCell<OverviewData, String> createCenteredCell() {
+        return new TableCell<OverviewData, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item);
+                    setAlignment(Pos.CENTER);
+                }
+            }
+        };
+    }
 
     private void setupEvaluationTable() {
-        // Make table unscrollable - fixed size
-        evalTable.setFixedCellSize(40); // Fixed row height
+        evalTable.setFixedCellSize(40);
         
-        // Setup cell value factories
         evalCol.setCellValueFactory(cellData -> cellData.getValue().evaluationProperty());
         statusCol.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
         
-        // Custom cell factory for status column to handle hyperlink for payment
         statusCol.setCellFactory(column -> new TableCell<EvaluationData, String>() {
             private final Hyperlink hyperlink = new Hyperlink();
+            private final Hyperlink receiptLink = new Hyperlink();
             private final Label label = new Label();
+            private final HBox hbox = new HBox(10);
             
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -308,9 +266,29 @@ public class EnrolleeDashboardController {
                 } else {
                     EvaluationData rowData = getTableView().getItems().get(getIndex());
                     
-                    // Check if this is the Payment Status row
                     if (rowData.getEvaluation().equals("Payment Status")) {
-                        if (item.equals("Not Paid")) {
+                        hbox.getChildren().clear();
+                        
+                        if (isPaid && invoiceInfo != null) {
+                            label.setText("Paid");
+                            label.setTextFill(Color.GREEN);
+                            label.setStyle("-fx-font-weight: bold;");
+                            
+                            receiptLink.setText("(Receipt)");
+                            receiptLink.setTextFill(Color.RED);
+                            receiptLink.setStyle("-fx-font-style: italic;");
+                            receiptLink.setOnAction(e -> handleReceiptLink());
+                            
+                            hbox.getChildren().addAll(label, receiptLink);
+                            hbox.setAlignment(Pos.CENTER_LEFT);
+                            setGraphic(hbox);
+                        } else if ("Paid_Pending_Verification".equals(item)) {
+                            // Show orange pending text
+                            label.setText("Pending Verification");
+                            label.setTextFill(Color.ORANGE);
+                            label.setStyle("-fx-font-weight: bold;");
+                            setGraphic(label);
+                        } else if (item.equals("Not Paid")) {
                             // Show red hyperlink for unpaid
                             hyperlink.setText(item);
                             hyperlink.setTextFill(Color.RED);
@@ -318,10 +296,10 @@ public class EnrolleeDashboardController {
                             hyperlink.setOnAction(e -> handlePaymentLink());
                             setGraphic(hyperlink);
                         } else {
-                            // Show green text for paid
+                            // Normal text for other statuses
                             label.setText(item);
-                            label.setTextFill(Color.GREEN);
-                            label.setStyle("-fx-font-weight: bold;");
+                            label.setTextFill(Color.BLACK);
+                            label.setStyle("");
                             setGraphic(label);
                         }
                     } else {
@@ -337,42 +315,38 @@ public class EnrolleeDashboardController {
         
         ObservableList<EvaluationData> evaluationData = FXCollections.observableArrayList();
         
-        // Application Status
         String enrollmentStatus = enrollee.getEnrollmentStatus() != null ? 
                                   enrollee.getEnrollmentStatus() : "Pending";
         evaluationData.add(new EvaluationData("Application Status", enrollmentStatus));
         
-        // Form Status
         String formStatus = enrollee.hasFilledUpForm() ? "Completed" : "Incomplete";
         evaluationData.add(new EvaluationData("Form Status", formStatus));
         
-        // Document Submission
         String docStatus = checkDocumentStatus();
         evaluationData.add(new EvaluationData("Document Submission", docStatus));
         
-        // Program Applied
         String program = enrollee.getProgramAppliedFor() != null ? 
                         enrollee.getProgramAppliedFor() : "Not Selected";
         evaluationData.add(new EvaluationData("Program Applied", program));
         
-        // Year Level
         String yearLevel = enrollee.getYearLevel() != null ? 
                           enrollee.getYearLevel() : "Not Specified";
         evaluationData.add(new EvaluationData("Year Level", yearLevel));
         
-        // Payment Status (NEW)
-        String paymentStatus = isPaid ? "Paid" : "Not Paid";
+        // Payment Status
+        String paymentStatus;
+        if (isPaid && invoiceInfo != null) {
+            paymentStatus = "Paid";
+        } else {
+            paymentStatus = loadPaymentStatusFromDB();
+        }
         evaluationData.add(new EvaluationData("Payment Status", paymentStatus));
         
-        // Cashier Comment (NEW)
         evaluationData.add(new EvaluationData("Cashier Comment", cashierComment));
-        
-        // Admin Comment (NEW)
         evaluationData.add(new EvaluationData("Admin Comment", adminComment));
         
         evalTable.setItems(evaluationData);
         
-        // Set table height based on content (8 rows + header)
         int rowCount = evaluationData.size();
         double headerHeight = 30;
         double rowHeight = 40;
@@ -384,14 +358,95 @@ public class EnrolleeDashboardController {
         
         System.out.println("Evaluation table setup complete with " + rowCount + " rows");
     }
+    
+    /**
+     * Load payment status from database
+     */
+    private String loadPaymentStatusFromDB() {
+        String query = "SELECT payment_status FROM enrollees WHERE enrollee_id = ?";
+        
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            
+            ps.setString(1, enrollee.getEnrolleeId());
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                String status = rs.getString("payment_status");
+                if ("Verified".equals(status)) {
+                    return "Paid";
+                } else if ("Paid_Pending_Verification".equals(status)) {
+                    return "Paid_Pending_Verification";
+                } else if ("Rejected".equals(status)) {
+                    return "Rejected";
+                }
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error loading payment status: " + e.getMessage());
+        }
+        
+        return "Not Paid";
+    }
+    
+    /**
+     * Handle receipt link click
+     */
+    private void handleReceiptLink() {
+        if (invoiceInfo != null) {
+            showReceiptDialog();
+        } else {
+            showInfoDialog("No Receipt", "Receipt information is not available.");
+        }
+    }
+    
+    /**
+     * Show receipt dialog with invoice details
+     */
+    private void showReceiptDialog() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Payment Receipt");
+        alert.setHeaderText("Official Receipt");
+        
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMMM dd, yyyy");
+        
+        String content = String.format(
+            "═══════════════════════════════════════\n" +
+            "        ABAKADA UNIVERSITY\n" +
+            "        OFFICIAL RECEIPT\n" +
+            "═══════════════════════════════════════\n\n" +
+            "Invoice Number: %s\n" +
+            "Date: %s\n" +
+            "Student: %s\n" +
+            "Enrollee ID: %s\n\n" +
+            "───────────────────────────────────────\n" +
+            "Description: Tuition Fee Payment\n" +
+            "Payment Type: %s\n" +
+            "Amount Paid: ₱%,.2f\n" +
+            "───────────────────────────────────────\n\n" +
+            "Total Amount: ₱%,.2f\n\n" +
+            "═══════════════════════════════════════\n" +
+            "     Thank you for your payment!\n" +
+            "═══════════════════════════════════════",
+            invoiceInfo.getInvoiceNumber(),
+            sdf.format(invoiceInfo.getInvoiceDate()),
+            buildFullName(),
+            enrollee.getEnrolleeId(),
+            invoiceInfo.getPaymentType(),
+            invoiceInfo.getTotalAmount(),
+            invoiceInfo.getTotalAmount()
+        );
+        
+        alert.setContentText(content);
+        alert.getDialogPane().setPrefWidth(500);
+        alert.showAndWait();
+    }
 
     private void handlePaymentLink() {
-        WindowOpener.openDialogWithCSS("/enrollmentsystem/PaymentMethod.fxml", "/paymentwindow.css", "Choose payment method", 429, 300);
-//        showInfoDialog("Payment Required", 
-//            "Your enrollment is not yet paid.\n\n" +
-//            "Please proceed to the cashier to complete your payment.\n\n" +
-//            "Enrollment Fee: ₱5,000.00\n" +
-//            "Location: Cashier's Office, Ground Floor");
+        WindowOpener.openDialogWithCSS("/enrollmentsystem/PaymentMethod.fxml", 
+                                      "/paymentwindow.css", 
+                                      "Choose payment method", 
+                                      429, 300);
     }
   
     private String checkDocumentStatus() {
@@ -446,10 +501,10 @@ public class EnrolleeDashboardController {
         return enrollee;
     }
     
-    // Getters for payment status and comments (for other components if needed)
     public boolean isPaid() { return isPaid; }
     public String getCashierComment() { return cashierComment; }
     public String getAdminComment() { return adminComment; }
+    public InvoiceInfo getInvoiceInfo() { return invoiceInfo; }
     
     public static class OverviewData {
         private final javafx.beans.property.SimpleStringProperty semester;
