@@ -12,12 +12,16 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@admindashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.AdminDashboardController">
+<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@admindashboard.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="enrollmentsystem.AdminDashboardController">
 
     <children>
 
         <!-- HEADER -->
-        <HBox fx:id="topBar" prefHeight="100" styleClass="top-bar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <HBox fx:id="topBar" prefHeight="100" styleClass="top-bar"
+              AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
             <children>
                 <ImageView fitHeight="60" fitWidth="60">
                     <image>
@@ -29,91 +33,110 @@
         </HBox>
 
         <!-- MAIN BODY -->
-        <HBox spacing="10" styleClass="main-content-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
+        <HBox spacing="10" styleClass="main-content-container"
+              AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0"
+              AnchorPane.rightAnchor="0" AnchorPane.topAnchor="100">
 
             <!-- SIDEBAR -->
+            <VBox fx:id="sidebar" alignment="TOP_CENTER" prefWidth="250" spacing="15" styleClass="sidebar">
+                <ImageView fx:id="adminLogo" fitHeight="100" fitWidth="100" styleClass="student-logo">
+                    <image>
+                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
+                    </image>
+                </ImageView>
 
-<VBox fx:id="sidebar" alignment="TOP_CENTER" prefWidth="250" spacing="15" styleClass="sidebar">
-    <ImageView fx:id="adminLogo" fitHeight="100" fitWidth="100" styleClass="student-logo">
-        <image>
-            <Image url="@images/STARLIGHT%20ACADEMY.png" />
-        </image>
-    </ImageView>
+                <Label fx:id="studentName" styleClass="student-name" text="ADMIN Full Name" />
+                <Label fx:id="studentEmail" styleClass="student-email" text="admin@abakada.admin" />
+                <Label fx:id="studentId" styleClass="student-id" text="ADMIN" />
 
-    <Label styleClass="student-name" text="ADMIN Full Name" />
-    <Label styleClass="student-email" text="admin@abakada.admin" />
-    <Label styleClass="student-id" text="ADMIN" />
+                <VBox alignment="CENTER" spacing="10">
+                    <HBox alignment="CENTER" styleClass="stat-card">
+                        <Label styleClass="stat-title" text="Enrolled" />
+                        <Region prefHeight="23.0" prefWidth="66.0" HBox.hgrow="ALWAYS" />
+                        <Label styleClass="stat-value" text="5" />
+                    </HBox>
 
-    <VBox alignment="CENTER" spacing="10">
-        <HBox alignment="CENTER" styleClass="stat-card">
-            <Label styleClass="stat-title" text="Enrolled" />
-                  <Region prefHeight="23.0" prefWidth="66.0" HBox.hgrow="ALWAYS" />
-            <Label styleClass="stat-value" text="5" />
-        </HBox>
+                    <HBox alignment="CENTER" styleClass="stat-card">
+                        <Label styleClass="stat-title" text="Pending Enrollment" />
+                        <Region prefHeight="23.0" prefWidth="3.0" HBox.hgrow="ALWAYS" />
+                        <Label styleClass="stat-value" text="5" />
+                    </HBox>
 
-        <HBox alignment="CENTER" styleClass="stat-card">
-            <Label styleClass="stat-title" text="Pending Enrollment" />
-                  <Region prefHeight="23.0" prefWidth="3.0" HBox.hgrow="ALWAYS" />
-            <Label styleClass="stat-value" text="5" />
-        </HBox>
+                    <HBox alignment="CENTER" styleClass="stat-card">
+                        <Label styleClass="stat-title" text="Pending Payments" />
+                        <Region prefHeight="23.0" prefWidth="13.0" HBox.hgrow="ALWAYS" />
+                        <Label styleClass="stat-value" text="5" />
+                    </HBox>
 
-        <HBox alignment="CENTER" styleClass="stat-card">
-            <Label styleClass="stat-title" text="Pending Payments" />
-                  <Region prefHeight="23.0" prefWidth="13.0" HBox.hgrow="ALWAYS" />
-            <Label styleClass="stat-value" text="5" />
-        </HBox>
-
-        <HBox alignment="CENTER" styleClass="stat-card">
-            <Label styleClass="stat-title" text="Paid" />
-                  <Region prefHeight="23.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
-            <Label styleClass="stat-value" text="5" />
-        </HBox>
-    </VBox>
-</VBox>
-
-
-
-
-
+                    <HBox alignment="CENTER" styleClass="stat-card">
+                        <Label styleClass="stat-title" text="Paid" />
+                        <Region prefHeight="23.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
+                        <Label styleClass="stat-value" text="5" />
+                    </HBox>
+                </VBox>
+            </VBox>
 
             <!-- MAIN CONTENT -->
-            <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="0" styleClass="main-content" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+            <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="0"
+                  styleClass="main-content" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <TabPane fx:id="mainTabPane" styleClass="tab-pane"
+                         tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
+
+                        <!-- HOME TAB -->
                         <Tab style="-fx-text-fill: #ffffff;" text="Home">
                             <AnchorPane styleClass="tab-content">
                                 <children>
                                     <Label layoutX="20" layoutY="20" styleClass="tab-text" />
-                           <TableView layoutX="20.0" layoutY="10.0" prefHeight="467.0" prefWidth="834.0">
-                             <columns>
-                               <TableColumn prefWidth="241.0" text="Student's Name" />
-                               <TableColumn minWidth="0.0" prefWidth="96.0" text="Course" />
-                               <TableColumn minWidth="0.0" prefWidth="110.0" text="Amount Paid" />
-                               <TableColumn minWidth="0.0" prefWidth="120.0" text="Action" />
-                               <TableColumn minWidth="0.0" prefWidth="148.0" text="Approval Status" />
-                               <TableColumn minWidth="0.0" prefWidth="118.0" text="Payment Status" />
-                             </columns>
-                           </TableView>
+                                    <TableView fx:id="homeTable" layoutX="40.0" layoutY="12.0"
+           prefHeight="460.0" prefWidth="833.0">
+
+    <columns>
+        <TableColumn fx:id="homeColEnrolleeID" editable="false"
+                     prefWidth="89.6" text="Enrollee ID" />
+
+        <TableColumn fx:id="homeColStudentName" editable="false"
+                     prefWidth="216.8" text="Enrollee's Name" />
+
+        <TableColumn fx:id="homeColCourse" editable="false"
+                     prefWidth="77.6" text="Program" />
+
+        <TableColumn fx:id="homeColYearLevel" editable="false"
+                     prefWidth="48.8" text="Year" />
+
+        <TableColumn fx:id="homeColAction" editable="false"
+                     prefWidth="166.4" text="Action" />
+
+        <!-- Optional empty column to maintain spacing -->
+        <TableColumn fx:id="homeColExtra" prefWidth="75.0" text="" />
+    </columns>
+</TableView>
+
                                 </children>
                             </AnchorPane>
                         </Tab>
+
+                        <!-- ACCOUNT CREATION TAB -->
                         <Tab text="Account Creation">
                             <AnchorPane styleClass="tab-content">
                                 <children>
-                                    <Label layoutX="20" layoutY="20" prefHeight="18.0" prefWidth="105.0" styleClass="tab-text" />
-                           <TableView layoutX="20.0" layoutY="14.0" prefHeight="467.0" prefWidth="834.0">
-                              <columns>
-                                 <TableColumn prefWidth="241.0" text="Student's Name" />
-                                 <TableColumn minWidth="0.0" prefWidth="96.0" text="Course" />
-                                 <TableColumn minWidth="0.0" prefWidth="110.0" text="Amount Paid" />
-                                 <TableColumn minWidth="0.0" prefWidth="120.0" text="Action" />
-                                 <TableColumn minWidth="0.0" prefWidth="148.0" text="Approval Status" />
-                                 <TableColumn minWidth="0.0" prefWidth="118.0" text="Payment Status" />
-                              </columns>
-                           </TableView>
+                                    <Label layoutX="20" layoutY="20" prefHeight="18.0"
+                                           prefWidth="105.0" styleClass="tab-text" />
+                                    <TableView fx:id="accountCreationTable" layoutX="20.0" layoutY="14.0"
+                                               prefHeight="467.0" prefWidth="834.0">
+                                        <columns>
+                                            <TableColumn fx:id="accColStudentName" prefWidth="241.0" text="Student's Name" />
+                                            <TableColumn fx:id="accColCourse" prefWidth="96.0" text="Course" />
+                                            <TableColumn fx:id="accColAmountPaid" prefWidth="110.0" text="Amount Paid" />
+                                            <TableColumn fx:id="accColAction" prefWidth="120.0" text="Action" />
+                                            <TableColumn fx:id="accColApprovalStatus" prefWidth="148.0" text="Approval Status" />
+                                            <TableColumn fx:id="accColPaymentStatus" prefWidth="118.0" text="Payment Status" />
+                                        </columns>
+                                    </TableView>
                                 </children>
                             </AnchorPane>
                         </Tab>
+
                     </tabs>
                 </TabPane>
             </VBox>
