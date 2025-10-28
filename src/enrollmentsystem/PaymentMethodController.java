@@ -52,7 +52,7 @@ public class PaymentMethodController implements Initializable {
         } catch (Exception e) {
             System.err.println("Error opening payment dialog: " + e.getMessage());
             e.printStackTrace();
-            // Re-enable buttons if error occurs
+            
             disableAllButtons(false);
             dialogOpen = false;
         }
@@ -79,7 +79,7 @@ public class PaymentMethodController implements Initializable {
         } catch (Exception e) {
             System.err.println("Error opening GCash dialog: " + e.getMessage());
             e.printStackTrace();
-            // Re-enable buttons if error occurs
+            
             disableAllButtons(false);
             dialogOpen = false;
         }

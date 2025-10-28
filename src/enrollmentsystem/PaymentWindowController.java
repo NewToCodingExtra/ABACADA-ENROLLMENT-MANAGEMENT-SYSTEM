@@ -126,7 +126,7 @@ public class PaymentWindowController implements Initializable {
         
         // Process payment
         try {
-            // Verify card exists and has sufficient balance
+            
             CreditCardInfo cardInfo = verifyCreditCard(cardNumber, holderName, expMonth, expYear, cvc);
             
             if (cardInfo == null) {
@@ -135,7 +135,6 @@ public class PaymentWindowController implements Initializable {
                 return;
             }
             
-            // Check if card has sufficient balance
             if (cardInfo.getMoney().compareTo(tuitionFee) < 0) {
                 showError("Insufficient Balance", 
                          "Your card balance (₱" + cardInfo.getMoney() + ") is insufficient.\n" +
@@ -143,19 +142,16 @@ public class PaymentWindowController implements Initializable {
                 return;
             }
             
-            // Check card status
             if (!cardInfo.getStatus().equals("Active")) {
                 showError("Card Not Active", 
                          "This card is " + cardInfo.getStatus() + " and cannot be used for payment.");
                 return;
             }
             
-            // Show confirmation dialog
             if (!showConfirmation(cardInfo)) {
                 return;
             }
             
-            // Process the payment
             boolean success = processCardPayment(cardInfo);
             
             if (success) {
@@ -175,9 +171,6 @@ public class PaymentWindowController implements Initializable {
         }
     }
     
-    /**
-     * Validate all input fields
-     */
     private boolean validateAllFields() {
         boolean isValid = true;
         

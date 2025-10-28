@@ -80,7 +80,7 @@
                                <TableColumn fx:id="amountPaidCol" editable="false" minWidth="0.0" prefWidth="127.20001220703125" text="Amount Paid" />
                                <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="94.40008544921875" text="Payment Date" />
                                <TableColumn fx:id="paymentTypeCol" minWidth="0.0" prefWidth="70.0" text="Payment Method" />
-                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="118.0" text="Accept/Decline" />
+                               <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="200.0" text="Accept/Decline" />
                               </columns>
                            </TableView>
                         </children>
