@@ -1,6 +1,6 @@
 package enrollmentsystem;
 
-import java.math.BigDecimal;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -12,13 +12,18 @@ import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
@@ -38,6 +43,12 @@ public class AdminDashboardController implements Initializable {
     @FXML private VBox mainContainer;
     @FXML private TabPane mainTabPane;
     
+    // Dashboard Statistics Labels
+    @FXML private Label enrolledNoLabel;
+    @FXML private Label pendingEnrollmentLabel;
+    @FXML private Label pendingPaymentLabel;
+    @FXML private Label paidLabel;
+    
     // Home Tab - All Enrollees with Verified Payment
     @FXML private TableView<EnrolleeForApproval> homeTable;
     @FXML private TableColumn<EnrolleeForApproval, String> homeColEnrolleeID;
@@ -49,12 +60,12 @@ public class AdminDashboardController implements Initializable {
     
     // Account Creation Tab
     @FXML private TableView<?> accountCreationTable;
-    @FXML private TableColumn<?, ?> accountColStudentName;
-    @FXML private TableColumn<?, ?> accountColCourse;
-    @FXML private TableColumn<?, ?> accountColAmountPaid;
-    @FXML private TableColumn<?, ?> accountColAction;
-    @FXML private TableColumn<?, ?> accountColApprovalStatus;
-    @FXML private TableColumn<?, ?> accountColPaymentStatus;
+    @FXML private TableColumn<?, ?> accColStudentName;
+    @FXML private TableColumn<?, ?> accColCourse;
+    @FXML private TableColumn<?, ?> accColAmountPaid;
+    @FXML private TableColumn<?, ?> accColAction;
+    @FXML private TableColumn<?, ?> accColApprovalStatus;
+    @FXML private TableColumn<?, ?> accColPaymentStatus;
 
     private String adminId;
     private ObservableList<EnrolleeForApproval> enrolleesList;
@@ -71,11 +82,68 @@ public class AdminDashboardController implements Initializable {
         
         setupTableColumns();
         loadEnrollees();
+        loadDashboardStatistics(); // NEW: Load stats
         
         // Auto-refresh every 5 seconds
         startAutoRefresh(5);
         
         System.out.println("Admin Dashboard initialized for admin: " + adminId);
+    }
+    
+    /**
+     * Load dashboard statistics from database
+     */
+    private void loadDashboardStatistics() {
+        try (Connection conn = DBConnection.getConnection()) {
+            
+            // 1. Total Enrolled Students (enrollment_status = 'Enrolled')
+            int enrolledCount = getCountFromQuery(conn, 
+                "SELECT COUNT(*) FROM enrollees WHERE enrollment_status = 'Enrolled'");
+            enrolledNoLabel.setText(String.valueOf(enrolledCount));
+            
+            // 2. Pending Enrollments (enrollment_status = 'Pending')
+            int pendingEnrollmentCount = getCountFromQuery(conn,
+                "SELECT COUNT(*) FROM enrollees WHERE enrollment_status = 'Pending'");
+            pendingEnrollmentLabel.setText(String.valueOf(pendingEnrollmentCount));
+            
+            // 3. Pending Payments (payment_status = 'Not_Paid' OR 'Paid_Pending_Verification')
+            int pendingPaymentCount = getCountFromQuery(conn,
+                "SELECT COUNT(*) FROM enrollees WHERE payment_status IN ('Not_Paid', 'Paid_Pending_Verification')");
+            pendingPaymentLabel.setText(String.valueOf(pendingPaymentCount));
+            
+            // 4. Paid/Verified Payments (payment_status = 'Verified')
+            int paidCount = getCountFromQuery(conn,
+                "SELECT COUNT(*) FROM enrollees WHERE payment_status = 'Verified'");
+            paidLabel.setText(String.valueOf(paidCount));
+            
+            System.out.println("Dashboard stats loaded - Enrolled: " + enrolledCount + 
+                             ", Pending: " + pendingEnrollmentCount + 
+                             ", Pending Payment: " + pendingPaymentCount + 
+                             ", Paid: " + paidCount);
+            
+        } catch (SQLException e) {
+            System.err.println("Error loading dashboard statistics: " + e.getMessage());
+            e.printStackTrace();
+            
+            // Set default values on error
+            enrolledNoLabel.setText("0");
+            pendingEnrollmentLabel.setText("0");
+            pendingPaymentLabel.setText("0");
+            paidLabel.setText("0");
+        }
+    }
+    
+    /**
+     * Helper method to get count from query
+     */
+    private int getCountFromQuery(Connection conn, String query) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
     }
     
     private void setupTableColumns() {
@@ -163,34 +231,47 @@ public class AdminDashboardController implements Initializable {
         enrolleesList = FXCollections.observableArrayList(enrollees);
         homeTable.setItems(enrolleesList);
         
+        // Refresh statistics when loading enrollees
+        loadDashboardStatistics();
+        
         System.out.println("Loaded " + enrollees.size() + " enrollees with verified payment");
     }
     
     /**
      * Opens a read-only view of enrollee's enrollment forms
+     * FIXED: Now properly passes enrollee ID to the dialog
      */
     private void openEnrolleeViewDialog(EnrolleeForApproval enrollee) {
         try {
-            // Store enrollee ID in session temporarily for viewing
-            String currentEnrolleeId = SessionManager.getInstance().getEnrolleeId();
-            SessionManager.getInstance().setEnrolleeId(enrollee.getEnrolleeId());
-            
-            // Open read-only enrollment view
-            WindowOpener.openDialogWithCSS(
-                "/enrollmentsystem/EnrolleeViewDialog.fxml",
-                "/enrollment.css",
-                "View Enrollment - " + enrollee.getEnrolleeId(),
-                900,
-                600
+            // Load FXML
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/enrollmentsystem/EnrolleeViewDialog.fxml")
             );
+            Parent root = loader.load();
             
-            // Restore original enrollee ID
-            SessionManager.getInstance().setEnrolleeId(currentEnrolleeId);
+            // Get controller and set enrollee ID
+            EnrolleeViewDialogController controller = loader.getController();
+            controller.setEnrolleeId(enrollee.getEnrolleeId());
             
-        } catch (Exception e) {
+            // Create dialog stage
+            Stage dialogStage = new Stage();
+            controller.setDialogStage(dialogStage);
+            
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.initOwner(homeTable.getScene().getWindow());
+            dialogStage.setTitle("View Enrollment - " + enrollee.getEnrolleeId());
+            dialogStage.setScene(new Scene(root, 900, 700));
+            dialogStage.setResizable(false);
+            
+            // Load data AFTER stage is set up
+            controller.loadAndDisplay();
+            
+            dialogStage.showAndWait();
+            
+        } catch (IOException e) {
             System.err.println("Error opening enrollee view: " + e.getMessage());
             e.printStackTrace();
-            showError("Error", "Failed to open enrollee details.");
+            showError("Error", "Failed to open enrollee details: " + e.getMessage());
         }
     }
     
@@ -325,13 +406,13 @@ public class AdminDashboardController implements Initializable {
         alert.setHeaderText("Student Account Created for " + studentName);
         
         String content = String.format(
-            "╔══════════════════════════════════════╗\n" +
+            "╔═══════════════════════════════════╗\n" +
             "        STUDENT LOGIN CREDENTIALS\n" +
-            "╚══════════════════════════════════════╝\n\n" +
+            "╚═══════════════════════════════════╝\n\n" +
             "Student ID: %s\n" +
             "Username: %s\n" +
             "Password: %s\n\n" +
-            "════════════════════════════════════════\n\n" +
+            "═══════════════════════════════════════\n\n" +
             "IMPORTANT INSTRUCTIONS:\n\n" +
             "1. These credentials have been sent to the\n" +
             "   enrollee's dashboard under Admin Comment.\n\n" +
@@ -339,7 +420,7 @@ public class AdminDashboardController implements Initializable {
             "   student account.\n\n" +
             "3. The enrollee account will remain active\n" +
             "   until the student logs in for the first time.\n\n" +
-            "════════════════════════════════════════",
+            "═══════════════════════════════════════",
             studentId, username, password
         );
         
@@ -634,7 +715,7 @@ public class AdminDashboardController implements Initializable {
         refreshTimeline = new Timeline(
             new KeyFrame(Duration.seconds(intervalSeconds), event -> {
                 System.out.println("Auto-refreshing admin dashboard...");
-                loadEnrollees();
+                loadEnrollees(); // This will also refresh statistics
             })
         );
         refreshTimeline.setCycleCount(Timeline.INDEFINITE);

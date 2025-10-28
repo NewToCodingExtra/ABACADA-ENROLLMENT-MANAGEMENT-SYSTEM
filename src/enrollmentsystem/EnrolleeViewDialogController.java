@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -49,9 +50,30 @@ public class EnrolleeViewDialogController {
     
     private Enrollee currentEnrollee;
     private Stage dialogStage;
+    private String enrolleeIdToLoad;
+
+    /**
+     * CRITICAL: Set enrollee ID BEFORE showing dialog
+     */
+    public void setEnrolleeId(String enrolleeId) {
+        this.enrolleeIdToLoad = enrolleeId;
+        System.out.println("EnrolleeViewDialog: Set enrollee ID to load: " + enrolleeId);
+    }
 
     public void initialize() {
-        loadEnrolleeData();
+        // Load will happen after setEnrolleeId is called
+    }
+    
+    /**
+     * Call this after setEnrolleeId to load and display data
+     */
+    public void loadAndDisplay() {
+        if (enrolleeIdToLoad == null) {
+            showError("Error", "No enrollee ID provided");
+            return;
+        }
+        
+        loadEnrolleeDataFromDatabase(enrolleeIdToLoad);
         disableAllFields();
         updateDocumentButtons();
     }
@@ -63,15 +85,93 @@ public class EnrolleeViewDialogController {
         this.dialogStage = dialogStage;
     }
     
-    private void loadEnrolleeData() {
-        currentEnrollee = EnrolleeDataLoader.loadEnrolleeData();
-        
-        if (currentEnrollee != null) {
-            populateFields();
+    /**
+     * Load enrollee data directly from database using enrollee_id
+     */
+    private void loadEnrolleeDataFromDatabase(String enrolleeId) {
+        String query = "SELECT e.*, u.username, u.email, u.password, u.access, u.created_at, u.is_active " +
+                       "FROM enrollees e " +
+                       "JOIN users u ON e.user_id = u.user_id " +
+                       "WHERE e.enrollee_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, enrolleeId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                currentEnrollee = createEnrolleeFromResultSet(rs);
+                populateFields();
+                System.out.println("Successfully loaded enrollee data for: " + enrolleeId);
+            } else {
+                showError("Error", "No enrollee found with ID: " + enrolleeId);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error loading enrollee data: " + e.getMessage());
+            e.printStackTrace();
+            showError("Database Error", "Failed to load enrollee data: " + e.getMessage());
         }
     }
     
+    private Enrollee createEnrolleeFromResultSet(ResultSet rs) throws SQLException {
+        int userId = rs.getInt("user_id");
+        String username = rs.getString("username");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        String access = rs.getString("access");
+        java.time.LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+        boolean isActive = rs.getBoolean("is_active");
+
+        String enrolleeId = rs.getString("enrollee_id");
+        String firstName = rs.getString("first_name");
+        String middleName = rs.getString("middle_name");
+        String lastName = rs.getString("last_name");
+        String suffix = rs.getString("suffix");
+        Date birthDateSql = rs.getDate("birth_date");
+        java.time.LocalDate birthDate = birthDateSql != null ? birthDateSql.toLocalDate() : null;
+        String gender = rs.getString("gender");
+        String address = rs.getString("address");
+        String province = rs.getString("province");
+        String city = rs.getString("city");
+        String contactNumber = rs.getString("contact_number");
+        String emailAddress = rs.getString("email_address");
+        String guardianName = rs.getString("guardian_name");
+        String guardianContact = rs.getString("guardian_contact");
+        String lastSchoolAttended = rs.getString("last_school_attended");
+        String lastSchoolYear = rs.getString("school_year_to_enroll");
+        String yearLevel = rs.getString("year_level");
+        String studentType = rs.getString("student_type");
+        String programAppliedFor = rs.getString("program_applied_for");
+        String enrollmentStatus = rs.getString("enrollment_status");
+        Timestamp dateAppliedTs = rs.getTimestamp("date_applied");
+        String photoLink = rs.getString("photo_link");
+        String birthCertLink = rs.getString("birth_cert_link");
+        String reportCardLink = rs.getString("report_card_link");
+        String form137Link = rs.getString("form_137_link");
+        java.time.LocalDateTime dateApplied = dateAppliedTs != null ? dateAppliedTs.toLocalDateTime() : null;
+        Integer reviewedBy = (Integer) rs.getObject("reviewed_by");
+        Timestamp reviewedOnTs = rs.getTimestamp("reviewed_on");
+        java.time.LocalDateTime reviewedOn = reviewedOnTs != null ? reviewedOnTs.toLocalDateTime() : null;
+        boolean hasFilledUpForm = rs.getBoolean("has_filled_up_form");
+
+        Enrollee enrollee = new Enrollee(userId, username, email, password, access, createdAt, isActive,
+                enrolleeId, firstName, middleName, lastName, suffix, birthDate, gender,
+                address, province, city, contactNumber, emailAddress,
+                guardianName, guardianContact, yearLevel, studentType, lastSchoolAttended, lastSchoolYear,
+                programAppliedFor, enrollmentStatus, dateApplied, reviewedBy, reviewedOn);
+        enrollee.setHasFilledUpForm(hasFilledUpForm);
+        
+        enrollee.setPhotoLink(photoLink);
+        enrollee.setBirthCertLink(birthCertLink);
+        enrollee.setReportCardLink(reportCardLink);
+        enrollee.setForm137Link(form137Link);
+        return enrollee;
+    }
+    
     private void populateFields() {
+        if (currentEnrollee == null) return;
+        
         // Personal Information
         if (currentEnrollee.getFirstName() != null) 
             firstNameField.setText(currentEnrollee.getFirstName());
@@ -172,43 +272,45 @@ public class EnrolleeViewDialogController {
     }
 
     private void updateDocumentButtons() {
+        if (currentEnrollee == null) return;
+        
         // Photo
         if (currentEnrollee.getPhotoLink() != null && !currentEnrollee.getPhotoLink().isEmpty()) {
-            uploadPhotoButton.setText("View Photo");
+            uploadPhotoButton.setText("📄 View Photo");
             uploadPhotoButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-cursor: hand;");
             uploadPhotoButton.setOnAction(e -> openDriveLink(currentEnrollee.getPhotoLink(), "Photo"));
         } else {
-            uploadPhotoButton.setText("No Photo Uploaded");
+            uploadPhotoButton.setText("❌ No Photo Uploaded");
             uploadPhotoButton.setDisable(true);
         }
         
         // Birth Certificate
         if (currentEnrollee.getBirthCertLink() != null && !currentEnrollee.getBirthCertLink().isEmpty()) {
-            uploadBirthCertButton.setText("View Birth Certificate");
+            uploadBirthCertButton.setText("📄 View Birth Certificate");
             uploadBirthCertButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-cursor: hand;");
             uploadBirthCertButton.setOnAction(e -> openDriveLink(currentEnrollee.getBirthCertLink(), "Birth Certificate"));
         } else {
-            uploadBirthCertButton.setText("No Birth Cert Uploaded");
+            uploadBirthCertButton.setText("❌ No Birth Cert Uploaded");
             uploadBirthCertButton.setDisable(true);
         }
         
         // Report Card
         if (currentEnrollee.getReportCardLink() != null && !currentEnrollee.getReportCardLink().isEmpty()) {
-            uploadReportCardButton.setText("View Report Card");
+            uploadReportCardButton.setText("📄 View Report Card");
             uploadReportCardButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-cursor: hand;");
             uploadReportCardButton.setOnAction(e -> openDriveLink(currentEnrollee.getReportCardLink(), "Report Card"));
         } else {
-            uploadReportCardButton.setText("No Report Card Uploaded");
+            uploadReportCardButton.setText("❌ No Report Card Uploaded");
             uploadReportCardButton.setDisable(true);
         }
         
         // Form 137
         if (currentEnrollee.getForm137Link() != null && !currentEnrollee.getForm137Link().isEmpty()) {
-            uploadForm137Btn.setText("View Form 137");
+            uploadForm137Btn.setText("📄 View Form 137");
             uploadForm137Btn.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white; -fx-cursor: hand;");
             uploadForm137Btn.setOnAction(e -> openDriveLink(currentEnrollee.getForm137Link(), "Form 137"));
         } else {
-            uploadForm137Btn.setText("No Form 137 Uploaded");
+            uploadForm137Btn.setText("❌ No Form 137 Uploaded");
             uploadForm137Btn.setDisable(true);
         }
     }
