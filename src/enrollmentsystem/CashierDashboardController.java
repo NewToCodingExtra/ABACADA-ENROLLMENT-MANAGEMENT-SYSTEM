@@ -98,6 +98,9 @@ public class CashierDashboardController implements Initializable {
         // Load pending payments
         loadPendingPayments();
         
+        // START AUTO-REFRESH (refresh every 5 seconds)
+        startAutoRefresh(5);
+        
         System.out.println("Cashier Dashboard initialized for cashier: " + cashierId);
     }
  
@@ -190,7 +193,8 @@ public class CashierDashboardController implements Initializable {
         // Update count labels
         updateCountLabels();
         
-        System.out.println("Loaded " + payments.size() + " pending payments");
+        System.out.println("Loaded " + payments.size() + " pending payments at " + 
+                         new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()));
     }
  
     private void updateCountLabels() {
@@ -313,22 +317,29 @@ public class CashierDashboardController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+ 
     private void startAutoRefresh(int intervalSeconds) {
         if (refreshTimeline != null) {
             refreshTimeline.stop();
         }
 
         refreshTimeline = new Timeline(
-            new KeyFrame(Duration.seconds(intervalSeconds), event -> loadPendingPayments())
+            new KeyFrame(Duration.seconds(intervalSeconds), event -> {
+                System.out.println("Auto-refreshing cashier dashboard...");
+                loadPendingPayments();
+            })
         );
         refreshTimeline.setCycleCount(Timeline.INDEFINITE);
         refreshTimeline.play();
+        
+        System.out.println("Auto-refresh started: Every " + intervalSeconds + " seconds");
     }
 
-    // Stop refreshing when the controller is closed (optional)
+
     public void stopAutoRefresh() {
         if (refreshTimeline != null) {
             refreshTimeline.stop();
+            System.out.println("Auto-refresh stopped");
         }
     }
 }

@@ -8,7 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.sql.*;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime; 
 
 public class EnrollmentSystem extends Application {
     public static Stage mainStage;
@@ -32,8 +32,6 @@ public class EnrollmentSystem extends Application {
             primaryStage.centerOnScreen();
             primaryStage.setResizable(false);
             primaryStage.show();
-            
-            
             
         } catch (IOException ex) {
             System.getLogger(EnrollmentSystem.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);

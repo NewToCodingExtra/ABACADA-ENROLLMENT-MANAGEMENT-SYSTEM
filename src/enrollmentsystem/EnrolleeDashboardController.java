@@ -1,5 +1,7 @@
 package enrollmentsystem;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
+import javafx.util.Duration;
 import java.sql.*;
 
 public class EnrolleeDashboardController {
@@ -18,6 +21,7 @@ public class EnrolleeDashboardController {
     private String cashierComment = "None";
     private String adminComment = "None";
     private InvoiceInfo invoiceInfo = null;
+    private Timeline refreshTimeline;
     
     @FXML
     private Label studentNameLabel;
@@ -76,6 +80,9 @@ public class EnrolleeDashboardController {
             loadEnrolleeInfo();
             setupOverviewTable();
             setupEvaluationTable();
+            
+            // START AUTO-REFRESH (refresh every 5 seconds)
+            startAutoRefresh(5);
         } else {
             System.err.println("Failed to load enrollee data!");
             showErrorDialog("Error", "Failed to load enrollee data. Please try logging in again.");
@@ -313,6 +320,13 @@ public class EnrolleeDashboardController {
             }
         });
         
+        refreshEvaluationTable();
+    }
+    
+    /**
+     * Refresh the evaluation table data
+     */
+    private void refreshEvaluationTable() {
         ObservableList<EvaluationData> evaluationData = FXCollections.observableArrayList();
         
         String enrollmentStatus = enrollee.getEnrollmentStatus() != null ? 
@@ -355,8 +369,6 @@ public class EnrolleeDashboardController {
         evalTable.setPrefHeight(totalHeight);
         evalTable.setMinHeight(totalHeight);
         evalTable.setMaxHeight(totalHeight);
-        
-        System.out.println("Evaluation table setup complete with " + rowCount + " rows");
     }
     
     /**
@@ -495,6 +507,44 @@ public class EnrolleeDashboardController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+  
+    /**
+     * Start auto-refresh timer to update payment status
+     * @param intervalSeconds Refresh interval in seconds
+     */
+    private void startAutoRefresh(int intervalSeconds) {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+        }
+
+        refreshTimeline = new Timeline(
+            new KeyFrame(Duration.seconds(intervalSeconds), event -> {
+                System.out.println("Auto-refreshing enrollee dashboard at " + 
+                                 new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date()));
+                
+                // Reload payment and comment data
+                loadPaymentAndComments();
+                loadInvoiceInfo();
+                
+                // Refresh the evaluation table
+                refreshEvaluationTable();
+            })
+        );
+        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.play();
+        
+        System.out.println("Auto-refresh started: Every " + intervalSeconds + " seconds");
+    }
+
+    /**
+     * Stop refreshing when the controller is closed
+     */
+    public void stopAutoRefresh() {
+        if (refreshTimeline != null) {
+            refreshTimeline.stop();
+            System.out.println("Auto-refresh stopped");
+        }
     }
   
     public Enrollee getEnrollee() {

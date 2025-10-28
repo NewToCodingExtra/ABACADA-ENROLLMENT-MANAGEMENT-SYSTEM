@@ -97,6 +97,7 @@ CREATE TABLE `card_payment` (
 
 LOCK TABLES `card_payment` WRITE;
 /*!40000 ALTER TABLE `card_payment` DISABLE KEYS */;
+INSERT INTO `card_payment` VALUES (1,'Joshua S. Santiago',NULL,'TXN1761656666865378','BPI','9999999999999999','08','28','321'),(2,'Joshua S. Santiago',NULL,'TXN1761657878138592','BPI','9999999999999999','08','28','321'),(3,'Joshua S. Santiago',NULL,'TXN1761660130612457','BPI','9999999999999999','08','28','321'),(4,'Joshua S. Santiago',NULL,'TXN1761660762985632','BPI','9999999999999999','08','28','321'),(5,'Joshua S. Santiago',NULL,'TXN1761663776831691','BPI','9999999999999999','08','28','321'),(6,'Joshua S. Santiago',NULL,'TXN1761664127364625','BPI','9999999999999999','08','28','321'),(7,'Joshua S. Santiago',NULL,'TXN1761664586736646','BPI','9999999999999999','08','28','321');
 /*!40000 ALTER TABLE `card_payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,7 +258,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
-INSERT INTO `courses` VALUES ('IT101','IT101','Introduction to Computing',3.0,'PROG-01',1,'1st',0,0,30),('IT102','IT102','Computer Programming 1',3.0,'PROG-01',1,'1st',0,0,30),('IT103','IT103','Computer Programming 2',3.0,'PROG-01',1,'2nd',0,0,30),('IT104','IT104','Computer Hardware Fundamentals',3.0,'PROG-01',1,'1st',0,0,30),('IT105','IT105','Mathematics in the Modern World',3.0,'PROG-01',1,'1st',0,0,30),('IT106','IT106','Purposive Communication',3.0,'PROG-01',1,'1st',0,0,30),('IT107','IT107','Understanding the Self',3.0,'PROG-01',1,'2nd',0,0,30),('IT108','IT108','Programming Logic and Design',3.0,'PROG-01',1,'2nd',0,0,30),('IT109','IT109','Physical Education 1',2.0,'PROG-01',1,'1st',0,0,30),('IT110','IT110','Physical Education 2',2.0,'PROG-01',1,'2nd',0,0,30),('IT111','IT111','NSTP 1',3.0,'PROG-01',1,'1st',0,0,30),('IT112','IT112','NSTP 2',3.0,'PROG-01',1,'2nd',0,0,30),('IT113','IT113','Introduction to Human Computer Interaction',3.0,'PROG-01',1,'2nd',0,0,30),('IT114','IT114','Ethics',3.0,'PROG-01',1,'2nd',0,0,30),('IT115','IT115','Science, Technology and Society',3.0,'PROG-01',1,'2nd',0,0,30),('IT116','IT116','Introduction to Networking',3.0,'PROG-01',1,'2nd',0,0,30),('IT201','IT201','Data Structures and Algorithms',3.0,'PROG-01',2,'1st',0,0,30),('IT202','IT202','Database Management Systems',3.0,'PROG-01',2,'1st',0,0,30),('IT203','IT203','Object-Oriented Programming',3.0,'PROG-01',2,'1st',0,0,30),('IT204','IT204','Operating Systems',3.0,'PROG-01',2,'2nd',0,0,30),('IT205','IT205','Networking 1 (LAN Technologies)',3.0,'PROG-01',2,'1st',0,0,30),('IT206','IT206','Networking 2 (WAN Technologies)',3.0,'PROG-01',2,'2nd',0,0,30),('IT207','IT207','IT Elective 1 (Web Development)',3.0,'PROG-01',2,'2nd',0,0,30),('IT208','IT208','Discrete Mathematics',3.0,'PROG-01',2,'1st',0,0,30),('IT209','IT209','Data Communications',3.0,'PROG-01',2,'2nd',0,0,30),('IT210','IT210','PE 3',2.0,'PROG-01',2,'1st',0,0,30),('IT211','IT211','PE 4',2.0,'PROG-01',2,'2nd',0,0,30),('IT212','IT212','Professional Ethics',3.0,'PROG-01',2,'1st',0,0,30),('IT213','IT213','IT Project Management',3.0,'PROG-01',2,'2nd',0,0,30),('IT214','IT214','Advanced Database Systems',3.0,'PROG-01',2,'2nd',0,0,30),('IT215','IT215','Web Systems and Technologies 1',3.0,'PROG-01',2,'1st',0,0,30),('IT216','IT216','Web Systems and Technologies 2',3.0,'PROG-01',2,'2nd',0,0,30),('IT301','IT301','Software Engineering 1',3.0,'PROG-01',3,'1st',0,0,30),('IT302','IT302','Software Engineering 2',3.0,'PROG-01',3,'2nd',0,0,30),('IT303','IT303','System Integration and Architecture',3.0,'PROG-01',3,'2nd',0,0,30),('IT304','IT304','Mobile Application Development',3.0,'PROG-01',3,'1st',0,0,30),('IT305','IT305','Human-Computer Interaction',3.0,'PROG-01',3,'2nd',0,0,30),('IT306','IT306','Information Assurance and Security 1',3.0,'PROG-01',3,'1st',0,0,30),('IT307','IT307','Information Assurance and Security 2',3.0,'PROG-01',3,'2nd',0,0,30),('IT308','IT308','Technopreneurship',3.0,'PROG-01',3,'1st',0,0,30),('IT309','IT309','IT Elective 2 (Cloud Computing)',3.0,'PROG-01',3,'1st',0,0,30),('IT310','IT310','IT Elective 3 (Game Development)',3.0,'PROG-01',3,'2nd',0,0,30),('IT311','IT311','Research Methods in IT',3.0,'PROG-01',3,'2nd',0,0,30),('IT312','IT312','Free Elective 1',3.0,'PROG-01',3,'2nd',0,0,30),('IT313','IT313','Free Elective 2',3.0,'PROG-01',3,'1st',0,0,30),('IT314','IT314','IT Practicum Orientation',1.0,'PROG-01',3,'2nd',0,0,30),('IT315','IT315','IT Seminar 1',1.0,'PROG-01',3,'2nd',0,0,30),('IT316','IT316','Web Hosting and Deployment',3.0,'PROG-01',3,'1st',0,0,30),('IT401','IT401','Capstone Project 1',3.0,'PROG-01',4,'1st',0,0,30),('IT402','IT402','Capstone Project 2',3.0,'PROG-01',4,'2nd',0,0,30),('IT403','IT403','System Administration and Maintenance',3.0,'PROG-01',4,'1st',0,0,30),('IT404','IT404','IT Seminar 2',1.0,'PROG-01',4,'2nd',0,0,30),('IT405','IT405','IT Practicum / OJT',6.0,'PROG-01',4,'2nd',0,0,30),('IT406','IT406','Emerging Technologies',3.0,'PROG-01',4,'1st',0,0,30),('IT407','IT407','IT Elective 4 (Cybersecurity)',3.0,'PROG-01',4,'2nd',0,0,30),('IT408','IT408','IT Elective 5 (AI Basics)',3.0,'PROG-01',4,'1st',0,0,30),('IT409','IT409','IT Research Colloquium',3.0,'PROG-01',4,'2nd',0,0,30),('IT410','IT410','Free Elective 3',3.0,'PROG-01',4,'1st',0,0,30),('IT411','IT411','Free Elective 4',3.0,'PROG-01',4,'2nd',0,0,30),('IT412','IT412','IT in the Modern Enterprise',3.0,'PROG-01',4,'1st',0,0,30),('IT413','IT413','Cloud Security',3.0,'PROG-01',4,'2nd',0,0,30),('IT414','IT414','Server Management',3.0,'PROG-01',4,'2nd',0,0,30),('IT415','IT415','Digital Ethics',3.0,'PROG-01',4,'1st',0,0,30),('IT416','IT416','Data Analytics',3.0,'PROG-01',4,'2nd',0,0,30);
+INSERT INTO `courses` VALUES ('C001','COMSCI 2100','Information Management',2.0,'BSIT',2,'1st',0,1,40),('C002','COMSCI 2100 LAB A','Information Management (Laboratory A)',1.0,'BSIT',2,'1st',1,1,25),('C003','COMSCI 2100 LAB B','Information Management (Laboratory B)',1.0,'BSIT',2,'1st',1,1,25),('C004','COMSCI 2101','Operating Systems',3.0,'BSIT',2,'1st',0,1,40),('C005','COMSCI 2110','Object Oriented Programming',2.0,'BSIT',2,'1st',0,1,40),('C006','COMSCI 2110 LAB A','Object Oriented Programming (Laboratory A)',1.0,'BSIT',2,'1st',1,1,25),('C007','COMSCI 2110 LAB B','Object Oriented Programming (Laboratory B)',1.0,'BSIT',2,'1st',1,1,25),('C008','INTECH 2100','Web Design and Multimedia',2.0,'BSIT',2,'1st',0,1,40),('C009','INTECH 2100 LAB A','Web Design and Multimedia (Laboratory A)',1.0,'BSIT',2,'1st',1,1,25),('C010','EED 1212','Foundation of Special and Inclusive Education',3.0,'BEED',2,'1st',0,0,40),('C011','EED 2111','The Teacher and the School Curriculum',3.0,'BEED',2,'1st',0,0,40),('C012','ELEM 2111','Technology for Teaching and Learning in the Elementary Grades',3.0,'BEED',2,'1st',0,1,40),('C013','ELEM 2112','Teaching English in the Elementary Grades (Language Arts)',3.0,'BEED',2,'1st',0,0,40),('C014','ELEM 2113','Pagtuturo ng Filipino sa Elementarya 1 (Estruktura at Gamit ng Wikang Filipino)',3.0,'BEED',2,'1st',0,0,40),('C015','ELEM 2114','Teaching Arts in the Elementary Grades',3.0,'BEED',2,'1st',0,0,40),('C016','ELEM 2115','Teaching Music in the Elementary Grades',3.0,'BEED',2,'1st',1,0,30),('C017','SOCSCI 1110','Ethics',3.0,'BEED',2,'1st',0,0,40),('C018','PATHFit 3','Menu of Dance, Sports, Martial Arts, Group Exercise, Outdoor and Adventure Activities',2.0,'BEED',2,'1st',1,0,30),('IT101','IT101','Introduction to Computing',3.0,'PROG-01',1,'1st',0,0,30),('IT102','IT102','Computer Programming 1',3.0,'PROG-01',1,'1st',0,0,30),('IT103','IT103','Computer Programming 2',3.0,'PROG-01',1,'2nd',0,0,30),('IT104','IT104','Computer Hardware Fundamentals',3.0,'PROG-01',1,'1st',0,0,30),('IT105','IT105','Mathematics in the Modern World',3.0,'PROG-01',1,'1st',0,0,30),('IT106','IT106','Purposive Communication',3.0,'PROG-01',1,'1st',0,0,30),('IT107','IT107','Understanding the Self',3.0,'PROG-01',1,'2nd',0,0,30),('IT108','IT108','Programming Logic and Design',3.0,'PROG-01',1,'2nd',0,0,30),('IT109','IT109','Physical Education 1',2.0,'PROG-01',1,'1st',0,0,30),('IT110','IT110','Physical Education 2',2.0,'PROG-01',1,'2nd',0,0,30),('IT111','IT111','NSTP 1',3.0,'PROG-01',1,'1st',0,0,30),('IT112','IT112','NSTP 2',3.0,'PROG-01',1,'2nd',0,0,30),('IT113','IT113','Introduction to Human Computer Interaction',3.0,'PROG-01',1,'2nd',0,0,30),('IT114','IT114','Ethics',3.0,'PROG-01',1,'2nd',0,0,30),('IT115','IT115','Science, Technology and Society',3.0,'PROG-01',1,'2nd',0,0,30),('IT116','IT116','Introduction to Networking',3.0,'PROG-01',1,'2nd',0,0,30),('IT201','IT201','Data Structures and Algorithms',3.0,'PROG-01',2,'1st',0,0,30),('IT202','IT202','Database Management Systems',3.0,'PROG-01',2,'1st',0,0,30),('IT203','IT203','Object-Oriented Programming',3.0,'PROG-01',2,'1st',0,0,30),('IT204','IT204','Operating Systems',3.0,'PROG-01',2,'2nd',0,0,30),('IT205','IT205','Networking 1 (LAN Technologies)',3.0,'PROG-01',2,'1st',0,0,30),('IT206','IT206','Networking 2 (WAN Technologies)',3.0,'PROG-01',2,'2nd',0,0,30),('IT207','IT207','IT Elective 1 (Web Development)',3.0,'PROG-01',2,'2nd',0,0,30),('IT208','IT208','Discrete Mathematics',3.0,'PROG-01',2,'1st',0,0,30),('IT209','IT209','Data Communications',3.0,'PROG-01',2,'2nd',0,0,30),('IT210','IT210','PE 3',2.0,'PROG-01',2,'1st',0,0,30),('IT211','IT211','PE 4',2.0,'PROG-01',2,'2nd',0,0,30),('IT212','IT212','Professional Ethics',3.0,'PROG-01',2,'1st',0,0,30),('IT213','IT213','IT Project Management',3.0,'PROG-01',2,'2nd',0,0,30),('IT214','IT214','Advanced Database Systems',3.0,'PROG-01',2,'2nd',0,0,30),('IT215','IT215','Web Systems and Technologies 1',3.0,'PROG-01',2,'1st',0,0,30),('IT216','IT216','Web Systems and Technologies 2',3.0,'PROG-01',2,'2nd',0,0,30),('IT301','IT301','Software Engineering 1',3.0,'PROG-01',3,'1st',0,0,30),('IT302','IT302','Software Engineering 2',3.0,'PROG-01',3,'2nd',0,0,30),('IT303','IT303','System Integration and Architecture',3.0,'PROG-01',3,'2nd',0,0,30),('IT304','IT304','Mobile Application Development',3.0,'PROG-01',3,'1st',0,0,30),('IT305','IT305','Human-Computer Interaction',3.0,'PROG-01',3,'2nd',0,0,30),('IT306','IT306','Information Assurance and Security 1',3.0,'PROG-01',3,'1st',0,0,30),('IT307','IT307','Information Assurance and Security 2',3.0,'PROG-01',3,'2nd',0,0,30),('IT308','IT308','Technopreneurship',3.0,'PROG-01',3,'1st',0,0,30),('IT309','IT309','IT Elective 2 (Cloud Computing)',3.0,'PROG-01',3,'1st',0,0,30),('IT310','IT310','IT Elective 3 (Game Development)',3.0,'PROG-01',3,'2nd',0,0,30),('IT311','IT311','Research Methods in IT',3.0,'PROG-01',3,'2nd',0,0,30),('IT312','IT312','Free Elective 1',3.0,'PROG-01',3,'2nd',0,0,30),('IT313','IT313','Free Elective 2',3.0,'PROG-01',3,'1st',0,0,30),('IT314','IT314','IT Practicum Orientation',1.0,'PROG-01',3,'2nd',0,0,30),('IT315','IT315','IT Seminar 1',1.0,'PROG-01',3,'2nd',0,0,30),('IT316','IT316','Web Hosting and Deployment',3.0,'PROG-01',3,'1st',0,0,30),('IT401','IT401','Capstone Project 1',3.0,'PROG-01',4,'1st',0,0,30),('IT402','IT402','Capstone Project 2',3.0,'PROG-01',4,'2nd',0,0,30),('IT403','IT403','System Administration and Maintenance',3.0,'PROG-01',4,'1st',0,0,30),('IT404','IT404','IT Seminar 2',1.0,'PROG-01',4,'2nd',0,0,30),('IT405','IT405','IT Practicum / OJT',6.0,'PROG-01',4,'2nd',0,0,30),('IT406','IT406','Emerging Technologies',3.0,'PROG-01',4,'1st',0,0,30),('IT407','IT407','IT Elective 4 (Cybersecurity)',3.0,'PROG-01',4,'2nd',0,0,30),('IT408','IT408','IT Elective 5 (AI Basics)',3.0,'PROG-01',4,'1st',0,0,30),('IT409','IT409','IT Research Colloquium',3.0,'PROG-01',4,'2nd',0,0,30),('IT410','IT410','Free Elective 3',3.0,'PROG-01',4,'1st',0,0,30),('IT411','IT411','Free Elective 4',3.0,'PROG-01',4,'2nd',0,0,30),('IT412','IT412','IT in the Modern Enterprise',3.0,'PROG-01',4,'1st',0,0,30),('IT413','IT413','Cloud Security',3.0,'PROG-01',4,'2nd',0,0,30),('IT414','IT414','Server Management',3.0,'PROG-01',4,'2nd',0,0,30),('IT415','IT415','Digital Ethics',3.0,'PROG-01',4,'1st',0,0,30),('IT416','IT416','Data Analytics',3.0,'PROG-01',4,'2nd',0,0,30);
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -280,7 +281,9 @@ CREATE TABLE `credit_card` (
   `status` enum('Active','Blocked','Expired') DEFAULT 'Active',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`card_id`),
-  UNIQUE KEY `card_no` (`card_no`)
+  UNIQUE KEY `card_no` (`card_no`),
+  UNIQUE KEY `card_no_2` (`card_no`),
+  UNIQUE KEY `card_no_3` (`card_no`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -290,7 +293,7 @@ CREATE TABLE `credit_card` (
 
 LOCK TABLES `credit_card` WRITE;
 /*!40000 ALTER TABLE `credit_card` DISABLE KEYS */;
-INSERT INTO `credit_card` VALUES (1,'9999 9999 9999 9','Joshua S. Santiago','08','28','321','BPI',100000000.00,'Active','2025-10-28 03:36:59'),(2,'1234 1234 1234 1','Wesley Tadique','12','27','456','BDO',10000.00,'Active','2025-10-28 03:34:05'),(3,'4321 4321 4321 4','Kyle Soriano','06','29','789','Metrobank',20000.00,'Active','2025-10-28 03:34:05');
+INSERT INTO `credit_card` VALUES (1,'9999999999999999','Joshua S. Santiago','08','28','321','BPI',99788000.00,'Active','2025-10-28 15:16:49'),(2,'1234123412341234','Wesley Tadique','12','27','456','BDO',10000.00,'Active','2025-10-28 13:02:45'),(3,'4321432143214321','Kyle Soriano','06','29','789','Metrobank',20000.00,'Active','2025-10-28 13:02:39');
 /*!40000 ALTER TABLE `credit_card` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,6 +326,8 @@ CREATE TABLE `enrollees` (
   `school_year_to_enroll` varchar(20) DEFAULT NULL,
   `program_applied_for` varchar(20) DEFAULT NULL,
   `enrollment_status` enum('Pending','Approved','Rejected','Enrolled') DEFAULT 'Pending',
+  `payment_status` enum('Not_Paid','Paid_Pending_Verification','Verified','Rejected') DEFAULT 'Not_Paid',
+  `cashier_rejection_reason` text,
   `date_applied` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `reviewed_by` int(11) DEFAULT NULL,
   `reviewed_on` timestamp NULL DEFAULT NULL,
@@ -336,6 +341,7 @@ CREATE TABLE `enrollees` (
   KEY `idx_enrollees_user` (`user_id`),
   KEY `idx_enrollees_program` (`program_applied_for`),
   KEY `idx_enrollees_status` (`enrollment_status`),
+  KEY `idx_enrollees_payment_status` (`payment_status`),
   CONSTRAINT `enrollees_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `enrollees_ibfk_3` FOREIGN KEY (`reviewed_by`) REFERENCES `admin` (`user_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -347,7 +353,7 @@ CREATE TABLE `enrollees` (
 
 LOCK TABLES `enrollees` WRITE;
 /*!40000 ALTER TABLE `enrollees` DISABLE KEYS */;
-INSERT INTO `enrollees` VALUES ('SA25-2111',1,'Joshua','Simugan','Santiago',NULL,'2006-09-21',NULL,'#002, Zone 1, Sta. Lucia','Nueva Ecija','Guimba','09603376884','joshuasantiago0921@gmail.com',NULL,NULL,'1st Year','New','Bartolome Sangalang National High School','2016-2022','BSIT','Pending','2025-10-27 12:47:59',NULL,NULL,1,'https://drive.google.com/file/d/1ymjB6ixfU5o52LLoDM_7vwHktStSqNu4/view?usp=drivesdk','https://drive.google.com/file/d/1Dbfdio9BIl3FB_g7npLB86ivj2S1HRCx/view?usp=drivesdk','https://drive.google.com/file/d/1h4E78QPnoiZO9U7ijueIbpkTVqgN9CWX/view?usp=drivesdk','https://drive.google.com/file/d/1U8YM0Wi1yMTVywqjtoSluoR-EKtiSedD/view?usp=drivesdk'),('SA25-3706',10,'Lee Dave','G','Canillas',NULL,'1982-10-08',NULL,'69, None, Ewan ko','Nueva Ecija','San Jose','09784673213','leedavetumuwad@gmail.com',NULL,NULL,'1st Year','New','Tumuwad High School','1998-2006','BSIT','Pending','2025-10-28 03:58:30',NULL,NULL,1,'https://drive.google.com/file/d/1wgl4s4ukzcJw6ylmMwWuy4W0t6eZXp08/view?usp=drivesdk','https://drive.google.com/file/d/1tH9llhy_pESZB-k6k_36w_lZ024PhDwm/view?usp=drivesdk','https://drive.google.com/file/d/1kuR8dkJy6WHRvrfymJpjuFGIc-vrlPlw/view?usp=drivesdk','https://drive.google.com/file/d/1APm8Blsu_N-wwczYCrRLMBE82nhMDEOa/view?usp=drivesdk'),('SA25-9290',9,'Earl Wesley','Aquino','Tadique',NULL,'2006-10-06',NULL,'None, None, Bantug','Nueva Ecija','Munoz','092049552049','earlwesley.tadique@gmail.com',NULL,NULL,'1st Year','New','MNHS','2024-2025','BSIT','Pending','2025-10-28 03:30:56',NULL,NULL,1,'https://drive.google.com/file/d/1zALYDbwPt35GJJMqGK3RzlXkh8DTuKMt/view?usp=drivesdk','https://drive.google.com/file/d/1DU1BCXcSQ4Js55tkLSOU5_beEUQYpZpp/view?usp=drivesdk','https://drive.google.com/file/d/1wWLMLoqeR0MH3ketoU4jtpYWFCAg1Bhp/view?usp=drivesdk','https://drive.google.com/file/d/1pMMb7C8vIpryChW1onNi9cImE5jC8zol/view?usp=drivesdk');
+INSERT INTO `enrollees` VALUES ('SA25-2111',1,'Joshua','Simugan','Santiago',NULL,'2006-09-21',NULL,'#002, Zone 1, Sta. Lucia','Nueva Ecija','Guimba','09603376884','joshuasantiago0921@gmail.com',NULL,NULL,'1st Year','New','Bartolome Sangalang National High School','2016-2022','BSIT','Pending','Paid_Pending_Verification','Your details are not completed!','2025-10-29 05:26:56',NULL,NULL,1,'https://drive.google.com/file/d/1ymjB6ixfU5o52LLoDM_7vwHktStSqNu4/view?usp=drivesdk','https://drive.google.com/file/d/1Dbfdio9BIl3FB_g7npLB86ivj2S1HRCx/view?usp=drivesdk','https://drive.google.com/file/d/1h4E78QPnoiZO9U7ijueIbpkTVqgN9CWX/view?usp=drivesdk','https://drive.google.com/file/d/1U8YM0Wi1yMTVywqjtoSluoR-EKtiSedD/view?usp=drivesdk'),('SA25-3706',10,'Lee Dave','G','Canillas',NULL,'1982-10-08',NULL,'69, None, Ewan ko','Nueva Ecija','San Jose','09784673213','leedavetumuwad@gmail.com',NULL,NULL,'4th Year','Transferee','Tumuwad High School','1998-2006','BSCS','Pending','Paid_Pending_Verification',NULL,'2025-10-29 06:17:50',NULL,NULL,1,'https://drive.google.com/file/d/1wgl4s4ukzcJw6ylmMwWuy4W0t6eZXp08/view?usp=drivesdk','https://drive.google.com/file/d/1tH9llhy_pESZB-k6k_36w_lZ024PhDwm/view?usp=drivesdk','https://drive.google.com/file/d/1kuR8dkJy6WHRvrfymJpjuFGIc-vrlPlw/view?usp=drivesdk','https://drive.google.com/file/d/1APm8Blsu_N-wwczYCrRLMBE82nhMDEOa/view?usp=drivesdk'),('SA25-6251',17,'Random','1','Person',NULL,'2006-05-19',NULL,'221, Purok 1, Isko','Dismarinas','Lokal','0911212122112121212','randomenrollee@gmail.com',NULL,NULL,'2nd Year','Returning','BTHS','2016-2022','BSCS','Pending','Paid_Pending_Verification',NULL,'2025-10-29 07:15:18',NULL,NULL,1,'https://drive.google.com/file/d/1TRn2AvoTYrRt2tslXxQfSwaobzF9c5yx/view?usp=drivesdk','https://drive.google.com/file/d/1v5ThERRkqkiIFoRi7O2STCOhMU-RbWmB/view?usp=drivesdk','https://drive.google.com/file/d/1sWOBQLjahwiSP3YP1l_ojE4SNFuIwK-z/view?usp=drivesdk','https://drive.google.com/file/d/1Z5CJcv18OqrxEHbXQSjYmDtF3IF093jE/view?usp=drivesdk'),('SA25-9290',9,'Earl Wesley','Aquino','Tadique',NULL,'2006-10-06',NULL,'None, None, Bantug','Nueva Ecija','Munoz','092049552049','earlwesley.tadique@gmail.com',NULL,NULL,'1st Year','New','MNHS','2024-2025','BSIT','Pending','Not_Paid',NULL,'2025-10-28 03:30:56',NULL,NULL,1,'https://drive.google.com/file/d/1zALYDbwPt35GJJMqGK3RzlXkh8DTuKMt/view?usp=drivesdk','https://drive.google.com/file/d/1DU1BCXcSQ4Js55tkLSOU5_beEUQYpZpp/view?usp=drivesdk','https://drive.google.com/file/d/1wWLMLoqeR0MH3ketoU4jtpYWFCAg1Bhp/view?usp=drivesdk','https://drive.google.com/file/d/1pMMb7C8vIpryChW1onNi9cImE5jC8zol/view?usp=drivesdk');
 /*!40000 ALTER TABLE `enrollees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -480,6 +486,7 @@ CREATE TABLE `full_tuition_payment` (
 
 LOCK TABLES `full_tuition_payment` WRITE;
 /*!40000 ALTER TABLE `full_tuition_payment` DISABLE KEYS */;
+INSERT INTO `full_tuition_payment` VALUES (1,NULL,'SA25-2111',30000.00,NULL),(2,NULL,'SA25-2111',30000.00,NULL),(3,NULL,'SA25-2111',30000.00,NULL),(4,NULL,'SA25-3706',30000.00,NULL),(5,NULL,'SA25-2111',30000.00,NULL),(6,NULL,'SA25-2111',30000.00,NULL),(7,NULL,'SA25-6251',32000.00,NULL);
 /*!40000 ALTER TABLE `full_tuition_payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -539,7 +546,7 @@ CREATE TABLE `invoice` (
   KEY `idx_invoice_enrollee` (`enrollee_id`),
   CONSTRAINT `invoice_ibfk_1` FOREIGN KEY (`payment_id`) REFERENCES `payment` (`payment_id`) ON DELETE CASCADE,
   CONSTRAINT `invoice_ibfk_3` FOREIGN KEY (`enrollee_id`) REFERENCES `enrollees` (`enrollee_id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -548,6 +555,7 @@ CREATE TABLE `invoice` (
 
 LOCK TABLES `invoice` WRITE;
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
+INSERT INTO `invoice` VALUES (1,2,'SA25-2111','INV-20251028-0773','2025-10-28',30000.00,'Tuition Fee Payment'),(2,3,'SA25-2111','INV-20251028-0838','2025-10-28',30000.00,'Tuition Fee Payment'),(3,5,'SA25-2111','INV-20251028-3000','2025-10-28',30000.00,'Tuition Fee Payment');
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,12 +627,12 @@ CREATE TABLE `payment` (
   `payment_type` enum('Cash','Card','GCash') NOT NULL,
   `remarks` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`payment_id`),
-  KEY `cashier_id` (`cashier_id`),
   KEY `idx_payment_enrollee` (`enrollee_id`),
   KEY `idx_payment_type` (`payment_type`),
+  KEY `idx_payment_cashier` (`cashier_id`),
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`cashier_id`) REFERENCES `cashier` (`cashier_id`) ON DELETE SET NULL,
   CONSTRAINT `payment_ibfk_3` FOREIGN KEY (`enrollee_id`) REFERENCES `enrollees` (`enrollee_id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -633,6 +641,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES (1,'CSH25-5665','SA25-2111',30000.00,'2025-10-28 13:04:48','Card','Payment rejected: Your details are not completed!'),(2,'CSH25-5665','SA25-2111',30000.00,'2025-10-28 13:24:59','Card','Payment verified and accepted'),(3,'CSH25-5665','SA25-2111',30000.00,'2025-10-28 14:02:32','Card','Payment verified and accepted'),(4,NULL,'SA25-3706',30000.00,'2025-10-28 14:13:04','Card','Pending cashier verification'),(5,'CSH25-5665','SA25-2111',30000.00,'2025-10-28 15:03:18','Card','Payment verified and accepted'),(6,NULL,'SA25-2111',30000.00,'2025-10-28 15:09:09','Card','Pending cashier verification'),(7,NULL,'SA25-6251',32000.00,'2025-10-28 15:16:48','Card','Pending cashier verification');
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -980,7 +989,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -989,7 +998,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Joshua_Santiago','joshuasantiago0921@gmail.com','Joshua@21','Enrollees','2025-10-26 13:57:36',1),(6,'adminUser','admin@email.com','securePass123','Admin','2025-10-27 06:36:29',1),(7,'john1doe','john.doe@example.com','securePassword','Cashier','2025-10-27 15:19:39',1),(9,'Wesley1006','wesley@gmail.com','test123','Enrollees','2025-10-27 11:27:14',1),(10,'Dave6969','davepatuwad@gmail.com','malimodave','Enrollees','2025-10-27 11:54:06',1),(13,'john.doe','john.doe@university.edu','faculty123','Faculty','2025-10-28 09:55:55',1),(16,'jane.smith','jane.smith@university.edu','student123','Student','2025-10-28 10:19:34',1);
+INSERT INTO `users` VALUES (1,'Joshua_Santiago','joshuasantiago0921@gmail.com','Joshua@21','Enrollees','2025-10-26 13:57:36',1),(6,'adminUser','admin@email.com','securePass123','Admin','2025-10-27 06:36:29',1),(7,'john1doe','john.doe@example.com','securePassword','Cashier','2025-10-27 15:19:39',1),(9,'Wesley1006','wesley@gmail.com','test123','Enrollees','2025-10-27 11:27:14',1),(10,'Dave6969','davepatuwad@gmail.com','malimodave','Enrollees','2025-10-27 11:54:06',1),(13,'john.doe','john.doe@university.edu','faculty123','Faculty','2025-10-28 09:55:55',1),(16,'jane.smith','jane.smith@university.edu','student123','Student','2025-10-28 10:19:34',1),(17,'RandomStuden1','EnrolleeRandom1@gmail.com','123456','Enrollees','2025-10-28 15:10:53',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
