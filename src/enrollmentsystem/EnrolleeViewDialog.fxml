@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.EnrolleeViewDialogController">
+    <children>
+        <!-- Header -->
+        <Pane prefHeight="71.0" prefWidth="900.0" style="-fx-background-color: #191825;">
+            <children>
+                <ImageView fitHeight="64.0" fitWidth="75.0" layoutX="13.0" layoutY="5.0">
+                    <image>
+                        <Image url="@images/STARLIGHT%20ACADEMY.png" />
+                    </image>
+                </ImageView>
+                <Label contentDisplay="CENTER" layoutX="102.0" prefHeight="71.0" prefWidth="572.0" 
+                       style="-fx-font-size: 22px; -fx-font-weight: bold;" 
+                       text="ENROLLMENT DETAILS - READ ONLY" textFill="WHITE">
+                    <font>
+                        <Font size="22.0" />
+                    </font>
+                </Label>
+            </children>
+        </Pane>
+
+        <!-- Scrollable Content Area -->
+        <ScrollPane layoutY="71.0" prefHeight="569.0" prefWidth="900.0" fitToWidth="true" 
+                    style="-fx-background-color: white;">
+            <content>
+                <VBox spacing="20" style="-fx-padding: 20;">
+                    
+                    <!-- SECTION 1: PERSONAL INFORMATION -->
+                    <VBox spacing="10">
+                        <Label style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8 20;" 
+                               text="PERSONAL INFORMATION" />
+                        
+                        <GridPane hgap="20" vgap="15" style="-fx-padding: 10;">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50.0" />
+                                <ColumnConstraints percentWidth="50.0" />
+                            </columnConstraints>
+                            
+                            <children>
+                                <!-- Row 0 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="First Name:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="firstNameField" promptText="First Name" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Middle Name:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="middleNameField" promptText="Middle Name" />
+                                </VBox>
+                                
+                                <!-- Row 1 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <Label text="Last Name:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="lastNameField" promptText="Last Name" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label text="Gender:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="genderField" promptText="Gender" />
+                                </VBox>
+                                
+                                <!-- Row 2 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                    <Label text="Birthday:" style="-fx-font-weight: bold;" />
+                                    <DatePicker fx:id="datePicker" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label text="Contact No.:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="contactField" promptText="09XXXXXXXXX" />
+                                </VBox>
+                                
+                                <!-- Row 3 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                    <Label text="Province:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="provinceField" promptText="Province" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <Label text="City:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="cityField" promptText="City" />
+                                </VBox>
+                                
+                                <!-- Row 4 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="4">
+                                    <Label text="Barangay:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="barangayField" promptText="Barangay" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                    <Label text="Street:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="streetField" promptText="Street" />
+                                </VBox>
+                                
+                                <!-- Row 5 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="5">
+                                    <Label text="House No.:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="houseNoField" promptText="House Number" />
+                                </VBox>
+                            </children>
+                            
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                    </VBox>
+                    
+                    <!-- SECTION 2: ACADEMIC INFORMATION -->
+                    <VBox spacing="10">
+                        <Label style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8 20;" 
+                               text="ACADEMIC INFORMATION" />
+                        
+                        <GridPane hgap="20" vgap="15" style="-fx-padding: 10;">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50.0" />
+                                <ColumnConstraints percentWidth="50.0" />
+                            </columnConstraints>
+                            
+                            <children>
+                                <!-- Row 0 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Email Address:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="emailField" promptText="Email" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Year Level to Enroll:" style="-fx-font-weight: bold;" />
+                                    <ComboBox fx:id="yearLevelCombo" promptText="Select year level" prefWidth="400" />
+                                </VBox>
+                                
+                                <!-- Row 1 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <Label text="Course/Program:" style="-fx-font-weight: bold;" />
+                                    <ComboBox fx:id="courseCombo" promptText="Select course" prefWidth="400" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label text="Student Type:" style="-fx-font-weight: bold;" />
+                                    <ComboBox fx:id="studentTypeCombo" promptText="Select type" prefWidth="400" />
+                                </VBox>
+                                
+                                <!-- Row 2 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                    <Label text="Previous School Attended:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="previousSchoolField" promptText="School" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                    <Label text="School Year (e.g., 2025-2026):" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="schoolYearField" promptText="Year" />
+                                </VBox>
+                                
+                                <!-- Row 3 - Guardian Info -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                    <Label text="Guardian Name:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="guardianNameField" promptText="Guardian Name" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                    <Label text="Guardian Contact:" style="-fx-font-weight: bold;" />
+                                    <TextField fx:id="guardianContactField" promptText="Guardian Contact" />
+                                </VBox>
+                            </children>
+                            
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                    </VBox>
+                    
+                    <!-- SECTION 3: UPLOADED DOCUMENTS -->
+                    <VBox spacing="10">
+                        <Label style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8 20;" 
+                               text="UPLOADED DOCUMENTS" />
+                        
+                        <GridPane hgap="20" vgap="15" style="-fx-padding: 10;">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50.0" />
+                                <ColumnConstraints percentWidth="50.0" />
+                            </columnConstraints>
+                            
+                            <children>
+                                <!-- Row 0 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="1x1 Photo:" style="-fx-font-weight: bold;" />
+                                    <Button fx:id="uploadPhotoButton" text="📄 View Photo" prefWidth="200" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Birth Certificate:" style="-fx-font-weight: bold;" />
+                                    <Button fx:id="uploadBirthCertButton" text="📄 View Birth Certificate" prefWidth="200" />
+                                </VBox>
+                                
+                                <!-- Row 1 -->
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                    <Label text="Report Card:" style="-fx-font-weight: bold;" />
+                                    <Button fx:id="uploadReportCardButton" text="📄 View Report Card" prefWidth="200" />
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <Label text="Form 137:" style="-fx-font-weight: bold;" />
+                                    <Button fx:id="uploadForm137Btn" text="📄 View Form 137" prefWidth="200" />
+                                </VBox>
+                            </children>
+                            
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                    </VBox>
+                    
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <!-- Footer with Close Button -->
+        <HBox alignment="CENTER" layoutY="640.0" prefHeight="60.0" prefWidth="900.0" 
+              style="-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; -fx-border-width: 1 0 0 0;">
+            <children>
+                <Button fx:id="closeButton" onAction="#handleClose" 
+                        style="-fx-background-color: #002366; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 150; -fx-font-size: 14px;" 
+                        text="Close" />
+            </children>
+        </HBox>
+
+    </children>
+</AnchorPane>

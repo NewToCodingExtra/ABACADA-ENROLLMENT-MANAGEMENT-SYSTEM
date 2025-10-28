@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -45,13 +46,16 @@
 
     <VBox alignment="CENTER" spacing="50">
         <HBox alignment="CENTER" prefHeight="58.0" prefWidth="250.0" styleClass="stat-card">
-            <Label minWidth="-Infinity" prefHeight="18.0" prefWidth="154.0" styleClass="stat-title" text="Pending Payments" />
-            <Label fx:id="pendingLabel" styleClass="stat-value" text="5" />
+            <Label minWidth="-Infinity" prefHeight="18.0" prefWidth="133.0" styleClass="stat-title" text="Pending Payments" />
+            <Label fx:id="pendingLabel" prefHeight="18.0" prefWidth="60.0" styleClass="stat-value" text="5" />
+                  <VBox.margin>
+                     <Insets top="80.0" />
+                  </VBox.margin>
         </HBox>
 
         <HBox alignment="CENTER" prefHeight="51.0" prefWidth="250.0" styleClass="stat-card">
-            <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="18.0" prefWidth="150.0" styleClass="stat-title" text="Paid" />
-            <Label fx:id="paidLabel" styleClass="stat-value" text="5" />
+            <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="18.0" prefWidth="116.0" styleClass="stat-title" text="Paid" />
+            <Label fx:id="paidLabel" prefHeight="18.0" prefWidth="53.0" styleClass="stat-value" text="5" />
         </HBox>
 
      
@@ -75,9 +79,9 @@
                                  <TableColumn fx:id="enrolleeIDCol" editable="false" prefWidth="89.60003280639648" text="Enrollee ID" /> 
                                  <TableColumn fx:id="enrolleeCol" editable="false" prefWidth="216.80006408691406" text="Enrollee's Name" />
                                <TableColumn fx:id="programCol" editable="false" minWidth="0.0" prefWidth="77.5999755859375" text="Program" />
-                                 <TableColumn fx:id="yearLevelCol" editable="false" minWidth="0.0" prefWidth="48.7999267578125" text="Year" />
-                               <TableColumn fx:id="amountPaidCol" editable="false" minWidth="0.0" prefWidth="111.99993896484375" text="Amount Paid" />
-                               <TableColumn fx:id="paymentTypeCol" minWidth="0.0" prefWidth="120.79998779296875" text="Pay Method" />
+                                 <TableColumn fx:id="yearLevelCol" editable="false" minWidth="0.0" prefWidth="61.60003662109375" text="Year" />
+                               <TableColumn fx:id="amountPaidCol" editable="false" minWidth="0.0" prefWidth="105.60003662109375" text="Amount Paid" />
+                               <TableColumn fx:id="paymentTypeCol" minWidth="0.0" prefWidth="114.39996337890625" text="Pay Method" />
                                <TableColumn fx:id="actionCol" editable="false" minWidth="0.0" prefWidth="166.39996337890625" text="Accept/Decline" />
                                  <TableColumn prefWidth="75.0" text="Column X" />
                               </columns>

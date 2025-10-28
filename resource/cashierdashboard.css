@@ -159,6 +159,13 @@
         -fx-alignment: CENTER;
         
     }
+#pendingLabel, #paidLabel {
+     -fx-min-width: 50px;   
+    -fx-max-width: 200px;   
+    -fx-pref-width: 60px;   
+    -fx-alignment: CENTER; 
+    -fx-text-overrun: clip;
+}
 /* =======================
    RESPONSIVE SCALING
 ======================= */

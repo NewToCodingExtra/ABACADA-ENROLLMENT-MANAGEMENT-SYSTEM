@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.geometry.Pos;
 import javafx.util.Duration;
 import java.sql.*;
+import java.util.Optional;
 
 public class EnrolleeDashboardController {
     
@@ -153,24 +154,34 @@ public class EnrolleeDashboardController {
      * Get admin comment based on reviewed_by
      */
     private String getAdminComment(int reviewedBy) {
-        String query = "SELECT first_name, last_name FROM admin WHERE user_id = ?";
-        
+        String query = "SELECT e.admin_approval_message, a.first_name, a.last_name " +
+                      "FROM enrollees e " +
+                      "LEFT JOIN admin a ON e.reviewed_by = a.user_id " +
+                      "WHERE e.enrollee_id = ?";
+
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
-            
-            ps.setInt(1, reviewedBy);
+
+            ps.setString(1, enrollee.getEnrolleeId());
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
+                String approvalMessage = rs.getString("admin_approval_message");
+                if (approvalMessage != null && !approvalMessage.isEmpty()) {
+                    return approvalMessage; // Return credentials message
+                }
+
                 String firstName = rs.getString("first_name");
                 String lastName = rs.getString("last_name");
-                return "Reviewed by " + firstName + " " + lastName;
+                if (firstName != null && lastName != null) {
+                    return "Reviewed by " + firstName + " " + lastName;
+                }
             }
-            
+
         } catch (SQLException e) {
             System.err.println("Error getting admin comment: " + e.getMessage());
         }
-        
+
         return "None";
     }
   
@@ -254,63 +265,90 @@ public class EnrolleeDashboardController {
 
     private void setupEvaluationTable() {
         evalTable.setFixedCellSize(40);
-        
+
         evalCol.setCellValueFactory(cellData -> cellData.getValue().evaluationProperty());
         statusCol.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
-        
+
         statusCol.setCellFactory(column -> new TableCell<EvaluationData, String>() {
             private final Hyperlink hyperlink = new Hyperlink();
             private final Hyperlink receiptLink = new Hyperlink();
             private final Label label = new Label();
             private final HBox hbox = new HBox(10);
-            
+
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                
+
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
                     EvaluationData rowData = getTableView().getItems().get(getIndex());
-                    
+
+                    // Payment Status Row
                     if (rowData.getEvaluation().equals("Payment Status")) {
                         hbox.getChildren().clear();
-                        
+
                         if (isPaid && invoiceInfo != null) {
                             label.setText("Paid");
                             label.setTextFill(Color.GREEN);
                             label.setStyle("-fx-font-weight: bold;");
-                            
+
                             receiptLink.setText("(Receipt)");
                             receiptLink.setTextFill(Color.RED);
                             receiptLink.setStyle("-fx-font-style: italic;");
                             receiptLink.setOnAction(e -> handleReceiptLink());
-                            
+
                             hbox.getChildren().addAll(label, receiptLink);
                             hbox.setAlignment(Pos.CENTER_LEFT);
                             setGraphic(hbox);
                         } else if ("Paid_Pending_Verification".equals(item)) {
-                            // Show orange pending text
                             label.setText("Pending Verification");
                             label.setTextFill(Color.ORANGE);
                             label.setStyle("-fx-font-weight: bold;");
                             setGraphic(label);
                         } else if (item.equals("Not Paid")) {
-                            // Show red hyperlink for unpaid
                             hyperlink.setText(item);
                             hyperlink.setTextFill(Color.RED);
                             hyperlink.setStyle("-fx-font-weight: bold;");
                             hyperlink.setOnAction(e -> handlePaymentLink());
                             setGraphic(hyperlink);
                         } else {
-                            // Normal text for other statuses
                             label.setText(item);
                             label.setTextFill(Color.BLACK);
                             label.setStyle("");
                             setGraphic(label);
                         }
-                    } else {
-                        // Normal text for other rows
+                    } 
+                    // Admin Comment Row - Handle credentials and rejection
+                    else if (rowData.getEvaluation().equals("Admin Comment")) {
+                        if (item != null && item.contains("officially enrolled")) {
+                            // Show credentials hyperlink
+                            hyperlink.setText("View Credentials");
+                            hyperlink.setTextFill(Color.BLUE);
+                            hyperlink.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+                            hyperlink.setOnAction(e -> showCredentialsDialog(item));
+                            setGraphic(hyperlink);
+                        } else {
+                            label.setText(item);
+                            label.setTextFill(Color.BLACK);
+                            setGraphic(label);
+                        }
+                    }
+                    // Enrollment Status Row - Handle rejection
+                    else if (rowData.getEvaluation().equals("Application Status")) {
+                        if ("Rejected".equals(item)) {
+                            hyperlink.setText(item + " - Click to Resubmit");
+                            hyperlink.setTextFill(Color.RED);
+                            hyperlink.setStyle("-fx-font-weight: bold; -fx-underline: true;");
+                            hyperlink.setOnAction(e -> handleResubmit());
+                            setGraphic(hyperlink);
+                        } else {
+                            label.setText(item);
+                            label.setTextFill(Color.BLACK);
+                            setGraphic(label);
+                        }
+                    }
+                    else {
                         label.setText(item);
                         label.setTextFill(Color.BLACK);
                         label.setStyle("");
@@ -319,13 +357,10 @@ public class EnrolleeDashboardController {
                 }
             }
         });
-        
+
         refreshEvaluationTable();
     }
-    
-    /**
-     * Refresh the evaluation table data
-     */
+ 
     private void refreshEvaluationTable() {
         ObservableList<EvaluationData> evaluationData = FXCollections.observableArrayList();
         
@@ -370,10 +405,7 @@ public class EnrolleeDashboardController {
         evalTable.setMinHeight(totalHeight);
         evalTable.setMaxHeight(totalHeight);
     }
-    
-    /**
-     * Load payment status from database
-     */
+   
     private String loadPaymentStatusFromDB() {
         String query = "SELECT payment_status FROM enrollees WHERE enrollee_id = ?";
         
@@ -550,6 +582,196 @@ public class EnrolleeDashboardController {
     public Enrollee getEnrollee() {
         return enrollee;
     }
+  
+    private void showCredentialsDialog(String message) {
+        // Parse credentials from message
+        String[] lines = message.split("\n");
+        String studentId = "";
+        String username = "";
+        String password = "";
+
+        for (String line : lines) {
+            if (line.contains("Student ID:")) {
+                studentId = line.split(":")[1].trim();
+            } else if (line.contains("Username:")) {
+                username = line.split(":")[1].trim();
+            } else if (line.contains("Password:")) {
+                password = line.split(":")[1].trim();
+            }
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Student Account Credentials");
+        alert.setHeaderText("🎓 Congratulations! You are officially enrolled!");
+
+        String finalStudentId = studentId;
+        String finalUsername = username;
+        String finalPassword = password;
+
+        String content = String.format(
+            "╔══════════════════════════════════════╗\n" +
+            "      YOUR STUDENT LOGIN CREDENTIALS\n" +
+            "╚══════════════════════════════════════╝\n\n" +
+            "Student ID: %s\n" +
+            "Username: %s\n" +
+            "Password: %s\n\n" +
+            "════════════════════════════════════════\n\n" +
+            "⚠️  IMPORTANT INSTRUCTIONS:\n\n" +
+            "1. Please copy these credentials before closing.\n\n" +
+            "2. After closing this dialog, you will be logged\n" +
+            "   out and your enrollee account will be deleted.\n\n" +
+            "3. Log back in using your new Student Account\n" +
+            "   credentials above.\n\n" +
+            "4. Welcome to the student portal!\n\n" +
+            "════════════════════════════════════════",
+            finalStudentId, finalUsername, finalPassword
+        );
+
+        alert.setContentText(content);
+        alert.getDialogPane().setPrefWidth(500);
+
+        // Add copy and logout buttons
+        ButtonType copyButton = new ButtonType("Copy & Logout");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(copyButton, cancelButton);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == copyButton) {
+            // Copy to clipboard
+            String credentials = String.format(
+                "Student ID: %s\nUsername: %s\nPassword: %s",
+                finalStudentId, finalUsername, finalPassword
+            );
+
+            javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+            javafx.scene.input.ClipboardContent clipboardContent = new javafx.scene.input.ClipboardContent();
+            clipboardContent.putString(credentials);
+            clipboard.setContent(clipboardContent);
+
+            // Show goodbye message
+            Alert goodbye = new Alert(Alert.AlertType.INFORMATION);
+            goodbye.setTitle("Goodbye!");
+            goodbye.setHeaderText("Thank you for enrolling!");
+            goodbye.setContentText(
+                "Your credentials have been copied to clipboard.\n\n" +
+                "You will now be logged out.\n\n" +
+                "Please log in again using your student account:\n" +
+                "Username: " + finalUsername + "\n" +
+                "Password: " + finalPassword + "\n\n" +
+                "See you in the Student Portal! 🎓"
+            );
+            goodbye.showAndWait();
+
+            // Delete enrollee account and logout
+            deleteEnrolleeAccount();
+
+            // Stop auto-refresh
+            stopAutoRefresh();
+
+            // Navigate to login
+            WindowOpener.openLogin();
+        }
+    }
+
+    /**
+     * Handles resubmit after rejection
+     */
+    private void handleResubmit() {
+        String rejectionReason = loadRejectionReason();
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Resubmit Application");
+        alert.setHeaderText("Your application was rejected");
+        alert.setContentText(
+            "Rejection Reason:\n" +
+            rejectionReason + "\n\n" +
+            "Would you like to update your application and resubmit?\n\n" +
+            "This will change your status back to 'Pending'."
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (resubmitApplication()) {
+                showInfoDialog("Resubmitted", 
+                    "Your application has been resubmitted for review.\n" +
+                    "Status changed to: Pending\n\n" +
+                    "Please wait for admin approval.");
+
+                // Reload dashboard
+                loadPaymentAndComments();
+                loadInvoiceInfo();
+                refreshEvaluationTable();
+            } else {
+                showErrorDialog("Error", "Failed to resubmit application. Please try again.");
+            }
+        }
+    }
+
+    private String loadRejectionReason() {
+        String query = "SELECT admin_rejection_reason FROM enrollees WHERE enrollee_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, enrollee.getEnrolleeId());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String reason = rs.getString("admin_rejection_reason");
+                return reason != null ? reason : "No reason provided";
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error loading rejection reason: " + e.getMessage());
+        }
+
+        return "Unable to load rejection reason";
+    }
+
+    private boolean resubmitApplication() {
+        String query = "UPDATE enrollees SET enrollment_status = 'Pending', " +
+                      "admin_rejection_reason = NULL, reviewed_by = NULL, reviewed_on = NULL " +
+                      "WHERE enrollee_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, enrollee.getEnrolleeId());
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                enrollee.setEnrollmentStatus("Pending");
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error resubmitting application: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private void deleteEnrolleeAccount() {
+        String query = "DELETE FROM enrollees WHERE enrollee_id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, enrollee.getEnrolleeId());
+            int rows = ps.executeUpdate();
+
+            if (rows > 0) {
+                System.out.println("Enrollee account deleted: " + enrollee.getEnrolleeId());
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error deleting enrollee account: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    
     
     public boolean isPaid() { return isPaid; }
     public String getCashierComment() { return cashierComment; }
