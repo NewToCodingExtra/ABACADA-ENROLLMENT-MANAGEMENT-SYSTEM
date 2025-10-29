@@ -16,91 +16,115 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="490.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.PaymentWindowController">
+<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="490.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.PaymentWindow2Controller">
     <stylesheets>
         <URL value="@paymentwindow.css" />
     </stylesheets>
-   <children>
-      <Pane prefHeight="59.0" prefWidth="574.0" style="-fx-background-color: #191825;" />
-      <VBox layoutY="58.0" prefHeight="268.0" prefWidth="574.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="27.0" prefWidth="578.0" styleClass="container" text="PAYMENT VIA GCASH">
-               <font>
-                  <Font name="Montserrat Regular" size="18.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Label>
-            <HBox prefHeight="210.0" prefWidth="448.0" style="-fx-background-color: e1e1e1;" styleClass="container">
-               <children>
-                  <VBox prefHeight="102.0" prefWidth="203.0" styleClass="form">
-                     <children>
-                        <VBox>
-                           <children>
-                              <Label text="Full Name">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <TextField prefHeight="25.0" prefWidth="186.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
+
+    <children>
+        <Pane prefHeight="59.0" prefWidth="574.0" style="-fx-background-color: #191825;" />
+
+        <VBox layoutY="58.0" prefHeight="268.0" prefWidth="574.0">
+            <children>
+                <Label alignment="CENTER" prefHeight="27.0" prefWidth="578.0" styleClass="container" text="PAYMENT VIA GCASH">
+                    <font>
+                        <Font name="Montserrat Regular" size="18.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </Label>
+
+                <HBox prefHeight="210.0" prefWidth="448.0" style="-fx-background-color: e1e1e1;" styleClass="container">
+                    <children>
+
+                        <VBox prefHeight="102.0" prefWidth="203.0" styleClass="form">
+                            <children>
+                                <!-- Full Name -->
+                                <VBox>
+                                    <children>
+                                        <HBox>
+                                            <VBox.margin>
+                                                <Insets top="5.0" />
+                                            </VBox.margin>
+                                            <children>
+                                                <Label text="Full Name:" />
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="fullNameField" prefHeight="25.0" prefWidth="186.0" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets top="15.0" />
+                                    </VBox.margin>
+                                </VBox>
+
+                                <!-- Phone Number -->
+                                <VBox prefHeight="42.0" prefWidth="176.0">
+                                    <children>
+                                        <HBox>
+                                            <VBox.margin>
+                                                <Insets top="5.0" />
+                                            </VBox.margin>
+                                            <children>
+                                                <Label text="Phone No.:" />
+                                                <Label fx:id="phoneNoError" prefHeight="18.0" prefWidth="141.0" textFill="#df1212">
+                                                    <font>
+                                                        <Font name="System Bold Italic" size="12.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="phoneNoField" />
+                                    </children>
+                                </VBox>
+
+                                <!-- Buttons -->
+                                <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#handleConfirmAction" prefHeight="23.0" prefWidth="239.0" text="Confirm">
+                                    <VBox.margin>
+                                        <Insets top="20.0" />
+                                    </VBox.margin>
+                                </Button>
+
+                                <Button fx:id="returnBtn" mnemonicParsing="false" onAction="#handleReturnAction" prefHeight="23.0" prefWidth="226.0" styleClass="return-button" text="Return">
+                                    <VBox.margin>
+                                        <Insets top="5.0" />
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+
+                            <HBox.margin>
+                                <Insets left="190.0" />
+                            </HBox.margin>
                         </VBox>
-                        <VBox prefHeight="42.0" prefWidth="176.0">
-                           <children>
-                              <Label text="Phone No.">
-                                 <VBox.margin>
-                                    <Insets top="5.0" />
-                                 </VBox.margin>
-                              </Label>
-                              <TextField />
-                           </children>
-                        </VBox>
-                        <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="239.0" text="Confirm">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="226.0" styleClass="return-button" text="Return">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </Button>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="190.0" />
-                     </HBox.margin>
-                  </VBox>
-                  <GridPane styleClass="credit-card-grid" HBox.hgrow="NEVER">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.33334350585938" minWidth="10.0" prefWidth="44.66668701171875" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="77.66665649414062" minHeight="33.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="118.0" minHeight="31.333343505859375" prefHeight="31.333343505859375" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="118.0" minHeight="73.33334350585938" prefHeight="116.66665649414062" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <ImageView fitHeight="73.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                           <image>
-                              <Image url="@images/Gcash.png" />
-                           </image>
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </ImageView>
-                     </children>
-                  </GridPane>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
+
+                        <!-- GCash Image -->
+                        <GridPane styleClass="credit-card-grid" HBox.hgrow="NEVER">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" prefWidth="44.6667" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints prefHeight="33.0" />
+                                <RowConstraints prefHeight="31.3333" />
+                                <RowConstraints prefHeight="116.6667" />
+                            </rowConstraints>
+                            <children>
+                                <ImageView fitHeight="73.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                                    <image>
+                                        <Image url="@images/Gcash.png" />
+                                    </image>
+                                    <GridPane.margin>
+                                        <Insets left="10.0" />
+                                    </GridPane.margin>
+                                </ImageView>
+                            </children>
+                        </GridPane>
+                    </children>
+
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

@@ -11,68 +11,111 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="378.0" prefWidth="532.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.PaymentWindowController">
+<AnchorPane id="AnchorPane" prefHeight="378.0" prefWidth="532.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.PaymentWindow3Controller">
     <stylesheets>
         <URL value="@paymentwindow.css" />
     </stylesheets>
-   <children>
-      <Pane prefHeight="59.0" prefWidth="573.0" style="-fx-background-color: #191825;" />
-      <VBox layoutY="58.0" prefHeight="317.0" prefWidth="573.0">
-         <children>
-            <VBox prefHeight="82.0" prefWidth="573.0" styleClass="container">
-               <children>
-                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="574.0" styleClass="container" text="PAYMENT VIA CASH">
-                     <font>
-                        <Font name="Montserrat Regular" size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Label>
-               </children>
-            </VBox>
-            <AnchorPane prefHeight="201.0" prefWidth="574.0">
-               <children>
-                  <HBox layoutX="126.0" layoutY="-27.0" maxHeight="300.0" maxWidth="600.0" minHeight="0.0" minWidth="0.0" prefHeight="238.0" prefWidth="326.0" style="-fx-background-color: e1e1e1;" styleClass="container">
-                     <children>
-                        <VBox prefHeight="238.0" prefWidth="269.0" styleClass="form" HBox.hgrow="NEVER">
-                           <children>
-                              <VBox>
-                                 <children>
-                                    <Label text="Full Name" />
-                                    <TextField editable="false" prefHeight="25.0" prefWidth="186.0" />
-                                 </children>
-                              </VBox>
-                              <Label text="Course Chosen:" />
-                              <TextField editable="false" prefHeight="25.0" prefWidth="186.0" />
-                              <VBox prefHeight="42.0" prefWidth="176.0">
-                                 <children>
-                                    <Label text="Date of Transaction:" />
-                                    <TextField editable="false" promptText="mm/dd/yyyy" />
-                                 </children>
-                              </VBox>
-                              <HBox>
-                                 <children>
-                                    <Label text="Confirm amount of: " />
-                                    <Label fx:id="amountPlaceholder" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="96.0" textAlignment="CENTER" textFill="#273aab" />
-                                 </children>
-                              </HBox>
-                              <HBox styleClass="date-cvc-spacing">
-                                 <children>
-                                    <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="226.0" styleClass="return-button" text="Return" />
-                                    <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="226.0" text="Confirm" />
-                                 </children>
-                              </HBox>
-                           </children>
-                           <HBox.margin>
-                              <Insets left="30.0" top="30.0" />
-                           </HBox.margin>
-                        </VBox>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-         </children>
-      </VBox>
-   </children>
+
+    <children>
+        <Pane prefHeight="59.0" prefWidth="573.0" style="-fx-background-color: #191825;" />
+
+        <VBox layoutY="58.0" prefHeight="317.0" prefWidth="573.0">
+            <children>
+
+                <VBox prefHeight="82.0" prefWidth="573.0" styleClass="container">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="38.0" prefWidth="574.0" styleClass="container" text="PAYMENT VIA CASH">
+                            <font>
+                                <Font name="Montserrat Regular" size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets top="10.0" />
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                </VBox>
+
+                <AnchorPane prefHeight="201.0" prefWidth="574.0">
+                    <children>
+                        <HBox layoutX="126.0" layoutY="-27.0" prefHeight="238.0" prefWidth="326.0" style="-fx-background-color: e1e1e1;" styleClass="container">
+                            <children>
+
+                                <VBox prefHeight="238.0" prefWidth="269.0" styleClass="form" HBox.hgrow="NEVER">
+                                    <children>
+
+                                        <!-- Full Name -->
+                                        <VBox>
+                                            <children>
+                                                <HBox>
+                                                    <children>
+                                                        <Label text="Full Name:" />
+                                                        <Label fx:id="nameError" prefHeight="18.0" prefWidth="212.0" textFill="#df1111">
+                                                            <font>
+                                                                <Font name="System Bold Italic" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                                <TextField fx:id="fullNameField" editable="false" prefHeight="25.0" prefWidth="186.0" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Program Chosen -->
+                                        <HBox>
+                                            <children>
+                                                <Label prefHeight="18.0" prefWidth="112.0" text="Program Chosen:" />
+                                                <Label fx:id="programError" prefHeight="18.0" prefWidth="188.0" textFill="#df1111">
+                                                    <font>
+                                                        <Font name="System Bold Italic" size="12.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                        <TextField fx:id="programField" editable="false" prefHeight="25.0" prefWidth="186.0" />
+
+                                        <!-- Date of Transaction -->
+                                        <VBox prefHeight="42.0" prefWidth="176.0">
+                                            <children>
+                                                <HBox>
+                                                    <children>
+                                                        <Label text="Date of Transaction:" />
+                                                        <Label fx:id="dateError" prefHeight="18.0" prefWidth="162.0" textFill="#df1111">
+                                                            <font>
+                                                                <Font name="System Bold Italic" size="12.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                                <TextField fx:id="dateField" editable="false" promptText="mm/dd/yyyy" />
+                                            </children>
+                                        </VBox>
+
+                                        <!-- Amount -->
+                                        <HBox>
+                                            <children>
+                                                <Label text="Confirm amount of:" />
+                                                <Label fx:id="amountPlaceholder" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="96.0" textAlignment="CENTER" textFill="#273aab" />
+                                            </children>
+                                        </HBox>
+
+                                        <!-- Buttons -->
+                                        <HBox spacing="10" styleClass="date-cvc-spacing">
+                                            <children>
+                                                <Button fx:id="returnBtn" mnemonicParsing="false" onAction="#handleReturnAction" prefHeight="23.0" prefWidth="100.0" styleClass="return-button" text="Return" />
+                                                <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#handleConfirmAction" prefHeight="23.0" prefWidth="100.0" text="Confirm" />
+                                            </children>
+                                        </HBox>
+
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets left="30.0" top="30.0" />
+                                    </HBox.margin>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </AnchorPane>
+            </children>
+        </VBox>
+    </children>
 </AnchorPane>

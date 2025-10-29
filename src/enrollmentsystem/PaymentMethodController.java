@@ -90,6 +90,25 @@ public class PaymentMethodController implements Initializable {
         if (dialogOpen) return;
         dialogOpen = true;
         disableAllButtons(true);
+        Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
+        
+//        try {
+//            WindowOpener.openDialogWithCSSAndOwner(
+//                "/enrollmentsystem/PaymentWindow3.fxml", 
+//                "/paymentwindow.css",
+//                "Paying Tuition using GCash", 
+//                574.4, 
+//                329,
+//                currentStage
+//            );
+//            closeDialog();
+//        } catch (Exception e) {
+//            System.err.println("Error opening GCash dialog: " + e.getMessage());
+//            e.printStackTrace();
+//            
+//            disableAllButtons(false);
+//            dialogOpen = false;
+//        }
         closeDialog();
     }
 
