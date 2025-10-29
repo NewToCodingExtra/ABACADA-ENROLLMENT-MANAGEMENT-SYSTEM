@@ -45,7 +45,7 @@
 }
 .welcome-text {
     -fx-font-family: "Montserrat";
-    -fx-font-size: 25px;
+    -fx-font-size: 20px;
     -fx-font-weight: 800; /* or bold */
     -fx-text-fill: #191825;
 }

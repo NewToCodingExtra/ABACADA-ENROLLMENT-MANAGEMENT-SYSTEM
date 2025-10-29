@@ -112,6 +112,7 @@
 .tab-pane .tab:selected {
     -fx-font-weight: 700;
     -fx-background-color: #001b4d;
+    -fx-text-fill: white; 
 }
 
 .tab-pane .tab-label {
@@ -158,6 +159,7 @@
 .table-view .table-cell {
     -fx-border-color: transparent;
     -fx-padding: 5;
+    -fx-text-fill: black;
 }
 
 .table-row-cell {

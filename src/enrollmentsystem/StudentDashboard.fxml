@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.StudentDashboardController">
+<AnchorPane prefHeight="700" prefWidth="1200" stylesheets="@../../resource/studentdashboard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.StudentDashboardController">
 
     <children>
 
@@ -23,7 +23,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label styleClass="title-label" text="ABAKADA ACADEMY ENROLLMENT SYSTEM" />
+                <Label styleClass="title-label" text="ABAKADA UNIVERSITY ENROLLMENT SYSTEM" />
             </children>
         </HBox>
 
@@ -37,7 +37,7 @@
                         <Image url="@images/STARLIGHT%20ACADEMY.png" />
                     </image>
                 </ImageView>
-                <Label fx:id="studentNameLabel" styleClass="student-name" text="Student Full Name" />
+                <Label fx:id="studentNameLabel" prefHeight="24.0" prefWidth="204.0" styleClass="student-name" text="Student Full Name" />
                 <Label fx:id="studentEmailLabel" alignment="CENTER" prefHeight="20.0" prefWidth="197.0" styleClass="student-email" text="student@abakada.student" />
                 <Label fx:id="studentIdLabel" styleClass="student-id" text="ID No. STUDENT" />
             </VBox>
@@ -46,7 +46,7 @@
             <VBox fx:id="mainContainer" alignment="TOP_CENTER" spacing="0" styleClass="main-content" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                 <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                     <tabs>
-                        <Tab style="-fx-text-fill: #ffffff;" text="Home">
+                        <Tab style="-fx-text-fill: 000000;" text="Home">
                             <AnchorPane styleClass="tab-content">
                         <children>
                            <TableView fx:id="overViewTable" layoutX="46.0" layoutY="22.0" prefHeight="60.0" prefWidth="777.0" style="-fx-background-color: ffffff;">
