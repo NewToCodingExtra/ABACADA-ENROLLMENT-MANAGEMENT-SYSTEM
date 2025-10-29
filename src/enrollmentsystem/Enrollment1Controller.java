@@ -259,13 +259,13 @@ public class Enrollment1Controller {
                 emptyFields.add("Birthday (cannot be in the future)");
             }
             int age = Period.between(datePicker.getValue(), LocalDate.now()).getYears();
-            if (age < 1) {
-                emptyFields.add("Birthday (age must be at least 1 year)");
+            if (age < 12) {
+                emptyFields.add("Birthday (age must be at least 12 year)");
             } else if (age > 150) {
                 emptyFields.add("Birthday (age cannot exceed 150 years)");
             }
         }
-
+        
         if (!emptyFields.isEmpty()) {
             showValidationDialog(emptyFields);
             return false;

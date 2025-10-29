@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="329.0" prefWidth="490.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.PaymentWindow2Controller">
+<AnchorPane id="AnchorPane" prefHeight="360.0" prefWidth="574.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="enrollmentsystem.PaymentWindow2Controller">
     <stylesheets>
         <URL value="@paymentwindow.css" />
     </stylesheets>
@@ -35,7 +35,7 @@
                     </VBox.margin>
                 </Label>
 
-                <HBox prefHeight="210.0" prefWidth="448.0" style="-fx-background-color: e1e1e1;" styleClass="container">
+                <HBox prefHeight="233.0" prefWidth="574.0" style="-fx-background-color: e1e1e1;" styleClass="container">
                     <children>
 
                         <VBox prefHeight="102.0" prefWidth="203.0" styleClass="form">
@@ -49,6 +49,11 @@
                                             </VBox.margin>
                                             <children>
                                                 <Label text="Full Name:" />
+                                    <Label fx:id="phoneNoError1" prefHeight="18.0" prefWidth="141.0" textFill="#df1212">
+                                       <font>
+                                          <Font name="System Bold Italic" size="12.0" />
+                                       </font>
+                                    </Label>
                                             </children>
                                         </HBox>
                                         <TextField fx:id="fullNameField" prefHeight="25.0" prefWidth="186.0" />
@@ -75,6 +80,24 @@
                                             </children>
                                         </HBox>
                                         <TextField fx:id="phoneNoField" />
+                              <VBox>
+                                 <children>
+                                    <HBox>
+                                       <VBox.margin>
+                                          <Insets top="5.0" />
+                                       </VBox.margin>
+                                       <children>
+                                          <Label text="PIN:" />
+                                          <Label fx:id="pinError" prefHeight="18.0" prefWidth="180.0" textFill="#df1212">
+                                             <font>
+                                                <Font name="System Bold Italic" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <TextField fx:id="pinField" prefHeight="25.0" prefWidth="186.0" />
+                                 </children>
+                              </VBox>
                                     </children>
                                 </VBox>
 
@@ -87,7 +110,7 @@
 
                                 <Button fx:id="returnBtn" mnemonicParsing="false" onAction="#handleReturnAction" prefHeight="23.0" prefWidth="226.0" styleClass="return-button" text="Return">
                                     <VBox.margin>
-                                        <Insets top="5.0" />
+                                        <Insets bottom="10.0" top="5.0" />
                                     </VBox.margin>
                                 </Button>
                             </children>

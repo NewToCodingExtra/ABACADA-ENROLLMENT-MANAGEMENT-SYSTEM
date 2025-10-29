@@ -72,7 +72,7 @@ public class PaymentMethodController implements Initializable {
                 "/enrollmentsystem/PaymentWindow2.fxml", 
                 "Paying Tuition using GCash", 
                 574.4, 
-                329,
+                361.2,
                 currentStage
             );
             closeDialog();
@@ -92,26 +92,24 @@ public class PaymentMethodController implements Initializable {
         disableAllButtons(true);
         Stage currentStage = (Stage) cancelBtn.getScene().getWindow();
         
-//        try {
-//            WindowOpener.openDialogWithCSSAndOwner(
-//                "/enrollmentsystem/PaymentWindow3.fxml", 
-//                "/paymentwindow.css",
-//                "Paying Tuition using GCash", 
-//                574.4, 
-//                329,
-//                currentStage
-//            );
-//            closeDialog();
-//        } catch (Exception e) {
-//            System.err.println("Error opening GCash dialog: " + e.getMessage());
-//            e.printStackTrace();
-//            
-//            disableAllButtons(false);
-//            dialogOpen = false;
-//        }
-        closeDialog();
+        try {
+            WindowOpener.openDialogWithOwner(
+                "/enrollmentsystem/PaymentWindow3.fxml", 
+                "Paying Tuition using Cash(unavailable)", 
+                574.4, 
+                361.2,
+                currentStage
+            );
+            closeDialog();
+        
+        }catch (Exception e) {
+            System.err.println("Error opening GCash dialog: " + e.getMessage());
+            e.printStackTrace();
+            
+            disableAllButtons(false);
+            dialogOpen = false;
+        }
     }
-
     @FXML
     private void cancelBtnButton(ActionEvent event) {
         if (dialogOpen) return;

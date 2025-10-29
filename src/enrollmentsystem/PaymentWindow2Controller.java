@@ -18,14 +18,19 @@ public class PaymentWindow2Controller implements Initializable {
     @FXML private TextField fullNameField;
     @FXML private Label phoneNoError;
     @FXML private TextField phoneNoField;
-    @FXML private TextField pinField;
+    @FXML
+    private TextField pinField;
     @FXML private Label pinError;
     @FXML private Button confirmBtn;
     @FXML private Button returnBtn;
-    @FXML private Label amountLabel;
+    private Label amountLabel;
 
     private BigDecimal tuitionFee;
     private String enrolleeId;
+    @FXML
+    private Label phoneNoError1;
+    
+    
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
