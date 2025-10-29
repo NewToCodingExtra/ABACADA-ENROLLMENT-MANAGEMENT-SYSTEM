@@ -3,33 +3,44 @@ package enrollmentsystem;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class AutoScheduler {
+/**
+ * Enhanced AutoScheduler with Fair Faculty Load Distribution
+ * Ensures every active faculty member gets assigned classes
+ */
+public class FairAutoScheduler {
     
     private String semesterId;
     private List<TimeSlot> availableTimeSlots;
     private List<Room> availableRooms;
-    private Map<String, List<String>> facultySchedule; 
-    private Map<String, List<String>> roomSchedule;  
-    private Map<String, List<String>> sectionSchedule;  
+    private Map<String, List<String>> facultySchedule;
+    private Map<String, List<String>> roomSchedule;
+    private Map<String, List<String>> sectionSchedule;
+    private Map<String, Integer> facultyLoadCount; // Track faculty teaching load
+    private Map<String, FacultyInfo> facultyInfoMap;
     private int successCount = 0;
     private int failCount = 0;
     private List<String> errors = new ArrayList<>();
+    private List<String> warnings = new ArrayList<>();
     
-    public AutoScheduler(String semesterId) {
+    public FairAutoScheduler(String semesterId) {
         this.semesterId = semesterId;
         this.facultySchedule = new HashMap<>();
         this.roomSchedule = new HashMap<>();
         this.sectionSchedule = new HashMap<>();
+        this.facultyLoadCount = new HashMap<>();
+        this.facultyInfoMap = new HashMap<>();
     }
     
     public boolean generateSchedules() {
         long startTime = System.currentTimeMillis();
         
-        System.out.println("\n=== AUTO SCHEDULER STARTED ===");
+        System.out.println("\n=== FAIR AUTO SCHEDULER STARTED ===");
         System.out.println("Semester: " + semesterId);
         System.out.println("Start time: " + LocalDateTime.now());
         
+        // Load resources
         availableTimeSlots = TimeSlot.loadAll();
         availableRooms = Room.loadAll();
         
@@ -42,6 +53,9 @@ public class AutoScheduler {
         System.out.println("  - Time slots: " + availableTimeSlots.size());
         System.out.println("  - Rooms: " + availableRooms.size());
         
+        loadFacultyInfo();
+        System.out.println("  - Active faculty: " + facultyInfoMap.size());
+        
         loadExistingSchedules();
         
         List<CourseOffering> offerings = getUnscheduledOfferings();
@@ -49,63 +63,213 @@ public class AutoScheduler {
         
         if (offerings.isEmpty()) {
             System.out.println("\nNo unscheduled offerings found!");
+            checkFacultyDistribution();
             return true;
         }
-      
-        offerings.sort((a, b) -> {
-            CourseRequirements reqA = getCourseRequirements(a.getCourseId());
-            CourseRequirements reqB = getCourseRequirements(b.getCourseId());
-            
-            int labCompare = Boolean.compare(reqB.requiresLab, reqA.requiresLab);
-            if (labCompare != 0) return labCompare;
-            
-            int capacityCompare = Integer.compare(b.getCapacity(), a.getCapacity());
-            if (capacityCompare != 0) return capacityCompare;
-            
-            return a.getCourseId().compareTo(b.getCourseId());
-        });
         
-        System.out.println("\n=== SCHEDULING PROCESS ===");
-        int processed = 0;
+        System.out.println("\n=== PHASE 1: Priority Assignment (Faculty with 0 classes) ===");
+        List<CourseOffering> unassignedFacultyOfferings = 
+            prioritizeUnassignedFaculty(offerings);
         
-        for (CourseOffering offering : offerings) {
-            processed++;
-            System.out.print("\r[" + processed + "/" + offerings.size() + "] Processing...");
-            
-            if (scheduleOffering(offering)) {
-                successCount++;
-            } else {
-                failCount++;
-                String error = "Failed: " + offering.getOfferingId() + 
-                              " (" + offering.getCourseId() + " - " + offering.getSectionId() + ")";
-                errors.add(error);
-            }
+        if (!unassignedFacultyOfferings.isEmpty()) {
+            System.out.println("Prioritizing " + unassignedFacultyOfferings.size() + 
+                             " offerings for underloaded faculty");
+            scheduleOfferings(unassignedFacultyOfferings);
         }
+   
+        System.out.println("\n=== PHASE 2: Fair Load Distribution ===");
+        offerings = getUnscheduledOfferings(); 
         
-        System.out.println();
+        if (!offerings.isEmpty()) {
+            offerings.sort((a, b) -> {
+                int loadA = facultyLoadCount.getOrDefault(a.getFacultyId(), 0);
+                int loadB = facultyLoadCount.getOrDefault(b.getFacultyId(), 0);
+                
+                if (loadA != loadB) {
+                    return Integer.compare(loadA, loadB);
+                }
+                
+                CourseRequirements reqA = getCourseRequirements(a.getCourseId());
+                CourseRequirements reqB = getCourseRequirements(b.getCourseId());
+                int labCompare = Boolean.compare(reqB.requiresLab, reqA.requiresLab);
+                if (labCompare != 0) return labCompare;
+                
+                return Integer.compare(b.getCapacity(), a.getCapacity());
+            });
+            
+            scheduleOfferings(offerings);
+        }
         
         long endTime = System.currentTimeMillis();
         int executionTime = (int) (endTime - startTime);
         
         logGeneration(offerings.size(), successCount, executionTime);
         
-        System.out.println("\n=== SCHEDULE GENERATION COMPLETE ===");
-        System.out.println("Total offerings: " + offerings.size());
-        System.out.println("✓ Scheduled: " + successCount + " (" + 
-                          String.format("%.1f%%", (successCount * 100.0 / offerings.size())) + ")");
-        System.out.println("✗ Failed: " + failCount + " (" + 
-                          String.format("%.1f%%", (failCount * 100.0 / offerings.size())) + ")");
-        System.out.println("Execution time: " + executionTime + "ms (" + 
-                          String.format("%.2f", executionTime / 1000.0) + "s)");
+        printSummary(executionTime);
         
-        if (!errors.isEmpty()) {
-            System.out.println("\n=== FAILED OFFERINGS ===");
-            errors.forEach(System.err::println);
-        }
+        checkFacultyDistribution();
         
         return failCount == 0;
     }
-   
+    
+    private void loadFacultyInfo() {
+        try (Connection conn = DBConnection.getConnection()) {
+            String query = "SELECT f.faculty_id, f.first_name, f.last_name, " +
+                          "f.department, f.specialization, f.max_teaching_hours, " +
+                          "COUNT(DISTINCT co.offering_id) as current_load " +
+                          "FROM faculty f " +
+                          "LEFT JOIN course_offerings co ON f.faculty_id = co.faculty_id " +
+                          "  AND co.semester_id = ? AND co.status = 'Open' " +
+                          "JOIN users u ON f.user_id = u.user_id " +
+                          "WHERE u.is_active = 1 " +
+                          "GROUP BY f.faculty_id";
+            
+            try (PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, semesterId);
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    FacultyInfo info = new FacultyInfo(
+                        rs.getString("faculty_id"),
+                        rs.getString("first_name") + " " + rs.getString("last_name"),
+                        rs.getString("department"),
+                        rs.getString("specialization"),
+                        rs.getInt("max_teaching_hours"),
+                        rs.getInt("current_load")
+                    );
+                    facultyInfoMap.put(info.facultyId, info);
+                    facultyLoadCount.put(info.facultyId, info.currentLoad);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error loading faculty info: " + e.getMessage());
+        }
+    }
+  
+    private List<CourseOffering> prioritizeUnassignedFaculty(List<CourseOffering> offerings) {
+        Set<String> facultyWithClasses = new HashSet<>(facultyLoadCount.keySet());
+        facultyWithClasses.removeIf(id -> facultyLoadCount.get(id) == 0);
+        
+        List<CourseOffering> priorityOfferings = new ArrayList<>();
+        for (CourseOffering offering : offerings) {
+            int load = facultyLoadCount.getOrDefault(offering.getFacultyId(), 0);
+            if (load == 0) {
+                priorityOfferings.add(offering);
+            }
+        }
+    
+        priorityOfferings.sort((a, b) -> Integer.compare(b.getCapacity(), a.getCapacity()));
+        
+        return priorityOfferings;
+    }
+    
+    private void scheduleOfferings(List<CourseOffering> offerings) {
+        int processed = 0;
+        
+        for (CourseOffering offering : offerings) {
+            processed++;
+            System.out.print("\r  [" + processed + "/" + offerings.size() + "] Processing...");
+            
+            if (scheduleOffering(offering)) {
+                successCount++;
+                String facultyId = offering.getFacultyId();
+                facultyLoadCount.put(facultyId, facultyLoadCount.getOrDefault(facultyId, 0) + 1);
+            } else {
+                failCount++;
+                String error = "Failed: " + offering.getOfferingId() + 
+                              " (Faculty: " + offering.getFacultyId() + 
+                              ", Course: " + offering.getCourseId() + 
+                              ", Section: " + offering.getSectionId() + ")";
+                errors.add(error);
+            }
+        }
+        
+        System.out.println();  
+    }
+    
+    private void checkFacultyDistribution() {
+        System.out.println("\n=== FACULTY TEACHING LOAD DISTRIBUTION ===");
+        
+        int totalFaculty = facultyInfoMap.size();
+        int facultyWithClasses = 0;
+        int facultyWithoutClasses = 0;
+        int totalClasses = 0;
+        int minLoad = Integer.MAX_VALUE;
+        int maxLoad = 0;
+        
+        List<FacultyLoadReport> reports = new ArrayList<>();
+        
+        for (FacultyInfo info : facultyInfoMap.values()) {
+            int load = facultyLoadCount.getOrDefault(info.facultyId, 0);
+            totalClasses += load;
+            
+            if (load > 0) {
+                facultyWithClasses++;
+                minLoad = Math.min(minLoad, load);
+                maxLoad = Math.max(maxLoad, load);
+            } else {
+                facultyWithoutClasses++;
+            }
+            
+            reports.add(new FacultyLoadReport(info, load));
+        }
+        
+        if (minLoad == Integer.MAX_VALUE) minLoad = 0;
+        
+        double avgLoad = totalFaculty > 0 ? (double) totalClasses / totalFaculty : 0;
+        
+        // Print statistics
+        System.out.println("Total Faculty: " + totalFaculty);
+        System.out.println("Faculty with classes: " + facultyWithClasses);
+        System.out.println("Faculty WITHOUT classes: " + facultyWithoutClasses);
+        System.out.println("Total classes assigned: " + totalClasses);
+        System.out.println("Average load: " + String.format("%.2f", avgLoad) + " classes/faculty");
+        System.out.println("Load range: " + minLoad + " - " + maxLoad + " classes");
+        
+        // Print detailed report
+        System.out.println("\nDetailed Faculty Load Report:");
+        System.out.println("─".repeat(80));
+        System.out.printf("%-15s %-25s %-20s %10s%n", 
+                         "Faculty ID", "Name", "Department", "Classes");
+        System.out.println("─".repeat(80));
+        
+        reports.sort((a, b) -> Integer.compare(a.load, b.load));
+        
+        for (FacultyLoadReport report : reports) {
+            String status = report.load == 0 ? " ⚠ NO CLASSES" : "";
+            System.out.printf("%-15s %-25s %-20s %10d%s%n",
+                             report.info.facultyId,
+                             truncate(report.info.name, 25),
+                             truncate(report.info.department, 20),
+                             report.load,
+                             status);
+            
+            if (report.load == 0) {
+                warnings.add("Faculty " + report.info.facultyId + " (" + 
+                           report.info.name + ") has NO classes assigned");
+            }
+        }
+        System.out.println("─".repeat(80));
+        
+        if (!warnings.isEmpty()) {
+            System.out.println("\n⚠ WARNINGS:");
+            for (String warning : warnings) {
+                System.out.println("  - " + warning);
+            }
+            
+            System.out.println("\nRECOMMENDATIONS:");
+            System.out.println("  1. Review course offerings - add more offerings for underutilized faculty");
+            System.out.println("  2. Check faculty specializations match available courses");
+            System.out.println("  3. Consider adjusting faculty availability schedules");
+            System.out.println("  4. Verify faculty are not marked as inactive");
+        }
+    }
+    
+    private String truncate(String str, int maxLen) {
+        if (str == null) return "";
+        return str.length() <= maxLen ? str : str.substring(0, maxLen - 3) + "...";
+    }
+    
     private void loadExistingSchedules() {
         try (Connection conn = DBConnection.getConnection()) {
             String query = "SELECT faculty_id, room_id, section_id, time_slot_id " +
@@ -138,7 +302,7 @@ public class AutoScheduler {
             System.err.println("Error loading existing schedules: " + e.getMessage());
         }
     }
-   
+  
     private boolean scheduleOffering(CourseOffering offering) {
         CourseRequirements requirements = getCourseRequirements(offering.getCourseId());
         List<TimeSlot> facultyAvailableSlots = getFacultyAvailableSlots(offering.getFacultyId());
@@ -200,6 +364,11 @@ public class AutoScheduler {
         roomSchedule.computeIfAbsent(roomId, k -> new ArrayList<>()).add(timeSlotId);
     }
     
+    private boolean isRoomAvailable(String roomId, String timeSlotId) {
+        if (!roomSchedule.containsKey(roomId)) return true;
+        return !roomSchedule.get(roomId).contains(timeSlotId);
+    }
+    
     private Room findSuitableRoom(String timeSlotId, CourseRequirements requirements, int capacity) {
         for (Room room : availableRooms) {
             if (!room.meetsRequirements(requirements.requiresLab, 
@@ -215,11 +384,6 @@ public class AutoScheduler {
             return room;
         }
         return null;
-    }
-    
-    private boolean isRoomAvailable(String roomId, String timeSlotId) {
-        if (!roomSchedule.containsKey(roomId)) return true;
-        return !roomSchedule.get(roomId).contains(timeSlotId);
     }
     
     private boolean assignSchedule(CourseOffering offering, TimeSlot timeSlot, Room room) {
@@ -248,7 +412,7 @@ public class AutoScheduler {
             return false;
         }
     }
-   
+    
     private List<CourseOffering> getUnscheduledOfferings() {
         List<CourseOffering> offerings = new ArrayList<>();
         
@@ -281,7 +445,7 @@ public class AutoScheduler {
         
         return offerings;
     }
-  
+    
     private CourseRequirements getCourseRequirements(String courseId) {
         try (Connection conn = DBConnection.getConnection()) {
             if (conn == null) return new CourseRequirements();
@@ -306,7 +470,7 @@ public class AutoScheduler {
         }
         return new CourseRequirements();
     }
-  
+    
     private List<TimeSlot> getFacultyAvailableSlots(String facultyId) {
         List<TimeSlot> slots = new ArrayList<>();
         
@@ -341,7 +505,7 @@ public class AutoScheduler {
         
         return slots;
     }
-  
+    
     private void logGeneration(int total, int scheduled, int executionTime) {
         try (Connection conn = DBConnection.getConnection()) {
             if (conn == null) return;
@@ -359,10 +523,15 @@ public class AutoScheduler {
                 pstmt.setInt(5, scheduled);
                 pstmt.setInt(6, failCount);
                 pstmt.setInt(7, executionTime);
-                pstmt.setString(8, errors.isEmpty() ? null : String.join("; ", errors));
+                
+                String errorMsg = errors.isEmpty() ? null : String.join("; ", errors);
+                if (!warnings.isEmpty()) {
+                    errorMsg = (errorMsg != null ? errorMsg + "; " : "") + 
+                              "Warnings: " + String.join("; ", warnings);
+                }
+                pstmt.setString(8, errorMsg);
                 
                 pstmt.executeUpdate();
-                System.out.println("\nSchedule generation logged to database");
             }
             
         } catch (SQLException e) {
@@ -370,7 +539,18 @@ public class AutoScheduler {
         }
     }
     
-    // Helper Classes
+    private void printSummary(int executionTime) {
+        System.out.println("\n=== SCHEDULE GENERATION COMPLETE ===");
+        System.out.println("✓ Scheduled: " + successCount);
+        System.out.println("✗ Failed: " + failCount);
+        System.out.println("Execution time: " + executionTime + "ms (" + 
+                          String.format("%.2f", executionTime / 1000.0) + "s)");
+        
+        if (!errors.isEmpty()) {
+            System.out.println("\n=== FAILED OFFERINGS ===");
+            errors.forEach(System.err::println);
+        }
+    }
     
     private static class CourseRequirements {
         boolean requiresLab;
@@ -415,5 +595,34 @@ public class AutoScheduler {
         
         public int getCapacity() { return capacity; }
         public void setCapacity(int capacity) { this.capacity = capacity; }
+    }
+    
+    private static class FacultyInfo {
+        String facultyId;
+        String name;
+        String department;
+        String specialization;
+        int maxTeachingHours;
+        int currentLoad;
+        
+        FacultyInfo(String facultyId, String name, String department, 
+                   String specialization, int maxTeachingHours, int currentLoad) {
+            this.facultyId = facultyId;
+            this.name = name;
+            this.department = department;
+            this.specialization = specialization;
+            this.maxTeachingHours = maxTeachingHours;
+            this.currentLoad = currentLoad;
+        }
+    }
+    
+    private static class FacultyLoadReport {
+        FacultyInfo info;
+        int load;
+        
+        FacultyLoadReport(FacultyInfo info, int load) {
+            this.info = info;
+            this.load = load;
+        }
     }
 }

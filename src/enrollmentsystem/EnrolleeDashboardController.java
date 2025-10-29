@@ -631,7 +631,7 @@ public class EnrolleeDashboardController {
         alert.getDialogPane().setPrefWidth(500);
 
         // Add copy and logout buttons
-        ButtonType copyButton = new ButtonType("Copy & Logout");
+        ButtonType copyButton = new ButtonType("Copy & Logout", ButtonBar.ButtonData.LEFT);
         ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(copyButton, cancelButton);
 

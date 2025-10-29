@@ -82,36 +82,28 @@ public class AdminDashboardController implements Initializable {
         
         setupTableColumns();
         loadEnrollees();
-        loadDashboardStatistics(); // NEW: Load stats
-        
-        // Auto-refresh every 5 seconds
+        loadDashboardStatistics();  
+
         startAutoRefresh(5);
         
         System.out.println("Admin Dashboard initialized for admin: " + adminId);
     }
-    
-    /**
-     * Load dashboard statistics from database
-     */
+   
     private void loadDashboardStatistics() {
         try (Connection conn = DBConnection.getConnection()) {
             
-            // 1. Total Enrolled Students (enrollment_status = 'Enrolled')
             int enrolledCount = getCountFromQuery(conn, 
                 "SELECT COUNT(*) FROM enrollees WHERE enrollment_status = 'Enrolled'");
             enrolledNoLabel.setText(String.valueOf(enrolledCount));
             
-            // 2. Pending Enrollments (enrollment_status = 'Pending')
             int pendingEnrollmentCount = getCountFromQuery(conn,
                 "SELECT COUNT(*) FROM enrollees WHERE enrollment_status = 'Pending'");
             pendingEnrollmentLabel.setText(String.valueOf(pendingEnrollmentCount));
             
-            // 3. Pending Payments (payment_status = 'Not_Paid' OR 'Paid_Pending_Verification')
             int pendingPaymentCount = getCountFromQuery(conn,
                 "SELECT COUNT(*) FROM enrollees WHERE payment_status IN ('Not_Paid', 'Paid_Pending_Verification')");
             pendingPaymentLabel.setText(String.valueOf(pendingPaymentCount));
             
-            // 4. Paid/Verified Payments (payment_status = 'Verified')
             int paidCount = getCountFromQuery(conn,
                 "SELECT COUNT(*) FROM enrollees WHERE payment_status = 'Verified'");
             paidLabel.setText(String.valueOf(paidCount));
@@ -125,7 +117,6 @@ public class AdminDashboardController implements Initializable {
             System.err.println("Error loading dashboard statistics: " + e.getMessage());
             e.printStackTrace();
             
-            // Set default values on error
             enrolledNoLabel.setText("0");
             pendingEnrollmentLabel.setText("0");
             pendingPaymentLabel.setText("0");
@@ -133,9 +124,6 @@ public class AdminDashboardController implements Initializable {
         }
     }
     
-    /**
-     * Helper method to get count from query
-     */
     private int getCountFromQuery(Connection conn, String query) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
@@ -147,11 +135,9 @@ public class AdminDashboardController implements Initializable {
     }
     
     private void setupTableColumns() {
-        // Enrollee ID Column
         homeColEnrolleeID.setCellValueFactory(new PropertyValueFactory<>("enrolleeId"));
         homeColEnrolleeID.setStyle("-fx-alignment: CENTER;");
         
-        // Student Name Column - Clickable Hyperlink
         homeColStudentName.setCellValueFactory(new PropertyValueFactory<>("studentName"));
         homeColStudentName.setCellFactory(column -> new TableCell<EnrolleeForApproval, String>() {
             private final Hyperlink hyperlink = new Hyperlink();
@@ -173,19 +159,15 @@ public class AdminDashboardController implements Initializable {
             }
         });
         
-        // Course Column
         homeColCourse.setCellValueFactory(new PropertyValueFactory<>("program"));
         homeColCourse.setStyle("-fx-alignment: CENTER;");
         
-        // Year Level Column
         homeColYearLevel.setCellValueFactory(new PropertyValueFactory<>("yearLevel"));
         homeColYearLevel.setStyle("-fx-alignment: CENTER;");
         
-        // Extra Info Column (Payment Status)
         homeColExtra.setCellValueFactory(new PropertyValueFactory<>("paymentStatus"));
         homeColExtra.setStyle("-fx-alignment: CENTER;");
         
-        // Action Column with Approve/Reject buttons
         homeColAction.setCellFactory(new Callback<TableColumn<EnrolleeForApproval, Void>, TableCell<EnrolleeForApproval, Void>>() {
             @Override
             public TableCell<EnrolleeForApproval, Void> call(TableColumn<EnrolleeForApproval, Void> param) {
@@ -231,29 +213,21 @@ public class AdminDashboardController implements Initializable {
         enrolleesList = FXCollections.observableArrayList(enrollees);
         homeTable.setItems(enrolleesList);
         
-        // Refresh statistics when loading enrollees
         loadDashboardStatistics();
         
         System.out.println("Loaded " + enrollees.size() + " enrollees with verified payment");
     }
     
-    /**
-     * Opens a read-only view of enrollee's enrollment forms
-     * FIXED: Now properly passes enrollee ID to the dialog
-     */
     private void openEnrolleeViewDialog(EnrolleeForApproval enrollee) {
         try {
-            // Load FXML
             FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/enrollmentsystem/EnrolleeViewDialog.fxml")
             );
             Parent root = loader.load();
             
-            // Get controller and set enrollee ID
             EnrolleeViewDialogController controller = loader.getController();
             controller.setEnrolleeId(enrollee.getEnrolleeId());
             
-            // Create dialog stage
             Stage dialogStage = new Stage();
             controller.setDialogStage(dialogStage);
             
@@ -263,7 +237,6 @@ public class AdminDashboardController implements Initializable {
             dialogStage.setScene(new Scene(root, 900, 700));
             dialogStage.setResizable(false);
             
-            // Load data AFTER stage is set up
             controller.loadAndDisplay();
             
             dialogStage.showAndWait();
@@ -274,10 +247,7 @@ public class AdminDashboardController implements Initializable {
             showError("Error", "Failed to open enrollee details: " + e.getMessage());
         }
     }
-    
-    /**
-     * Handles enrollee approval process
-     */
+   
     private void handleApproveEnrollee(EnrolleeForApproval enrollee) {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Approve Enrollment");
@@ -306,9 +276,6 @@ public class AdminDashboardController implements Initializable {
         }
     }
     
-    /**
-     * Approves enrollee and creates student account
-     */
     private boolean approveEnrolleeAndCreateAccount(EnrolleeForApproval enrollee) {
         Connection conn = null;
         
@@ -318,48 +285,40 @@ public class AdminDashboardController implements Initializable {
             
             conn.setAutoCommit(false);
             
-            // 1. Load full enrollee data
             Enrollee fullEnrollee = loadFullEnrolleeData(enrollee.getEnrolleeId(), conn);
             if (fullEnrollee == null) {
                 conn.rollback();
                 return false;
             }
             
-            // 2. Generate student credentials
             String studentId = generateStudentId();
             String username = studentId;
             String password = "1234" + fullEnrollee.getLastName();
             
-            // 3. Generate unique university email
             String universityEmail = generateUniqueEmail(
                 fullEnrollee.getFirstName(), 
                 fullEnrollee.getLastName(), 
                 conn
             );
             
-            // 4. Create user account with university email
             int userId = createUserAccount(username, universityEmail, password, "Student", conn);
             if (userId == 0) {
                 conn.rollback();
                 return false;
             }
             
-            // 4. Get program_id from program code
             String programId = getProgramId(enrollee.getProgram(), conn);
             
-            // 5. Create student record
             if (!createStudentRecord(studentId, userId, programId, conn)) {
                 conn.rollback();
                 return false;
             }
             
-            // 6. Copy enrollee data to student_record
             if (!copyToStudentRecord(fullEnrollee, studentId, programId, conn)) {
                 conn.rollback();
                 return false;
             }
             
-            // 7. Update enrollee status to 'Enrolled' and add credentials to admin comment
             String credentialsMessage = String.format(
                 "You are officially enrolled! Log in using your student account.\n\n" +
                 "Student ID: %s\n" +
@@ -374,12 +333,10 @@ public class AdminDashboardController implements Initializable {
                 return false;
             }
             
-            // 8. Assign to section (for auto-scheduler)
             assignToSection(studentId, programId, fullEnrollee.getYearLevel(), conn);
             
             conn.commit();
             
-            // Show success message with credentials
             showCredentialsDialog(enrollee.getStudentName(), studentId, username, password, universityEmail);
             
             return true;
@@ -404,24 +361,21 @@ public class AdminDashboardController implements Initializable {
             }
         }
     }
-    
-    /**
-     * Shows credentials dialog with copy functionality
-     */
+
     private void showCredentialsDialog(String studentName, String studentId, String username, String password, String universityEmail) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Enrollment Approved");
         alert.setHeaderText("Student Account Created for " + studentName);
         
         String content = String.format(
-            "╔═══════════════════════════════════╗\n" +
+            "=============================\n" +
             "        STUDENT LOGIN CREDENTIALS\n" +
-            "╚═══════════════════════════════════╝\n\n" +
+            "=============================\n\n" +
             "Student ID: %s\n" +
             "Username: %s\n" +
             "Password: %s\n" +
             "University Email: %s\n\n" +
-            "═══════════════════════════════════════\n\n" +
+            "=============================\n\n" +
             "IMPORTANT INSTRUCTIONS:\n\n" +
             "1. These credentials have been sent to the\n" +
             "   enrollee's dashboard under Admin Comment.\n\n" +
@@ -429,14 +383,13 @@ public class AdminDashboardController implements Initializable {
             "   student account.\n\n" +
             "3. The enrollee account will remain active\n" +
             "   until the student logs in for the first time.\n\n" +
-            "═══════════════════════════════════════",
+            "==============================",
             studentId, username, password, universityEmail
         );
         
         alert.setContentText(content);
         alert.getDialogPane().setPrefWidth(550);
         
-        // Remove default OK button and add custom buttons in order
         alert.getButtonTypes().clear();
         ButtonType copyButton = new ButtonType("Copy Credentials", ButtonBar.ButtonData.LEFT);
         ButtonType okButton = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
@@ -444,7 +397,6 @@ public class AdminDashboardController implements Initializable {
         
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == copyButton) {
-            // Copy to clipboard
             String credentials = String.format(
                 "Student ID: %s\nUsername: %s\nPassword: %s\nUniversity Email: %s",
                 studentId, username, password, universityEmail
@@ -458,10 +410,7 @@ public class AdminDashboardController implements Initializable {
             showCredentialsDialog(studentName, studentId, username, password, universityEmail); // Show again
         }
     }
-    
-    /**
-     * Handles enrollee rejection
-     */
+ 
     private void handleRejectEnrollee(EnrolleeForApproval enrollee) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Reject Enrollment");
@@ -507,9 +456,6 @@ public class AdminDashboardController implements Initializable {
         }
     }
     
-    /**
-     * Rejects enrollment and stores reason
-     */
     private boolean rejectEnrollment(String enrolleeId, String reason) {
         String query = "UPDATE enrollees SET enrollment_status = 'Rejected', " +
                       "admin_rejection_reason = ?, reviewed_by = ?, reviewed_on = ? " +
@@ -582,13 +528,9 @@ public class AdminDashboardController implements Initializable {
         int random = (int)(Math.random() * 9000) + 1000;
         return String.format("STU%02d-%04d", year, random);
     }
-    
-    /**
-     * Generate unique university email in format: LastName.FirstName@abakadauni.edu.ph
-     * If exists, append number: LastName.FirstName2@abakadauni.edu.ph
-     */
+  
     private String generateUniqueEmail(String firstName, String lastName, Connection conn) throws SQLException {
-        // Clean names (remove spaces, special chars, convert to lowercase)
+  
         String cleanFirstName = firstName.replaceAll("[^a-zA-Z]", "").toLowerCase();
         String cleanLastName = lastName.replaceAll("[^a-zA-Z]", "").toLowerCase();
         
@@ -596,7 +538,6 @@ public class AdminDashboardController implements Initializable {
         String email = baseEmail;
         int counter = 2;
         
-        // Check if email exists
         String checkQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
         
         while (true) {
@@ -605,16 +546,13 @@ public class AdminDashboardController implements Initializable {
                 ResultSet rs = ps.executeQuery();
                 
                 if (rs.next() && rs.getInt(1) == 0) {
-                    // Email doesn't exist, we can use it
                     System.out.println("Generated unique university email: " + email);
                     return email;
                 }
                 
-                // Email exists, try next number
                 email = cleanLastName + "." + cleanFirstName + counter + "@abakadauni.edu.ph";
                 counter++;
                 
-                // Safety limit to prevent infinite loop
                 if (counter > 100) {
                     throw new SQLException("Unable to generate unique email after 100 attempts");
                 }
