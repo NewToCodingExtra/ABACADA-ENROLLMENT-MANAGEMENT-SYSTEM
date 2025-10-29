@@ -687,118 +687,192 @@ public class AdminDashboardController implements Initializable {
         }
     }
     
-    /**
-     * CRITICAL FIX: Auto-assign student to section and enroll in all section courses
-     * Returns number of courses enrolled
-     */
-    private int assignToSectionAndEnroll(String studentId, String programId, String yearLevel, Connection conn) {
+   private int assignToSectionAndEnroll(String studentId, String programId, String yearLevel, Connection conn) {
         int enrolledCount = 0;
-        
+
         try {
-            // Step 1: Find appropriate section for student
+            System.out.println("\n=== STARTING ENROLLMENT PROCESS ===");
+            System.out.println("Student ID: " + studentId);
+            System.out.println("Program ID: " + programId);
+            System.out.println("Year Level: " + yearLevel);
+
+            // Step 1: Extract year number from yearLevel (e.g., "1st Year" -> "1")
+            String yearNumber = yearLevel.replaceAll("[^0-9]", "").trim();
+            if (yearNumber.isEmpty()) {
+                yearNumber = "1"; // Default to first year
+            }
+            System.out.println("Extracted year number: " + yearNumber);
+
+            // Step 2: Get program code for section name matching
+            String programCode = null;
+            String programCodeQuery = "SELECT program_code FROM programs WHERE program_id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(programCodeQuery)) {
+                ps.setString(1, programId);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    programCode = rs.getString("program_code");
+                    System.out.println("Program code: " + programCode);
+                }
+            }
+
+            if (programCode == null) {
+                System.err.println("ERROR: Could not find program code for program_id: " + programId);
+                return 0;
+            }
+
+            // Step 3: Find appropriate section (e.g., "BSIT 1-A" for BSIT 1st Year)
             String sectionQuery = "SELECT section_id, section_name FROM section " +
-                                "WHERE program_id = ? AND section_name LIKE ? " +
-                                "ORDER BY section_name LIMIT 1";
-            
-            // Extract year number from yearLevel (e.g., "1st Year" -> "1")
-            String yearPrefix = yearLevel.replaceAll("[^0-9]", "");
-            if (yearPrefix.isEmpty()) yearPrefix = "1";
-            
+                                "WHERE program_id = ? " +
+                                "AND section_name LIKE ? " +
+                                "ORDER BY section_name " +
+                                "LIMIT 1";
+
+            String sectionPattern = programCode + " " + yearNumber + "-%"; // e.g., "BSIT 1-%"
+            System.out.println("Searching for section with pattern: " + sectionPattern);
+
             String sectionId = null;
             String sectionName = null;
-            
+
             try (PreparedStatement ps = conn.prepareStatement(sectionQuery)) {
                 ps.setString(1, programId);
-                ps.setString(2, "%-" + yearPrefix + "%"); // Match sections like "BSIT 1-A"
+                ps.setString(2, sectionPattern);
                 ResultSet rs = ps.executeQuery();
-                
+
                 if (rs.next()) {
                     sectionId = rs.getString("section_id");
                     sectionName = rs.getString("section_name");
-                    System.out.println("Assigned student " + studentId + " to section: " + sectionName);
+                    System.out.println("✓ Found section: " + sectionName + " (ID: " + sectionId + ")");
                 } else {
-                    System.err.println("Warning: No section found for program " + programId + 
-                                     ", year " + yearLevel);
+                    System.err.println("ERROR: No section found for pattern: " + sectionPattern);
+                    System.err.println("Please check if sections exist in the database for this program and year level.");
                     return 0;
                 }
             }
-            
-            if (sectionId == null) return 0;
-            
-            // Step 2: Get active semester
-            String semesterQuery = "SELECT semester_id FROM semester WHERE is_active = 1 LIMIT 1";
+
+            // Step 4: Get active semester
+            String semesterQuery = "SELECT semester_id, name FROM semester WHERE is_active = 1 LIMIT 1";
             String semesterId = null;
-            
+            String semesterName = null;
+
             try (PreparedStatement ps = conn.prepareStatement(semesterQuery);
                  ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     semesterId = rs.getString("semester_id");
+                    semesterName = rs.getString("name");
+                    System.out.println("✓ Active semester: " + semesterName + " (ID: " + semesterId + ")");
+                } else {
+                    System.err.println("ERROR: No active semester found!");
+                    return 0;
                 }
             }
-            
-            if (semesterId == null) {
-                System.err.println("Warning: No active semester found");
-                return 0;
-            }
-            
-            // Step 3: Get all course offerings for this section in active semester
-            String offeringsQuery = "SELECT co.offering_id, co.course_id, c.course_title, " +
-                                  "co.capacity, co.enrolled_count " +
-                                  "FROM course_offerings co " +
-                                  "JOIN courses c ON co.course_id = c.course_id " +
-                                  "WHERE co.section_id = ? AND co.semester_id = ? " +
-                                  "AND co.status = 'Open' " +
-                                  "AND co.time_slot_id IS NOT NULL " + // Only scheduled courses
-                                  "AND co.enrolled_count < co.capacity"; // Has space
-            
+
+            // Step 5: Get all course offerings for this section in active semester
+            String offeringsQuery = 
+                "SELECT " +
+                "  co.offering_id, " +
+                "  co.course_id, " +
+                "  c.course_code, " +
+                "  c.course_title, " +
+                "  co.capacity, " +
+                "  co.enrolled_count, " +
+                "  co.schedule_day, " +
+                "  co.schedule_time, " +
+                "  co.room " +
+                "FROM course_offerings co " +
+                "JOIN courses c ON co.course_id = c.course_id " +
+                "WHERE co.section_id = ? " +
+                "  AND co.semester_id = ? " +
+                "  AND co.status = 'Open' " +
+                "  AND (co.enrolled_count < co.capacity OR co.capacity IS NULL) " +
+                "ORDER BY c.course_code";
+
+            System.out.println("\n--- AVAILABLE COURSE OFFERINGS ---");
+
             try (PreparedStatement ps = conn.prepareStatement(offeringsQuery)) {
                 ps.setString(1, sectionId);
                 ps.setString(2, semesterId);
                 ResultSet rs = ps.executeQuery();
-                
-                // Step 4: Enroll student in each course offering
+
+                boolean foundOfferings = false;
+
                 while (rs.next()) {
+                    foundOfferings = true;
                     String offeringId = rs.getString("offering_id");
+                    String courseCode = rs.getString("course_code");
                     String courseTitle = rs.getString("course_title");
-                    
+                    String scheduleDay = rs.getString("schedule_day");
+                    String scheduleTime = rs.getString("schedule_time");
+                    String room = rs.getString("room");
+                    int capacity = rs.getInt("capacity");
+                    int enrolled = rs.getInt("enrolled_count");
+
+                    System.out.println("\nCourse: " + courseCode + " - " + courseTitle);
+                    System.out.println("  Offering ID: " + offeringId);
+                    System.out.println("  Schedule: " + scheduleDay + " " + scheduleTime + " @ " + room);
+                    System.out.println("  Capacity: " + enrolled + "/" + capacity);
+
+                    // Enroll student in this offering
                     if (enrollStudentInOffering(studentId, offeringId, conn)) {
                         enrolledCount++;
-                        System.out.println("  ✓ Enrolled in: " + courseTitle + " (" + offeringId + ")");
+                        System.out.println("  ✓ ENROLLED SUCCESSFULLY");
                     } else {
-                        System.err.println("  ✗ Failed to enroll in: " + courseTitle);
+                        System.err.println("  ✗ ENROLLMENT FAILED");
                     }
                 }
+
+                if (!foundOfferings) {
+                    System.err.println("WARNING: No course offerings found for section " + sectionName);
+                    System.err.println("Please check:");
+                    System.err.println("  1. Section has courses assigned in course_offerings table");
+                    System.err.println("  2. Courses are marked as 'Open' status");
+                    System.err.println("  3. Courses belong to active semester: " + semesterName);
+                }
             }
-            
-            System.out.println("Successfully enrolled student " + studentId + " in " + 
-                             enrolledCount + " courses");
-            
+
+            System.out.println("\n=== ENROLLMENT COMPLETE ===");
+            System.out.println("Total courses enrolled: " + enrolledCount);
+            System.out.println("=============================\n");
+
         } catch (SQLException e) {
-            System.err.println("Error auto-enrolling student: " + e.getMessage());
+            System.err.println("ERROR during auto-enrollment: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return enrolledCount;
     }
-  
+
     private boolean enrollStudentInOffering(String studentId, String offeringId, Connection conn) throws SQLException {
+        // Check if already enrolled
+        String checkQuery = "SELECT COUNT(*) FROM enrollments WHERE student_id = ? AND offering_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(checkQuery)) {
+            ps.setString(1, studentId);
+            ps.setString(2, offeringId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("    (Already enrolled - skipping)");
+                return true; // Already enrolled, count as success
+            }
+        }
+
         // Generate enrollment ID
         String enrollmentId = generateEnrollmentId();
-        
-        String insertQuery = "INSERT INTO enrollments (enrollment_id, student_id, offering_id, " +
-                           "enrollment_date, status) VALUES (?, ?, ?, ?, 'Enrolled')";
-        
+
+        // Insert enrollment
+        String insertQuery = 
+            "INSERT INTO enrollments (enrollment_id, student_id, offering_id, enrollment_date, status) " +
+            "VALUES (?, ?, ?, ?, 'Enrolled')";
+
         try (PreparedStatement ps = conn.prepareStatement(insertQuery)) {
             ps.setString(1, enrollmentId);
             ps.setString(2, studentId);
             ps.setString(3, offeringId);
             ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
-            
+
             int rows = ps.executeUpdate();
-            
+
             if (rows > 0) {
-                String updateQuery = "UPDATE course_offerings SET enrolled_count = enrolled_count + 1 " +
-                                   "WHERE offering_id = ?";
+                // Update enrolled count in course_offerings
+                String updateQuery = "UPDATE course_offerings SET enrolled_count = enrolled_count + 1 WHERE offering_id = ?";
                 try (PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
                     updatePs.setString(1, offeringId);
                     updatePs.executeUpdate();
@@ -806,9 +880,10 @@ public class AdminDashboardController implements Initializable {
                 return true;
             }
         }
-        
+
         return false;
     }
+
  
     private String generateEnrollmentId() {
         int year = java.time.LocalDate.now().getYear();

@@ -51,25 +51,25 @@
                     <HBox alignment="CENTER" styleClass="stat-card">
                         <Label styleClass="stat-title" text="Enrolled" />
                         <Region prefHeight="23.0" prefWidth="66.0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="enrolledNoLabel" styleClass="stat-value" text="0" />
+                        <Label fx:id="enrolledNoLabel" prefHeight="18.0" prefWidth="26.0" styleClass="stat-value" text="0" />
                     </HBox>
 
                     <HBox alignment="CENTER" styleClass="stat-card">
                         <Label styleClass="stat-title" text="Pending Enrollment" />
                         <Region prefHeight="23.0" prefWidth="3.0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="pendingEnrollmentLabel" styleClass="stat-value" text="0" />
+                        <Label fx:id="pendingEnrollmentLabel" prefHeight="18.0" prefWidth="26.0" styleClass="stat-value" text="0" />
                     </HBox>
 
                     <HBox alignment="CENTER" styleClass="stat-card">
                         <Label styleClass="stat-title" text="Pending Payments" />
                         <Region prefHeight="23.0" prefWidth="13.0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="pendingPaymentLabel" styleClass="stat-value" text="0" />
+                        <Label fx:id="pendingPaymentLabel" prefHeight="18.0" prefWidth="26.0" styleClass="stat-value" text="0" />
                     </HBox>
 
                     <HBox alignment="CENTER" styleClass="stat-card">
                         <Label prefHeight="18.0" prefWidth="70.0" styleClass="stat-title" text="Paid" />
-                        <Region prefHeight="23.0" prefWidth="111.0" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="paidLabel" styleClass="stat-value" text="0" />
+                        <Region prefHeight="23.0" prefWidth="157.0" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="paidLabel" prefHeight="18.0" prefWidth="26.0" styleClass="stat-value" text="0" />
                     </HBox>
                 </VBox>
             </VBox>
