@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.*;
 import java.sql.*;
-import java.time.LocalDateTime;
 
 public class StudentDashboardController {
 
@@ -47,16 +46,27 @@ public class StudentDashboardController {
     private ObservableList<StudentGrade> gradesList;
     private ObservableList<StudentSchedule> scheduleList;
 
+    
     @FXML
     public void initialize() {
+        System.out.println("=== Student Dashboard Initializing ===");
+        
+        // Add debug info
+        String studentId = SessionManager.getInstance().getStudentId();
+        System.out.println("Student ID from session: " + studentId);
+        
         setupTableColumns();
         loadStudentData();
         loadOverviewData();
         loadGradesData();
         loadScheduleData();
+        
+        System.out.println("=== Initialization Complete ===");
     }
     
     private void setupTableColumns() {
+        System.out.println("Setting up table columns...");
+        
         // Overview Table
         semCol.setCellValueFactory(new PropertyValueFactory<>("semester"));
         courseCol.setCellValueFactory(new PropertyValueFactory<>("course"));
@@ -80,33 +90,60 @@ public class StudentDashboardController {
         timeCol.setCellValueFactory(new PropertyValueFactory<>("time"));
         scheduleList = FXCollections.observableArrayList();
         scheduleTable.setItems(scheduleList);
+        
+        System.out.println("Table columns set up successfully");
     }
     
     private void loadStudentData() {
+        System.out.println("\n--- Loading Student Data ---");
+        
         String studentId = SessionManager.getInstance().getStudentId();
         
         if (studentId == null || studentId.isEmpty()) {
-            System.err.println("No student ID found in session!");
+            System.err.println("ERROR: No student ID found in session!");
+            showError("Session Error", "No student ID found. Please log in again.");
             return;
         }
         
+        System.out.println("Loading student with ID: " + studentId);
         currentStudent = Student.loadById(studentId);
         
         if (currentStudent != null) {
-            // Set top bar info
+            System.out.println("Student loaded successfully: " + currentStudent.getUsername());
+            
+            // Load and display student profile
             StudentProfile profile = loadStudentProfile(studentId);
             if (profile != null) {
                 studentNameLabel.setText(profile.getFullName());
                 studentEmailLabel.setText(currentStudent.getEmail());
                 studentIdLabel.setText(studentId);
+                
+                System.out.println("Profile displayed:");
+                System.out.println("  Name: " + profile.getFullName());
+                System.out.println("  Email: " + currentStudent.getEmail());
+                System.out.println("  ID: " + studentId);
+            } else {
+                System.err.println("WARNING: Could not load student profile!");
+                // Set basic info even if profile fails
+                studentNameLabel.setText(currentStudent.getUsername());
+                studentEmailLabel.setText(currentStudent.getEmail());
+                studentIdLabel.setText(studentId);
             }
         } else {
-            System.err.println("Failed to load student data for ID: " + studentId);
+            System.err.println("ERROR: Failed to load student data for ID: " + studentId);
+            showError("Data Error", "Failed to load student information.");
         }
     }
     
     private StudentProfile loadStudentProfile(String studentId) {
+        System.out.println("Loading student profile from student_record...");
+        
         try (Connection conn = DBConnection.getConnection()) {
+            if (conn == null) {
+                System.err.println("ERROR: Database connection is null!");
+                return null;
+            }
+            
             String query = "SELECT sr.first_name, sr.middle_name, sr.last_name, " +
                           "sr.suffix, p.program_name, sr.year_level " +
                           "FROM student_record sr " +
@@ -127,64 +164,104 @@ public class StudentDashboardController {
                     String yearLevel = rs.getString("year_level");
                     
                     String fullName = firstName + " " + 
-                                    (middleName != null ? middleName.charAt(0) + ". " : "") + 
+                                    (middleName != null && !middleName.isEmpty() ? 
+                                        middleName.charAt(0) + ". " : "") + 
                                     lastName + 
-                                    (suffix != null ? " " + suffix : "");
+                                    (suffix != null && !suffix.isEmpty() ? " " + suffix : "");
                     
+                    System.out.println("Profile found: " + fullName);
                     return new StudentProfile(fullName, program, yearLevel);
+                } else {
+                    System.err.println("No student_record found for student ID: " + studentId);
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error loading student profile: " + e.getMessage());
+            System.err.println("SQL Error loading student profile: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
     }
     
     private void loadOverviewData() {
-        if (currentStudent == null) return;
+        System.out.println("\n--- Loading Overview Data ---");
+        
+        if (currentStudent == null) {
+            System.err.println("ERROR: currentStudent is null, cannot load overview");
+            return;
+        }
         
         overviewList.clear();
         
         try (Connection conn = DBConnection.getConnection()) {
-            String query = "SELECT DISTINCT s.name as semester, p.program_code as program, " +
-                          "sec.section_name, sr.year_level " +
+            if (conn == null) {
+                System.err.println("ERROR: Database connection is null!");
+                return;
+            }
+            
+            // Fixed query with proper semester name handling
+            String query = "SELECT DISTINCT " +
+                          "CONCAT(s.name, ' Semester ', SUBSTRING(ay.year_label, 1, 9)) as semester, " +
+                          "p.program_code as program, " +
+                          "sec.section_name, " +
+                          "sr.year_level " +
                           "FROM enrollments e " +
                           "JOIN course_offerings co ON e.offering_id = co.offering_id " +
                           "JOIN semester s ON co.semester_id = s.semester_id " +
+                          "JOIN academic_year ay ON s.academic_year_id = ay.academic_year_id " +
                           "JOIN section sec ON co.section_id = sec.section_id " +
                           "JOIN students st ON e.student_id = st.student_id " +
                           "JOIN programs p ON st.program_id = p.program_id " +
-                          "JOIN student_record sr ON e.student_id = sr.student_id " +
+                          "LEFT JOIN student_record sr ON e.student_id = sr.student_id " +
                           "WHERE e.student_id = ? AND e.status = 'Enrolled' " +
-                          "ORDER BY s.start_date DESC";
+                          "ORDER BY s.start_date DESC " +
+                          "LIMIT 1";
             
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, currentStudent.getStudentId());
+                
+                System.out.println("Executing overview query for student: " + currentStudent.getStudentId());
                 ResultSet rs = ps.executeQuery();
                 
-                while (rs.next()) {
+                if (rs.next()) {
                     StudentOverview overview = new StudentOverview(
                         rs.getString("semester"),
                         rs.getString("program"),
                         rs.getString("section_name"),
-                        rs.getString("year_level")
+                        rs.getString("year_level") != null ? rs.getString("year_level") : "N/A"
                     );
                     overviewList.add(overview);
+                    
+                    System.out.println("Overview data loaded:");
+                    System.out.println("  Semester: " + overview.getSemester());
+                    System.out.println("  Program: " + overview.getCourse());
+                    System.out.println("  Section: " + overview.getSection());
+                    System.out.println("  Year: " + overview.getYearLevel());
+                } else {
+                    System.out.println("No overview data found - student may not be enrolled in any courses");
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error loading overview data: " + e.getMessage());
+            System.err.println("SQL Error loading overview data: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
     private void loadGradesData() {
-        if (currentStudent == null) return;
+        System.out.println("\n--- Loading Grades Data ---");
+        
+        if (currentStudent == null) {
+            System.err.println("ERROR: currentStudent is null, cannot load grades");
+            return;
+        }
         
         gradesList.clear();
         
         try (Connection conn = DBConnection.getConnection()) {
+            if (conn == null) {
+                System.err.println("ERROR: Database connection is null!");
+                return;
+            }
+            
             String query = "SELECT c.course_title, e.grade, e.status " +
                           "FROM enrollments e " +
                           "JOIN course_offerings co ON e.offering_id = co.offering_id " +
@@ -194,13 +271,16 @@ public class StudentDashboardController {
             
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, currentStudent.getStudentId());
+                
+                System.out.println("Executing grades query for student: " + currentStudent.getStudentId());
                 ResultSet rs = ps.executeQuery();
                 
+                int count = 0;
                 while (rs.next()) {
                     String grade = rs.getString("grade");
                     String status = rs.getString("status");
                     
-                    String displayGrade = grade != null ? grade : 
+                    String displayGrade = grade != null && !grade.isEmpty() ? grade : 
                                         (status.equals("Enrolled") ? "In Progress" : "No Grade");
                     
                     StudentGrade gradeEntry = new StudentGrade(
@@ -208,58 +288,97 @@ public class StudentDashboardController {
                         displayGrade
                     );
                     gradesList.add(gradeEntry);
+                    count++;
                 }
+                
+                System.out.println("Loaded " + count + " grade entries");
             }
         } catch (SQLException e) {
-            System.err.println("Error loading grades data: " + e.getMessage());
+            System.err.println("SQL Error loading grades data: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
     private void loadScheduleData() {
-        if (currentStudent == null) return;
+        System.out.println("\n--- Loading Schedule Data ---");
+        
+        if (currentStudent == null) {
+            System.err.println("ERROR: currentStudent is null, cannot load schedule");
+            return;
+        }
         
         scheduleList.clear();
         
         try (Connection conn = DBConnection.getConnection()) {
+            if (conn == null) {
+                System.err.println("ERROR: Database connection is null!");
+                return;
+            }
+            
             String query = "SELECT c.course_code, c.course_title, " +
                           "CONCAT(f.first_name, ' ', f.last_name) as faculty_name, " +
                           "co.room, co.schedule_day, co.schedule_time " +
                           "FROM enrollments e " +
                           "JOIN course_offerings co ON e.offering_id = co.offering_id " +
                           "JOIN courses c ON co.course_id = c.course_id " +
-                          "JOIN faculty f ON co.faculty_id = f.faculty_id " +
+                          "LEFT JOIN faculty f ON co.faculty_id = f.faculty_id " +
                           "WHERE e.student_id = ? AND e.status = 'Enrolled' " +
                           "AND co.status = 'Open' " +
-                          "ORDER BY co.schedule_day, co.schedule_time";
+                          "ORDER BY " +
+                          "CASE co.schedule_day " +
+                          "  WHEN 'Monday' THEN 1 " +
+                          "  WHEN 'Tuesday' THEN 2 " +
+                          "  WHEN 'Wednesday' THEN 3 " +
+                          "  WHEN 'Thursday' THEN 4 " +
+                          "  WHEN 'Friday' THEN 5 " +
+                          "  WHEN 'Saturday' THEN 6 " +
+                          "  WHEN 'Sunday' THEN 7 " +
+                          "  ELSE 8 END, " +
+                          "co.schedule_time";
             
             try (PreparedStatement ps = conn.prepareStatement(query)) {
                 ps.setString(1, currentStudent.getStudentId());
+                
+                System.out.println("Executing schedule query for student: " + currentStudent.getStudentId());
                 ResultSet rs = ps.executeQuery();
                 
+                int count = 0;
                 while (rs.next()) {
                     String day = rs.getString("schedule_day");
                     String time = rs.getString("schedule_time");
                     String room = rs.getString("room");
+                    String facultyName = rs.getString("faculty_name");
                     
                     StudentSchedule schedule = new StudentSchedule(
                         rs.getString("course_code"),
                         rs.getString("course_title"),
-                        rs.getString("faculty_name"),
+                        facultyName != null ? facultyName : "TBA",
                         room != null ? room : "TBA",
                         day != null ? day : "TBA",
                         time != null ? time : "TBA"
                     );
                     scheduleList.add(schedule);
+                    count++;
                 }
+                
+                System.out.println("Loaded " + count + " schedule entries");
             }
         } catch (SQLException e) {
-            System.err.println("Error loading schedule data: " + e.getMessage());
+            System.err.println("SQL Error loading schedule data: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
-    // Inner Classes for TableView Models
+    private void showError(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    // Data Classes
+    
     public static class StudentOverview {
         private final StringProperty semester;
         private final StringProperty course;

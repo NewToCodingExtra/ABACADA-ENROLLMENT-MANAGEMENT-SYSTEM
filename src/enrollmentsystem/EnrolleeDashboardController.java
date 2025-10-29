@@ -14,6 +14,8 @@ import javafx.geometry.Pos;
 import javafx.util.Duration;
 import java.sql.*;
 import java.util.Optional;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 
 public class EnrolleeDashboardController {
     
@@ -609,13 +611,13 @@ public class EnrolleeDashboardController {
         String finalPassword = password;
 
         String content = String.format(
-            "╔══════════════════════════════════════╗\n" +
+            "================================\n" +
             "      YOUR STUDENT LOGIN CREDENTIALS\n" +
-            "╚══════════════════════════════════════╝\n\n" +
+            "================================\n\n" +
             "Student ID: %s\n" +
             "Username: %s\n" +
             "Password: %s\n\n" +
-            "════════════════════════════════════════\n\n" +
+            "================================\n\n" +
             "⚠️  IMPORTANT INSTRUCTIONS:\n\n" +
             "1. Please copy these credentials before closing.\n\n" +
             "2. After closing this dialog, you will be logged\n" +
@@ -623,7 +625,7 @@ public class EnrolleeDashboardController {
             "3. Log back in using your new Student Account\n" +
             "   credentials above.\n\n" +
             "4. Welcome to the student portal!\n\n" +
-            "════════════════════════════════════════",
+            "================================",
             finalStudentId, finalUsername, finalPassword
         );
 
@@ -643,8 +645,8 @@ public class EnrolleeDashboardController {
                 finalStudentId, finalUsername, finalPassword
             );
 
-            javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
-            javafx.scene.input.ClipboardContent clipboardContent = new javafx.scene.input.ClipboardContent();
+            Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+            ClipboardContent clipboardContent = new ClipboardContent();
             clipboardContent.putString(credentials);
             clipboard.setContent(clipboardContent);
 

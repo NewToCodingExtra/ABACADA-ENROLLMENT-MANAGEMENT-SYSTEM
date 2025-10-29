@@ -31,6 +31,7 @@ import javafx.util.Duration;
  * Admin Dashboard Controller
  * Manages enrollee approval/rejection process
  * Creates student accounts and handles enrollment workflow
+ * FIXED: Now automatically enrolls students in section courses
  */
 public class AdminDashboardController implements Initializable {
 
@@ -43,13 +44,11 @@ public class AdminDashboardController implements Initializable {
     @FXML private VBox mainContainer;
     @FXML private TabPane mainTabPane;
     
-    // Dashboard Statistics Labels
     @FXML private Label enrolledNoLabel;
     @FXML private Label pendingEnrollmentLabel;
     @FXML private Label pendingPaymentLabel;
     @FXML private Label paidLabel;
     
-    // Home Tab - All Enrollees with Verified Payment
     @FXML private TableView<EnrolleeForApproval> homeTable;
     @FXML private TableColumn<EnrolleeForApproval, String> homeColEnrolleeID;
     @FXML private TableColumn<EnrolleeForApproval, String> homeColStudentName;
@@ -58,7 +57,6 @@ public class AdminDashboardController implements Initializable {
     @FXML private TableColumn<EnrolleeForApproval, Void> homeColAction;
     @FXML private TableColumn<EnrolleeForApproval, String> homeColExtra;
     
-    // Account Creation Tab
     @FXML private TableView<?> accountCreationTable;
     @FXML private TableColumn<?, ?> accColStudentName;
     @FXML private TableColumn<?, ?> accColCourse;
@@ -261,7 +259,8 @@ public class AdminDashboardController implements Initializable {
             "• Create a student account\n" +
             "• Transfer data to student records\n" +
             "• Generate login credentials\n" +
-            "• Assign to a section with schedule"
+            "• Assign to a section with schedule\n" +
+            "• Enroll student in all section courses"
         );
         
         Optional<ButtonType> result = confirmation.showAndWait();
@@ -319,25 +318,41 @@ public class AdminDashboardController implements Initializable {
                 return false;
             }
             
-            String credentialsMessage = String.format(
-                "You are officially enrolled! Log in using your student account.\n\n" +
-                "Student ID: %s\n" +
-                "Username: %s\n" +
-                "Password: %s\n" +
-                "University Email: %s",
-                studentId, username, password, universityEmail
-            );
+            // CRITICAL FIX: Auto-enroll student in section courses
+            int enrolledCourses = assignToSectionAndEnroll(studentId, programId, fullEnrollee.getYearLevel(), conn);
+            
+            String credentialsMessage;
+            if (enrolledCourses > 0) {
+                credentialsMessage = String.format(
+                    "You are officially enrolled! Log in using your student account.\n\n" +
+                    "Student ID: %s\n" +
+                    "Username: %s\n" +
+                    "Password: %s\n" +
+                    "University Email: %s\n\n" +
+                    "You have been enrolled in %d courses for this semester.",
+                    studentId, username, password, universityEmail, enrolledCourses
+                );
+            } else {
+                credentialsMessage = String.format(
+                    "You are officially enrolled! Log in using your student account.\n\n" +
+                    "Student ID: %s\n" +
+                    "Username: %s\n" +
+                    "Password: %s\n" +
+                    "University Email: %s\n\n" +
+                    "Note: No courses available for your section yet. Check back later.",
+                    studentId, username, password, universityEmail
+                );
+            }
             
             if (!updateEnrolleeStatus(enrollee.getEnrolleeId(), "Enrolled", credentialsMessage, conn)) {
                 conn.rollback();
                 return false;
             }
             
-            assignToSection(studentId, programId, fullEnrollee.getYearLevel(), conn);
-            
             conn.commit();
             
-            showCredentialsDialog(enrollee.getStudentName(), studentId, username, password, universityEmail);
+            showCredentialsDialog(enrollee.getStudentName(), studentId, username, password, 
+                                universityEmail, enrolledCourses);
             
             return true;
             
@@ -362,7 +377,8 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
-    private void showCredentialsDialog(String studentName, String studentId, String username, String password, String universityEmail) {
+    private void showCredentialsDialog(String studentName, String studentId, String username, 
+                                      String password, String universityEmail, int enrolledCourses) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Enrollment Approved");
         alert.setHeaderText("Student Account Created for " + studentName);
@@ -374,17 +390,20 @@ public class AdminDashboardController implements Initializable {
             "Student ID: %s\n" +
             "Username: %s\n" +
             "Password: %s\n" +
-            "University Email: %s\n\n" +
+            "University Email: %s\n" +
+            "Courses Enrolled: %d\n\n" +
             "=============================\n\n" +
             "IMPORTANT INSTRUCTIONS:\n\n" +
             "1. These credentials have been sent to the\n" +
             "   enrollee's dashboard under Admin Comment.\n\n" +
             "2. The enrollee can now log in using their\n" +
             "   student account.\n\n" +
-            "3. The enrollee account will remain active\n" +
+            "3. The student has been automatically enrolled\n" +
+            "   in all courses for their assigned section.\n\n" +
+            "4. The enrollee account will remain active\n" +
             "   until the student logs in for the first time.\n\n" +
             "==============================",
-            studentId, username, password, universityEmail
+            studentId, username, password, universityEmail, enrolledCourses
         );
         
         alert.setContentText(content);
@@ -398,8 +417,8 @@ public class AdminDashboardController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == copyButton) {
             String credentials = String.format(
-                "Student ID: %s\nUsername: %s\nPassword: %s\nUniversity Email: %s",
-                studentId, username, password, universityEmail
+                "Student ID: %s\nUsername: %s\nPassword: %s\nUniversity Email: %s\nCourses Enrolled: %d",
+                studentId, username, password, universityEmail, enrolledCourses
             );
             javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
             javafx.scene.input.ClipboardContent content2 = new javafx.scene.input.ClipboardContent();
@@ -407,7 +426,7 @@ public class AdminDashboardController implements Initializable {
             clipboard.setContent(content2);
             
             showInfo("Copied", "Credentials copied to clipboard!");
-            showCredentialsDialog(studentName, studentId, username, password, universityEmail); // Show again
+            showCredentialsDialog(studentName, studentId, username, password, universityEmail, enrolledCourses);
         }
     }
  
@@ -530,7 +549,6 @@ public class AdminDashboardController implements Initializable {
     }
   
     private String generateUniqueEmail(String firstName, String lastName, Connection conn) throws SQLException {
-  
         String cleanFirstName = firstName.replaceAll("[^a-zA-Z]", "").toLowerCase();
         String cleanLastName = lastName.replaceAll("[^a-zA-Z]", "").toLowerCase();
         
@@ -669,30 +687,133 @@ public class AdminDashboardController implements Initializable {
         }
     }
     
-    private void assignToSection(String studentId, String programId, String yearLevel, Connection conn) {
-        // Auto-assign to section based on program and year level
-        // This integrates with the AutoScheduler
+    /**
+     * CRITICAL FIX: Auto-assign student to section and enroll in all section courses
+     * Returns number of courses enrolled
+     */
+    private int assignToSectionAndEnroll(String studentId, String programId, String yearLevel, Connection conn) {
+        int enrolledCount = 0;
+        
         try {
-            String query = "SELECT section_id FROM section WHERE program_id = ? " +
-                          "AND section_name LIKE ? LIMIT 1";
+            // Step 1: Find appropriate section for student
+            String sectionQuery = "SELECT section_id, section_name FROM section " +
+                                "WHERE program_id = ? AND section_name LIKE ? " +
+                                "ORDER BY section_name LIMIT 1";
             
-            String yearPrefix = yearLevel.charAt(0) + "";
+            // Extract year number from yearLevel (e.g., "1st Year" -> "1")
+            String yearPrefix = yearLevel.replaceAll("[^0-9]", "");
+            if (yearPrefix.isEmpty()) yearPrefix = "1";
             
-            try (PreparedStatement ps = conn.prepareStatement(query)) {
+            String sectionId = null;
+            String sectionName = null;
+            
+            try (PreparedStatement ps = conn.prepareStatement(sectionQuery)) {
                 ps.setString(1, programId);
-                ps.setString(2, "%" + yearPrefix + "%");
+                ps.setString(2, "%-" + yearPrefix + "%"); // Match sections like "BSIT 1-A"
                 ResultSet rs = ps.executeQuery();
                 
                 if (rs.next()) {
-                    String sectionId = rs.getString("section_id");
-                    System.out.println("Assigned student " + studentId + " to section " + sectionId);
-                    // Future: Enroll in section's scheduled courses
+                    sectionId = rs.getString("section_id");
+                    sectionName = rs.getString("section_name");
+                    System.out.println("Assigned student " + studentId + " to section: " + sectionName);
+                } else {
+                    System.err.println("Warning: No section found for program " + programId + 
+                                     ", year " + yearLevel);
+                    return 0;
                 }
             }
             
+            if (sectionId == null) return 0;
+            
+            // Step 2: Get active semester
+            String semesterQuery = "SELECT semester_id FROM semester WHERE is_active = 1 LIMIT 1";
+            String semesterId = null;
+            
+            try (PreparedStatement ps = conn.prepareStatement(semesterQuery);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    semesterId = rs.getString("semester_id");
+                }
+            }
+            
+            if (semesterId == null) {
+                System.err.println("Warning: No active semester found");
+                return 0;
+            }
+            
+            // Step 3: Get all course offerings for this section in active semester
+            String offeringsQuery = "SELECT co.offering_id, co.course_id, c.course_title, " +
+                                  "co.capacity, co.enrolled_count " +
+                                  "FROM course_offerings co " +
+                                  "JOIN courses c ON co.course_id = c.course_id " +
+                                  "WHERE co.section_id = ? AND co.semester_id = ? " +
+                                  "AND co.status = 'Open' " +
+                                  "AND co.time_slot_id IS NOT NULL " + // Only scheduled courses
+                                  "AND co.enrolled_count < co.capacity"; // Has space
+            
+            try (PreparedStatement ps = conn.prepareStatement(offeringsQuery)) {
+                ps.setString(1, sectionId);
+                ps.setString(2, semesterId);
+                ResultSet rs = ps.executeQuery();
+                
+                // Step 4: Enroll student in each course offering
+                while (rs.next()) {
+                    String offeringId = rs.getString("offering_id");
+                    String courseTitle = rs.getString("course_title");
+                    
+                    if (enrollStudentInOffering(studentId, offeringId, conn)) {
+                        enrolledCount++;
+                        System.out.println("  ✓ Enrolled in: " + courseTitle + " (" + offeringId + ")");
+                    } else {
+                        System.err.println("  ✗ Failed to enroll in: " + courseTitle);
+                    }
+                }
+            }
+            
+            System.out.println("Successfully enrolled student " + studentId + " in " + 
+                             enrolledCount + " courses");
+            
         } catch (SQLException e) {
-            System.err.println("Error assigning to section: " + e.getMessage());
+            System.err.println("Error auto-enrolling student: " + e.getMessage());
+            e.printStackTrace();
         }
+        
+        return enrolledCount;
+    }
+  
+    private boolean enrollStudentInOffering(String studentId, String offeringId, Connection conn) throws SQLException {
+        // Generate enrollment ID
+        String enrollmentId = generateEnrollmentId();
+        
+        String insertQuery = "INSERT INTO enrollments (enrollment_id, student_id, offering_id, " +
+                           "enrollment_date, status) VALUES (?, ?, ?, ?, 'Enrolled')";
+        
+        try (PreparedStatement ps = conn.prepareStatement(insertQuery)) {
+            ps.setString(1, enrollmentId);
+            ps.setString(2, studentId);
+            ps.setString(3, offeringId);
+            ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            
+            int rows = ps.executeUpdate();
+            
+            if (rows > 0) {
+                String updateQuery = "UPDATE course_offerings SET enrolled_count = enrolled_count + 1 " +
+                                   "WHERE offering_id = ?";
+                try (PreparedStatement updatePs = conn.prepareStatement(updateQuery)) {
+                    updatePs.setString(1, offeringId);
+                    updatePs.executeUpdate();
+                }
+                return true;
+            }
+        }
+        
+        return false;
+    }
+ 
+    private String generateEnrollmentId() {
+        int year = java.time.LocalDate.now().getYear();
+        int random = (int)(Math.random() * 9000) + 1000;
+        return String.format("ENR-%d-%03d", year, random);
     }
     
     private void startAutoRefresh(int intervalSeconds) {
@@ -703,7 +824,7 @@ public class AdminDashboardController implements Initializable {
         refreshTimeline = new Timeline(
             new KeyFrame(Duration.seconds(intervalSeconds), event -> {
                 System.out.println("Auto-refreshing admin dashboard...");
-                loadEnrollees(); // This will also refresh statistics
+                loadEnrollees();
             })
         );
         refreshTimeline.setCycleCount(Timeline.INDEFINITE);

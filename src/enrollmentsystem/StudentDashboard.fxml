@@ -69,7 +69,7 @@
                         <Tab text="Schedule">
                             <AnchorPane styleClass="tab-content">
                         <children>
-                           <TableView layoutX="23.0" layoutY="33.0" prefHeight="331.0" prefWidth="824.0">
+                           <TableView fx:id="scheduleTable" layoutX="23.0" layoutY="33.0" prefHeight="331.0" prefWidth="824.0">
                               <columns>
                                  <TableColumn fx:id="courseCode" editable="false" prefWidth="124.00002670288086" resizable="false" sortable="false" text="Course Code" />
                                  <TableColumn fx:id="courseNameCol" editable="false" prefWidth="278.40000915527344" resizable="false" sortable="false" text="Course Name" />
