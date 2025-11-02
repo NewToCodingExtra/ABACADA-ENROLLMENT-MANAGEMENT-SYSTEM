@@ -15,6 +15,16 @@ public class EnrollmentSystem extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            if (DBConnection.isUsingEmbedded()) {
+                System.out.println("Starting embedded database...");
+                EmbeddedDatabaseManager.startEmbeddedDatabase();
+
+                // Add shutdown hook to stop database cleanly
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    System.out.println("Shutting down embedded database...");
+                    EmbeddedDatabaseManager.stopEmbeddedDatabase();
+                }));
+            }
             
             mainStage = primaryStage;  
             Parent root = FXMLLoader.load(getClass().getResource("/enrollmentsystem/NewLoginUI.fxml"));

@@ -7,24 +7,60 @@ import java.net.InetAddress;
 import javax.swing.JOptionPane;
 
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12804580";
-    private static final String USER = "sql12804580";
-    private static final String PASSWORD = "JSrtCUQHCb";
+    // Remote database configuration (for development)
+    private static final String REMOTE_URL = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12804580";
+    private static final String REMOTE_USER = "sql12804580";
+    private static final String REMOTE_PASSWORD = "JSrtCUQHCb";
+    
+    // Configuration flag - set to true for production (embedded), false for development (remote)
+    private static final boolean USE_EMBEDDED = true;
     
     /**
      * Check if device has internet connection
      */
     private static boolean isInternetAvailable() {
         try {
-            // Try to reach Google's DNS server
             InetAddress address = InetAddress.getByName("8.8.8.8");
-            return address.isReachable(3000); // 3 second timeout
+            return address.isReachable(3000);
         } catch (Exception e) {
             return false;
         }
     }
     
+    /**
+     * Get database connection - automatically chooses embedded or remote
+     */
     public static Connection getConnection() {
+        Connection conn = null;
+        
+        // Use embedded database for production
+        if (USE_EMBEDDED) {
+            try {
+                conn = EmbeddedDatabaseManager.getEmbeddedConnection();
+                System.out.println("Connected to embedded database!");
+                return conn;
+            } catch (SQLException e) {
+                System.err.println("Embedded database connection failed: " + e.getMessage());
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Failed to connect to local database!\n\n" +
+                    "Error: " + e.getMessage() +
+                    "\n\nPlease restart the application.",
+                    "Database Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return null;
+            }
+        }
+        
+        // Use remote database for development
+        return getRemoteConnection();
+    }
+    
+    /**
+     * Get connection to remote database (for development)
+     */
+    private static Connection getRemoteConnection() {
         Connection conn = null;
         
         // Check internet connection first
@@ -42,7 +78,7 @@ public class DBConnection {
         }
         
         try {
-            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            conn = DriverManager.getConnection(REMOTE_URL, REMOTE_USER, REMOTE_PASSWORD);
             System.out.println("Database connected!");
         } catch (SQLException e) {
             String errorMsg = e.getMessage().toLowerCase();
@@ -68,7 +104,6 @@ public class DBConnection {
                     JOptionPane.ERROR_MESSAGE
                 );
             } else {
-                // Other database errors (wrong credentials, etc.)
                 JOptionPane.showMessageDialog(
                     null,
                     "Database connection failed!\n\n" +
@@ -90,5 +125,12 @@ public class DBConnection {
             System.out.println("Unexpected error: " + e.getMessage());
         }
         return conn;
+    }
+    
+    /**
+     * Check if using embedded database
+     */
+    public static boolean isUsingEmbedded() {
+        return USE_EMBEDDED;
     }
 }

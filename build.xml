@@ -50,4 +50,20 @@
     nbproject/build-impl.xml and nbproject/jfx-impl.xml.
 
     -->
+    <!-- Custom target: Copy JavaFX native libraries after building JAR -->
+    <target name="-post-jar">
+        <echo message="Copying JavaFX native DLL files to dist folder..."/>
+        
+        <!-- Define JDK path -->
+        <property name="jdk.bin.dir" value="C:\Program Files\Java\zulu25.28.85-ca-fx-jdk25.0.0-win_x64\bin"/>
+        
+        <!-- Copy all DLL files from JDK bin to dist folder -->
+        <copy todir="${dist.dir}" verbose="true" failonerror="false">
+            <fileset dir="${jdk.bin.dir}">
+                <include name="*.dll"/>
+            </fileset>
+        </copy>
+        
+        <echo message="Native libraries copied successfully!"/>
+    </target>
 </project>
